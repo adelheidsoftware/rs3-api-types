@@ -175,11 +175,11 @@ class PageReaderTest {
 				<table>
 				<thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead>
 				<tbody>
-				<tr><td>isSwitching</td><td>Bool</td><td>*<strong>(Read-only)</strong><br/>Whether it switches.</td></tr>
+				<tr><td>isSwitching</td><td>Bool</td><td>*<strong>(Read-only)</strong><br/>It switches.</td></tr>
 				</tbody>
 				</table>
 				""", "").types().get(0);
-		assertEquals(List.of(new ApiPage.PropertyDoc("isSwitching", "Bool", "(Read-only) Whether it switches.")),
+		assertEquals(List.of(new ApiPage.PropertyDoc("isSwitching", "Bool", "(Read-only) It switches.")),
 				carousel.properties());
 	}
 

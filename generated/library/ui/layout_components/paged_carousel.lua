@@ -14,7 +14,7 @@
 ---@class ui.PagedCarousel : ui.PagedLayer
 ---@field isSinglePageDisplay boolean (Read-only) True if this paged carousel only displays one page at the time, with no others being partially visible.
 ---@field numFullyVisiblePages integer (Read-only) The number of pages that can be viewed in their entirety at the same time.
----@field isSwitchingPages boolean *(Read-only) True if a page switch animation is currently in progres.
+---@field isSwitchingPages boolean (Read-only) True if a page switch animation is currently in progres.
 ---@field pageSpacing integer Spacing in interface units between each displayed page.
 ---@field inactivePageVisibility number Indicates how many pages can be displayed besides the one currently in focus. This value is symmetrical, so a value of 0.5 means 50% of the previous and 50% of the next page are visible. Supports multiple pages, for example 1.5 results in one additional fully visible page to each side, followed by another 50% visible page on each side.
 ---@field inactivePageScale number Fractional height scaling used for inactive pages compared to the focused page. Defaults to 1.0, the same size as the focused page. Avoid using too high or too low values, as it may affect page contents negatively as well as cause issues with the transition animations.

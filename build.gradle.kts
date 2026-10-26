@@ -62,6 +62,8 @@ checkstyle {
 
 tasks.test {
 	useJUnitPlatform()
+	// The SQLite driver, which a test reads a database with, loads its native library
+	jvmArgs("--enable-native-access=ALL-UNNAMED")
 }
 
 val generate = tasks.register<JavaExec>("generate") {

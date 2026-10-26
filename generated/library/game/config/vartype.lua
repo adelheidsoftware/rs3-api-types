@@ -65,6 +65,7 @@
 ---@field isVarBit boolean (Read-only) Whether this config type is a `VarBit`.
 ---@field baseVar VarType? (Read-only) Returns the base `VarType`, if this config is a `VarBit`. Otherwise returns `nil`.
 ---@field varBitMask integer? (Read-only) Returns a bitmask showing the range of bits used, if this config is a `VarBit`. Otherwise returns `nil`. A `VarBit` using bits 3-5 would return a value of `56` (`0x38`, `0b111000`).
+local VarType = {}
 
 ---A list of all the possible value types and the data type they correspond to.
 ---@enum ValueType

@@ -61,6 +61,12 @@ function Vector:NormaliseSafe(fallback) end
 ---@field y number Second element in this vector.
 ---@field u number First element in this vector, aliasing x.
 ---@field v number Second element in this vector, aliasing y.
+---@operator add(Vector2): Vector2
+---@operator sub(Vector2): Vector2
+---@operator mul(Vector2): Vector2
+---@operator mul(number): Vector2
+---@operator div(Vector2): Vector2
+---@operator div(number): Vector2
 Vector2 = {}
 
 ---Creates and returns a vector with the provided values, or with all elements set to 0 if no arguments were provided.
@@ -116,6 +122,12 @@ function Vector2:NormaliseSafe(fallback) end
 ---@field r number First element in this vector, aliasing x.
 ---@field g number Second element in this vector, aliasing y.
 ---@field b number Third element in this vector, aliasing z.
+---@operator add(Vector3): Vector3
+---@operator sub(Vector3): Vector3
+---@operator mul(Vector3): Vector3
+---@operator mul(number): Vector3
+---@operator div(Vector3): Vector3
+---@operator div(number): Vector3
 Vector3 = {}
 
 ---Creates and returns a vector with the provided values, or with all elements set to 0 if no arguments were provided.
@@ -194,6 +206,12 @@ function Vector3:NormaliseSafe(fallback) end
 ---@field b number Third element in this vector, aliasing z.
 ---@field a number Fourth element in this vector, aliasing w.
 ---@field rgb Vector3 (Read-only) Returns x, y, and z as a separate vector, aliasing xyz.
+---@operator add(Vector4): Vector4
+---@operator sub(Vector4): Vector4
+---@operator mul(Vector4): Vector4
+---@operator mul(number): Vector4
+---@operator div(Vector4): Vector4
+---@operator div(number): Vector4
 Vector4 = {}
 
 ---Creates and returns a vector with the provided values, or with all elements set to 0 if no arguments were provided.

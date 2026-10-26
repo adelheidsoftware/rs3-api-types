@@ -18,3 +18,4 @@
 ---@field configName string (Read-only) The name of this config, i.e. `"HUMAN_WALK_ROPEBALANCE"`.
 ---@field typeName string (Read-only) The type of this config. Will always be `"BaseAnimSet"`.
 ---@field overlayHeight integer (Read-only) The height above the owning entity, in fine units, at which entity overlays like Headbars and Hitmarks are drawn.
+local BaseAnimSetType = {}

@@ -23,6 +23,7 @@ function GrandExchange.MaxOffers() end
 ---@field itemCount integer (Read-only) Number of items in the offer.
 ---@field soldCount integer (Read-only) Number of items that have been sold in the offer.
 ---@field goldFromSale integer (Read-only) Amount of gold available after some items have been bought/sold.
+local GrandExchangeOffer = {}
 
 ---Type of offer for a offer on the Grand Exchange.
 ---@enum GrandExchangeOfferType

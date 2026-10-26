@@ -63,3 +63,4 @@ function Inv:GetCategoryTotal(category) end
 ---@class InvSlot
 ---@field obj ObjType (Read-only) Unique ID associated with the inventory.
 ---@field count integer (Read-only) Number of objects in the slot.
+local InvSlot = {}

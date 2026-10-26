@@ -175,6 +175,7 @@ function ui.Margin.new() end
 ---@field backgroundSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
 ---@field buttonSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the scrollbar's buttons.
 ---@field handleSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the scrollbar's draggable handle.
+local ScrollBar = {}
 
 ---TextDataConfigs are simplified versions of TextData, containing only the properties necessary for drawing text,
 ---allowing them to be initialised separately and shared across components.

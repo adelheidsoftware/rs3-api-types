@@ -17,7 +17,7 @@
 ---@field sprite integer|RuntimeSprite|PluginImageResource
 ---@field spriteID integer Gets the built-in sprite ID to draw.
 ---@field runtimeSprite RuntimeSprite? Gets the current runtime sprite to draw or nil if it doesn't exist.
----@field visualMargins ui.Margin (Modifiable Contents) Offsets used to split this sprite's graphics into multiple segments for drawing.
+---@field visualMargins ui.Margin (Modifiable Contents) Offsets used to split this sprite's graphics into multiple segments for drawing. In the client: It gives a copy: setting one of its sides changes nothing, so assign a whole margin, which works.
 ---@field outlineWidth integer Thickness of the sprite's outline. Only used when the containing component is associated with an object.
 ---@field rotationDegrees number Rotation of this sprite in degrees.
 ---@field rotationRadians number Rotation of this sprite in radians.

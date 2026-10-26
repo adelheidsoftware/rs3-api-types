@@ -143,17 +143,20 @@ function ComponentSwipeConfig:SetDeadZone(horizontal, vertical) end
 ---@field renderBehaviour ui.DragRenderBehaviour Indicates how the component should be rendered while it's being dragged.
 ---@field dragDelayTicks integer How long the user must be attempting a drag action for on a component in logic ticks, before the action actually starts.
 ---@field deadZone integer Minimum distance in interface units before a drag gesture is triggered, assuming `dragDelayTicks` has been exceeded.
+local ComponentDragConfig = {}
 
 ---Configuration parameters used for pinch gestures handling on components.
 ---@class ui.ComponentPinchConfig
 ---@field directionMask integer Combination of ui.SwipeDirectionBit, determines the direction used to detect pinch gestures.
 ---@field threshold integer Minimum distance in interface units before a pinch gesture is triggered.
+local ComponentPinchConfig = {}
 
 ---Configuration parameters used for cursors associated with this component.
 ---@class ui.ComponentCursorConfig
 ---@field mouseOverCursor integer The ID of the cursor to display when the mouse is over this component. A value of `-1` indicates no cursor is set.
 ---@field targetValidCursor integer The ID of the cursor to display when in target mode for this component and the cursor is over a valid target. A value of `-1` indicates no cursor is
 ---@field targetInvalidCursor integer The ID of the cursor to display when in target mode for this component and the cursor is over an invalid target. A value of `-1` indicates no cursor is
+local ComponentCursorConfig = {}
 
 ---Contains arbitrary parameter data associated with the component.
 ---

@@ -100,6 +100,7 @@ function AchievementType:GetSubItemCompletionCountForRequirementGroup(group) end
 ---@field totalLevels integer (Read-only) The target total skill levels which must be achieved.
 ---@field description string (Read-only) The description for this test, if supplied.
 ---@field isComplete boolean (Read-only) Whether the Player Character has completed this test.
+local AchievementTestSkill = {}
 
 ---This test checks whether the Player Character has completed the given quest.
 ---
@@ -109,6 +110,7 @@ function AchievementType:GetSubItemCompletionCountForRequirementGroup(group) end
 ---@field quest QuestTypeConfig (Read-only) The quest config to test for completion.
 ---@field description string (Read-only) The description for this test, if supplied.
 ---@field isComplete boolean (Read-only) Whether the Player Character has completed this test.
+local AchievementTestQuest = {}
 
 ---This test checks whether the Player Character has completed the given achievement.
 ---
@@ -118,6 +120,7 @@ function AchievementType:GetSubItemCompletionCountForRequirementGroup(group) end
 ---@field achievement AchievementType (Read-only) The achievement config to test for completion.
 ---@field description string (Read-only) The description for this test, if supplied.
 ---@field isComplete boolean (Read-only) Whether the Player Character has completed this test.
+local AchievementTestAchievement = {}
 
 ---This test checks whether the cumulative total of a given list of VarPlayers values meets or exceeds a given total
 ---value.
@@ -134,6 +137,7 @@ function AchievementType:GetSubItemCompletionCountForRequirementGroup(group) end
 ---@field totalValue integer (Read-only) The target value which must be met or exceeded.
 ---@field description string (Read-only) The description for this test, if supplied.
 ---@field isComplete boolean (Read-only) Whether the Player Character has completed this test.
+local AchievementTestVarTotal = {}
 
 ---This test checks whether a specific bit in a VarPlayer value matches a given value of `0` or `1`.
 ---
@@ -145,6 +149,7 @@ function AchievementType:GetSubItemCompletionCountForRequirementGroup(group) end
 ---@field bitValue integer (Read-only) The target value which must be matched. This is typically always `1`.
 ---@field description string (Read-only) The description for this test, if supplied.
 ---@field isComplete boolean (Read-only) Whether the Player Character has completed this test.
+local AchievementTestVarTestBit = {}
 
 ---The tests of an achievement's prerequisites or requirements, a list for each kind of test.
 ---@class AchievementTests
@@ -153,11 +158,13 @@ function AchievementType:GetSubItemCompletionCountForRequirementGroup(group) end
 ---@field achievements AchievementTestAchievement[]? (Read-only) The tests of completed achievements.
 ---@field varTotals AchievementTestVarTotal[]? (Read-only) The tests of variables' totals.
 ---@field varTestBits AchievementTestVarTestBit[]? (Read-only) The tests of variable bits.
+local AchievementTests = {}
 
 ---One of an achievement's descriptions, for a game mode.
 ---@class AchievementDescription
 ---@field type AchievementDescriptionType (Read-only) The kind of description this is.
 ---@field text string (Read-only) The description's text.
+local AchievementDescription = {}
 
 ---Achievement progress is provided by the `AchievementType.progress` property.
 ---

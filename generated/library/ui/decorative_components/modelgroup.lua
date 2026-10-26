@@ -50,8 +50,9 @@ function ui.ModelGroup:SwitchCamera(cameraIndex, transition, transitionMaskSprit
 function ui.ModelGroup:IsValidCameraID(cameraIndex) end
 
 ---Retrieves a copy of the camera present at the specified index.
----@return ui.ModelCamera? # A copy of the camera present at the specified index, or nil if it's missing.
-function ui.ModelGroup:GetCamera() end
+---@param cameraIndex integer The index of the camera to retrieve.
+---@return ui.ModelCamera?
+function ui.ModelGroup:GetCamera(cameraIndex) end
 
 ---Helper type representing a camera to be used by model group components for rendering.
 ---

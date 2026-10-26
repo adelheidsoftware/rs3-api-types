@@ -8,7 +8,7 @@
 ---Info: If you just want to create an outline, prefer using Rectangle since it has built-in support.
 ---@class ui.Line : ui.Component
 ---@field invert boolean If true, inverts diagonal lines vertically. Defaults to false.
----@field width integer Width used for this line in interface units. May differ from actual visible width due to anti-aliasing. Defaults to `1`.
+---@field width integer Width used for this line in interface units. May differ from actual visible width due to anti-aliasing. Defaults to `1`. In the client: On a line it is the line's thickness; the line's own width stays in size.width.
 ui.Line = {}
 
 ---Creates a new line on the specified parent.

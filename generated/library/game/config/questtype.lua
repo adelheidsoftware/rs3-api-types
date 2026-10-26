@@ -54,6 +54,7 @@ function QuestTypeConfig:HasParam(param) end
 ---@field varPlayer VarType (Read-only) The `var.VarPlayer` which holds the current progress value.
 ---@field startState integer (Read-only) The starting variable value for this quest. Values below this indicates that the quest has not been started.
 ---@field endState integer (Read-only) The completion value for this quest. Actual variable value may be greater than this, indicating post-completion progress.
+local MasterQuestVarPlayer = {}
 
 ---A container table holding data about a skill prerequisite.
 ---
@@ -61,6 +62,7 @@ function QuestTypeConfig:HasParam(param) end
 ---@class QuestPreReqSkill
 ---@field skillType SkillType (Read-only) The skill type to check.
 ---@field minimumLevel integer (Read-only) The minimum skill level required by the Player Character to complete this prerequisite.
+local QuestPreReqSkill = {}
 
 ---@enum QuestType
 QuestType = {

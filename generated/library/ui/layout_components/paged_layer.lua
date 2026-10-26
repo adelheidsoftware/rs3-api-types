@@ -87,3 +87,4 @@ function ui.PagedLayer:AddHeader(parent, categoryID, dynamicID) end
 ---@field backgroundSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
 ---@field disabledPageIcon ui.SpriteData (Modifiable Contents) Sprite properties used for the icon displayed on disabled pages.
 ---@field pageHeaderSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the the individual page elements.
+local PagedLayerHeader = {}

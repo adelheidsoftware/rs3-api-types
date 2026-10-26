@@ -7,6 +7,7 @@
 ---Warning: Cutscenes aren't currently exposed to the plugin API, however existing cutscene layers can be accessed as
 ---regular layers.
 ---@class ui.CutsceneLayer : ui.Layer
+local CutsceneLayer = {}
 
 ---Identifies why a cutscene finished playing on a cutscene layer component.
 ---@enum ui.CutscenePlaybackEndReason

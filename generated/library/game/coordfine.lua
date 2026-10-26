@@ -11,7 +11,7 @@
 ---@field x number (Writeable) The world position X of this CoordFine, in Fine units.
 ---@field y number (Writeable) The world position Y of this CoordFine, in Fine units.
 ---@field z number (Writeable) The world position Z of this CoordFine, in Fine units.
----@field position Vector3 (Writeable) The world position of this CoordFine, in Fine units.
+---@field position Vector3 (Writeable) The world position of this CoordFine, in Fine units. In the client: It is the coordinate's own vector: setting position.y changes the coordinate's y.
 ---@field mapSquareX integer (Read-only) The mapsquare X of this CoordFine, in Grid units. Valid range is 0-199.
 ---@field mapSquareZ integer (Read-only) The mapsquare Z of this CoordFine, in Grid units. Valid range is 0-199.
 ---@field localX integer (Read-only) The local tile X of this CoordFine, in Grid units. Valid range is 0-63.

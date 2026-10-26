@@ -24,3 +24,4 @@
 ---@field typeName string (Read-only) The type of this config. Will always be `"Param"`.
 ---@field valueType ValueType (Read-only) The expected type of data this param will return.
 ---@field defaultValue any (Read-only) Returns the default value of this param config. The value data type ValueType is provided by `valueType`. If the param does not exist within the data structure being used, this is the value which will be returned.
+local ParamType = {}

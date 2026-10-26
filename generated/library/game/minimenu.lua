@@ -115,36 +115,44 @@ function MiniMenu:Swap(indexA, indexB) end
 ---@field groundData GroundData? (Read-only) A collection of data related to this entry. Will be `nil` if unavailable.
 ---@field mapElementData MapElementData? (Read-only) A collection of data related to this entry. Will be `nil` if unavailable.
 ---@field componentData ComponentData? (Read-only) A collection of data related to this entry. Will be `nil` if unavailable.
+local MiniMenuEntry = {}
 
 ---@class NPCData
 ---@field entity NPCEntity (Read-only) The NPC entity source for this entry.
+local NPCData = {}
 
 ---@class LocData
 ---@field coordGridX integer (Read-only) The south-west tile X coordinate the Loc entity is positioned at.
 ---@field coordGridZ integer (Read-only) The south-west tile Z coordinate the Loc entity is positioned at.
 ---@field config LocType (Read-only) The config for the Loc entity.
+local LocData = {}
 
 ---@class ObjData
 ---@field entity ObjStackEntity (Read-only) The ObjStack entity source for this entry.
 ---@field stackIndex integer (Read-only) The specific object within the source ObjStackEntity that this MiniMenuEntry relates to. Use this with ObjStackEntity:GetEntry().
 ---@field config ObjType (Read-only) The config for the specific object that this MiniMenuEntry relates to.
+local ObjData = {}
 
 ---@class PlayerData
 ---@field entity PlayerEntity (Read-only) The Player entity source for this entry.
+local PlayerData = {}
 
 ---@class GroundData
 ---@field coordGridX integer (Read-only) The tile X coordinate this entry is focused at.
 ---@field coordGridZ integer (Read-only) The tile Z coordinate this entry is focused at.
 ---@field fromMiniMap boolean (Read-only) `true` if this entry was created from the MiniMap. `false` if this entry was created from the 3D world view.
+local GroundData = {}
 
 ---@class MapElementData
 ---@field mapElementID integer (Read-only) The MapElement config ID shown when this entry is active. Use `config.MapElement.FromID(mapElementID)` to obtain the config. TODO: `MapElement` configs are not available yet.
 ---@field categoryID integer (Read-only) The Category ID belonging to this map element.
+local MapElementData = {}
 
 ---@class ComponentData
 ---@field opIndex integer (Read-only) The op index for this entry. Valid values are `1` -> `10`.
 ---@field objConfig ObjType? (Read-only) Some Components allow ObjType IDs to be assigned to them, such as Sprites and Models. This property provides the config, if set on the source Component. Will be `nil` if unavailable.
 ---@field component ui.Component (Read-only) The Component source for this entry.
+local ComponentData = {}
 
 ---A list of all the possible source types for each MiniMenuEntry.
 ---@enum MiniMenuEntryType

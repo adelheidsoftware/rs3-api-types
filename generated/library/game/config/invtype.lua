@@ -16,3 +16,4 @@
 ---@field typeName string (Read-only) The type of this config. Will always be `"Inv"`.
 ---@field size integer (Read-only) The number of inventory slots in this config.
 ---@field stockCount integer (Read-only) The number of stock ObjTypes in this config.
+local InvType = {}

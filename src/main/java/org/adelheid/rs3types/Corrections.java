@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -33,7 +34,7 @@ final class Corrections {
 	private static final Map<String, Integer> KINDS = Map.ofEntries(Map.entry("rename", 1), Map.entry("type", -1),
 			Map.entry("optional", 0), Map.entry("field", -1), Map.entry("function", -1), Map.entry("param", -1),
 			Map.entry("values", -1), Map.entry("parent", 1), Map.entry("remove", 0), Map.entry("read-only", 0),
-			Map.entry("no-from-id", 0), Map.entry("note", -1), Map.entry("class", 1));
+			Map.entry("no-from-id", 0), Map.entry("operator", -1), Map.entry("note", -1), Map.entry("class", 1));
 	/** The kinds that may end with a description, after {@code --}: those that add what the docs leave out. */
 	private static final Set<String> DESCRIBED = Set.of("field", "function", "class");
 	private static final String DESCRIPTION = " -- ";
@@ -77,6 +78,8 @@ final class Corrections {
 	 *   <li>{@code remove <member>}: a member the docs give and the client lacks;
 	 *   <li>{@code read-only <class|field>}: the field, or each field of the class, cannot be assigned;
 	 *   <li>{@code no-from-id <enum>}: the enumeration's table has no {@code FromID}, which the others' have;
+	 *   <li>{@code operator <class> <operator>}: one of Lua's operators on the class's objects, as LuaCATS writes it,
+	 *       {@code add(Vector3): Vector3}; a line for each form;
 	 *   <li>{@code note <member|class|enum> <text>}: what the client does that the docs do not say, shown "In the
 	 *       client:";
 	 *   <li>{@code class <Class> <page>}: a table the docs describe in prose alone, in the file of a page, whose
@@ -143,11 +146,12 @@ final class Corrections {
 		return switch (correction.kind()) {
 			case "class" -> addClass(pages, correction.subject(), correction.rest(), correction.description());
 			case "values" -> values(pages, correction.subject(), correction.rest());
-			case "parent" -> changeType(pages, correction.subject(),
-					type -> withParent(type, correction.rest()));
+			case "parent" -> changeType(pages, correction.subject(), type -> type.withParent(correction.rest()));
 			case "note" -> note(pages, correction.subject(), correction.rest());
 			case "read-only" -> readOnly(pages, correction.subject());
 			case "no-from-id" -> changeEnum(pages, correction.subject(), ApiPage.EnumDoc::withoutFromId);
+			case "operator" -> changeType(pages, correction.subject(), type -> type.withOperators(
+					Stream.concat(type.operators().stream(), Stream.of(correction.rest())).toList()));
 			case "field" -> field(pages, correction.subject(), correction.rest(), correction.description());
 			case "function" -> function(pages, correction.subject(), correction.rest(), correction.description(),
 					replaced);
@@ -264,9 +268,8 @@ final class Corrections {
 			}
 			return function;
 		}).toList();
-		changeType(pages, member.type(), type -> new ApiPage.TypeDoc(type.name(), type.generics(), type.parent(),
-				type.description(), functions.apply(type.functions()), properties.apply(type.properties()),
-				type.indexes(), type.global()));
+		changeType(pages, member.type(), type -> type.withFunctions(functions.apply(type.functions()))
+				.withProperties(properties.apply(type.properties())));
 		changePayload(pages, member.type(), properties);
 		return found[0];
 	}
@@ -327,8 +330,7 @@ final class Corrections {
 			List<ApiPage.FunctionDoc> functions = type.functions().stream()
 					.filter(function -> !function.name().equals(member.name())).toList();
 			found[0] = properties.size() < type.properties().size() || functions.size() < type.functions().size();
-			return new ApiPage.TypeDoc(type.name(), type.generics(), type.parent(), type.description(), functions,
-					properties, type.indexes(), type.global());
+			return type.withFunctions(functions).withProperties(properties);
 		});
 		return found[0];
 	}
@@ -360,9 +362,7 @@ final class Corrections {
 			}
 			return properties;
 		};
-		changeType(pages, member.type(), each -> new ApiPage.TypeDoc(each.name(), each.generics(), each.parent(),
-				each.description(), each.functions(), change.apply(each.properties()), each.indexes(),
-				each.global()));
+		changeType(pages, member.type(), each -> each.withProperties(change.apply(each.properties())));
 		changePayload(pages, member.type(), change);
 		return true;
 	}
@@ -404,8 +404,7 @@ final class Corrections {
 						description.isEmpty() ? List.of() : List.of(description), List.of(), List.of(),
 						"corrections.txt"));
 			}
-			return new ApiPage.TypeDoc(type.name(), type.generics(), type.parent(), type.description(), functions,
-					type.properties(), type.indexes(), type.global());
+			return type.withFunctions(functions);
 		});
 		return true;
 	}
@@ -493,9 +492,7 @@ final class Corrections {
 	/** A note on a class, an enumeration, or a member. */
 	private static boolean note(List<ApiPage> pages, String path, String text) {
 		String sentence = "In the client: " + text;
-		if (changeType(pages, path, type -> new ApiPage.TypeDoc(type.name(), type.generics(), type.parent(),
-				append(type.description(), sentence), type.functions(), type.properties(), type.indexes(),
-				type.global()))) {
+		if (changeType(pages, path, type -> type.withDescription(append(type.description(), sentence)))) {
 			return true;
 		}
 		if (changeEnum(pages, path,
@@ -518,9 +515,7 @@ final class Corrections {
 			return said ? property
 					: new ApiPage.PropertyDoc(property.name(), property.type(), ("(Read-only) " + description).strip());
 		};
-		if (changeType(pages, path, type -> new ApiPage.TypeDoc(type.name(), type.generics(), type.parent(),
-				type.description(), type.functions(), type.properties().stream().map(mark).toList(), type.indexes(),
-				type.global()))) {
+		if (changeType(pages, path, type -> type.withProperties(type.properties().stream().map(mark).toList()))) {
 			return true;
 		}
 		return changeMember(pages, path, mark, function -> function);
@@ -534,18 +529,13 @@ final class Corrections {
 				List<ApiPage.TypeDoc> types = new ArrayList<>(each.types());
 				types.add(new ApiPage.TypeDoc(name, List.of(), null,
 						description.isEmpty() ? List.of() : List.of(description), List.of(), List.of(), List.of(),
-						null));
+						null, List.of()));
 				pages.set(page, new ApiPage(each.path(), types, each.globals(), each.enums(), each.events(),
 						each.otherNames(), each.described()));
 				return true;
 			}
 		}
 		return false;
-	}
-
-	private static ApiPage.TypeDoc withParent(ApiPage.TypeDoc type, String parent) {
-		return new ApiPage.TypeDoc(type.name(), type.generics(), parent, type.description(), type.functions(),
-				type.properties(), type.indexes(), type.global());
 	}
 
 	private static ApiPage.FunctionDoc renamed(ApiPage.FunctionDoc function, String name) {

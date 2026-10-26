@@ -32,3 +32,4 @@
 ---@field facingTarget integer (Read-only) The target facing angle, in degrees, of this `NPCEntity`. The `NPCEntity` will be turning towards this angle, if different from `NPCEntity.facing`.
 ---@field route CoordGrid[] (Read-only) Returns a list of the current coordinates in the `NPCEntity`'s movement route. Returns the current position coordinate if the `NPCEntity` is not moving.
 ---@field routeEnd CoordGrid? (Read-only) Returns the final coordinate in the `NPCEntity`'s movement route. Returns the current position coordinate if the `NPCEntity` is not moving.
+local NPCEntity = {}

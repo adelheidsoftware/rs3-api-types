@@ -69,6 +69,7 @@ function LampHolder:Hold(lantern) end
 
 ---@class LampShade
 ---@field colour string Its colour.
+local LampShade = {}
 
 ---A glow, which lamps give off.
 ---@class lamps.Glow

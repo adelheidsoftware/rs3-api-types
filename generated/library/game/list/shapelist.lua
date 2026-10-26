@@ -158,9 +158,9 @@ function ShapeData.Unregister(name) end
 ---@field isValid boolean (Read-only) Whether this instance still exists. Dispose of this usertype object when invalid.
 ---@field name string (Read-only) The name the instance was created with.
 ---@field hasData boolean (Read-only) Whether this instance has valid ShapeData or a registered shape name assigned to it.
----@field translation Vector3 (Writeable) A positional offset transform applied to the shape when it is drawn. Allows shape data constructed in local-space to be drawn in world-space. Defaults to `0,0,0`.
----@field rotation Vector3 (Writeable) A rotational transform applied to the shape when it is drawn. `X = Yaw, Y = Pitch, Z = Roll` Defaults to `0,0,0`.
----@field scale Vector3 (Writeable) A scaling transform applied to the shape when it is drawn. Defaults to `1,1,1`.
+---@field translation Vector3 (Writeable) A positional offset transform applied to the shape when it is drawn. Allows shape data constructed in local-space to be drawn in world-space. Defaults to `0,0,0`. In the client: It gives a copy: setting one of its elements, translation.y = 500, changes nothing, so assign a whole vector.
+---@field rotation Vector3 (Writeable) A rotational transform applied to the shape when it is drawn. `X = Yaw, Y = Pitch, Z = Roll` Defaults to `0,0,0`. In the client: It gives a copy, as translation does: assign a whole vector.
+---@field scale Vector3 (Writeable) A scaling transform applied to the shape when it is drawn. Defaults to `1,1,1`. In the client: It gives a copy, as translation does: assign a whole vector.
 ---@field visible boolean (Writeable) Whether the instance should be drawn. Defaults to `true`.
 ---@field ignoreDepth boolean (Writeable) Controls how the instance handles depth testing when drawing: `true` - Always draws on top of world geometry `false` - Draws behind occluding world geometry. Defaults to `false`.
 ---@field colour Long (Writeable) A 32-bit colour which is multiplied against the RGBA data of the ShapeData being drawn. Defaults to `0xFFFFFFFF`.
@@ -195,7 +195,7 @@ function ShapeInstance:Destroy() end
 ---@field isValid boolean (Read-only) Whether this entity still exists. Dispose of this usertype object when invalid.
 ---@field name string (Read-only) The name the entity was created with.
 ---@field hasData boolean (Read-only) Whether this entity has valid ShapeData or a registered shape name assigned to it.
----@field coordGrid CoordGrid (Writeable) The coordinate at which the entity is placed. The entity will be placed at the centre of the coordinate, and automatically sets its height to align with the ground. Replaces any value set for `coordFine`.
+---@field coordGrid CoordGrid (Writeable) The coordinate at which the entity is placed. The entity will be placed at the centre of the coordinate, and automatically sets its height to align with the ground. Replaces any value set for `coordFine`. In the client: It gives a copy: setting coordGrid.x changes nothing, so assign a whole coordinate.
 ---@field coordFine CoordFine (Writeable) The coordinate at which the entity is placed. Automatically sets its height to align with the ground. Replaces any value set for `coordGrid`.
 ---@field visible boolean (Writeable) Whether the entity should be drawn. Defaults to `true`.
 ---@field ignoreDepth boolean (Writeable) Controls how the entity handles depth testing when drawing: `true` - Always draws on top of world geometry `false` - Draws behind occluding world geometry. Defaults to `false`.

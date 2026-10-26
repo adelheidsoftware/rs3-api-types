@@ -83,10 +83,15 @@ final class LuaCatsWriter {
 		return out.toString();
 	}
 
+	/**
+	 * A type: its class, and its table, global where the page or a dot function says so, none for a table of keys a
+	 * plugin builds, and otherwise local, which says the client makes its objects.
+	 */
 	private void type(ApiPage.TypeDoc type) {
 		Boolean declared = type.global();
 		boolean global = declared != null ? declared
 				: type.functions().stream().anyMatch(function -> !function.colon());
+		boolean tableless = Boolean.FALSE.equals(declared);
 		String table = global ? type.name() : lastSegment(type.name());
 		out.append('\n');
 		description(type.description());
@@ -106,9 +111,12 @@ final class LuaCatsWriter {
 			appendDescription(index.description());
 			out.append('\n');
 		}
+		for (String operator : type.operators()) {
+			out.append("---@operator ").append(operator).append('\n');
+		}
 		if (global) {
 			out.append(table).append(" = {}\n");
-		} else if (!type.functions().isEmpty()) {
+		} else if (!tableless) {
 			out.append("local ").append(table).append(" = {}\n");
 		}
 		for (ApiPage.FunctionDoc function : type.functions()) {

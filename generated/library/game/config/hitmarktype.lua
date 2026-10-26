@@ -15,3 +15,4 @@
 ---@field configName string (Read-only) The name of this config, i.e. `"MAGIC_DAMAGE"`.
 ---@field typeName string (Read-only) The type of this config. Will always be `"Hitmark"`.
 ---@field duration integer (Read-only) How long, in client ticks, the hitmark will display for.
+local HitmarkType = {}

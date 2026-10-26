@@ -15,3 +15,4 @@
 ---@field configName string (Read-only) The name of this config, i.e. `"TELEGRAB_IMPACT"`.
 ---@field typeName string (Read-only) The type of this config. Will always be `"SpotAnim"`.
 ---@field seqID integer (Read-only) The ID of the SeqType to play with this spotanim.
+local SpotAnimType = {}

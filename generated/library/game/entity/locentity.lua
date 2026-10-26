@@ -34,6 +34,7 @@
 ---@field isRoofRemoved boolean (Read-only) Whether this entity has been hidden by the Remove Roof system.
 ---@field currentAnimation SeqType? (Read-only) The current animation being played by this entity. Returns `nil` if none is set.
 ---@field aabb AABB (Read-only) Returns the current bounding box for this `LocEntity`.
+local LocEntity = {}
 
 ---Indicates the 90-degree rotation type a `LocEntity` is using. Also see LocEntity.rotationType.
 ---@enum RotationType

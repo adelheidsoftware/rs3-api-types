@@ -50,3 +50,4 @@ function ObjStackEntity:HasObjID(objTypeID) end
 ---@field config ObjType (Read-only) The config that describes this entry.
 ---@field configID integer (Read-only) The config ID that describes this entry.
 ---@field count integer (Read-only) How many of this object are in this specific entry. This will always be `1` for ObjTypes that cannot stack.
+local ObjEntry = {}

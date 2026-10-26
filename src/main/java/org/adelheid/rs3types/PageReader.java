@@ -598,6 +598,8 @@ final class PageReader {
 		Signature form = forms.get(0);
 		String name = form.owner().replace(".", "") + form.name() + "Settings";
 		TypeBuilder settings = new TypeBuilder(name, anchor);
+		// A table the plugin builds, so no table of the client's
+		settings.global = false;
 		settings.description.add("The keys `" + form.owner() + "." + form.name() + "` takes in its table.");
 		for (ApiPage.PropertyDoc key : fields(table)) {
 			String type = key.type().endsWith("?") ? key.type() : key.type() + "?";
@@ -1218,7 +1220,7 @@ final class PageReader {
 			Boolean global = facts.isGlobal(name) ? Boolean.TRUE : type.global;
 			docs.add(new ApiPage.TypeDoc(name, generics.getOrDefault(name, List.of()),
 					parent != null ? parent : type.parent, type.description, type.functions, type.properties,
-					type.indexes, global));
+					type.indexes, global, List.of()));
 		});
 		List<ApiPage.TypeDoc> withCallers = docs.stream().map(type -> withCallerFunctions(type, docs)).toList();
 		return new ApiPage(path, withCallers, globals.functions, enums, events, otherNames, described);
@@ -1252,8 +1254,7 @@ final class PageReader {
 						.map(value -> new ApiPage.ReturnDoc(retype.apply(value.type()), value.description()))
 						.toList(), function.place()))
 				.forEach(functions::add);
-		return new ApiPage.TypeDoc(type.name(), type.generics(), parent, type.description(), functions,
-				type.properties(), type.indexes(), type.global());
+		return type.withFunctions(functions);
 	}
 
 	/**

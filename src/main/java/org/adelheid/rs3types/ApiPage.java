@@ -44,12 +44,14 @@ record ApiPage(String path, List<TypeDoc> types, List<FunctionDoc> globals, List
 	 * @param parent the type it extends, {@code ui.Component}; null for none
 	 * @param description its overview's paragraphs, and those of the sections of prose about it
 	 * @param indexes what indexing it gives, as {@code ui.StyleSheets[id]} gives a style sheet
-	 * @param global whether its table is a global, rather than only a description of the client's objects; null where
-	 *     the page does not say, and its functions decide
+	 * @param global true where its table is a global; false where it has no table, being a table of keys a plugin
+	 *     builds; null where the page does not say: a global where one of its functions is called with a dot, and
+	 *     otherwise a local table, as a type of the client's objects has
+	 * @param operators the Lua operators its objects take, as LuaCATS writes them, {@code add(Vector3): Vector3}
 	 */
 	record TypeDoc(String name, List<String> generics, @Nullable String parent, List<String> description,
 			List<FunctionDoc> functions, List<PropertyDoc> properties, List<IndexDoc> indexes,
-			@Nullable Boolean global) {
+			@Nullable Boolean global, List<String> operators) {
 
 		TypeDoc {
 			generics = List.copyOf(generics);
@@ -57,6 +59,32 @@ record ApiPage(String path, List<TypeDoc> types, List<FunctionDoc> globals, List
 			functions = List.copyOf(functions);
 			properties = List.copyOf(properties);
 			indexes = List.copyOf(indexes);
+			operators = List.copyOf(operators);
+		}
+
+		TypeDoc withParent(@Nullable String newParent) {
+			return new TypeDoc(name, generics, newParent, description, functions, properties, indexes, global,
+					operators);
+		}
+
+		TypeDoc withDescription(List<String> newDescription) {
+			return new TypeDoc(name, generics, parent, newDescription, functions, properties, indexes, global,
+					operators);
+		}
+
+		TypeDoc withFunctions(List<FunctionDoc> newFunctions) {
+			return new TypeDoc(name, generics, parent, description, newFunctions, properties, indexes, global,
+					operators);
+		}
+
+		TypeDoc withProperties(List<PropertyDoc> newProperties) {
+			return new TypeDoc(name, generics, parent, description, functions, newProperties, indexes, global,
+					operators);
+		}
+
+		TypeDoc withOperators(List<String> newOperators) {
+			return new TypeDoc(name, generics, parent, description, functions, properties, indexes, global,
+					newOperators);
 		}
 	}
 

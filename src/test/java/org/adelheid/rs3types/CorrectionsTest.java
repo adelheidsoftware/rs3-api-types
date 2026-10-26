@@ -57,6 +57,8 @@ class CorrectionsTest {
 				values LanternGrants LIGHT_ACCESS=1                           # client: a test
 				note LanternGrants Each is a number.                          # client: a test
 				no-from-id LanternState                                       # client: a test
+				operator Lantern add(Lantern): Lantern                        # client: a test
+				operator Lantern mul(number): Lantern                         # client: a test
 				""");
 		ApiPage.TypeDoc lantern = page.types().get(0);
 		ApiPage.FunctionDoc setColour = lantern.functions().get(2);
@@ -73,6 +75,7 @@ class CorrectionsTest {
 		assertEquals(new ApiPage.EnumValue("LIGHT_ACCESS", "1", "Allows lighting"),
 				page.enums().get(1).values().get(0));
 		assertEquals(List.of("In the client: Each is a number."), page.enums().get(1).description());
+		assertEquals(List.of("add(Lantern): Lantern", "mul(number): Lantern"), page.types().get(0).operators());
 		// Every enumeration has FromID, but for one a no-from-id line names
 		assertEquals(false, page.enums().get(0).fromId());
 		assertEquals(true, page.enums().get(1).fromId());

@@ -33,7 +33,7 @@
 ---@field alpha number Controls how opaque this component appears, ranges from 0 (fully transparent) to 1 (opaque).
 ---@field rgb integer Hexadecimal colour code representing the Red, Green, and Blue tints for this component.
 ---@field rgba Long Hexadecimal colour code representing the Red, Green, Blue, And Alpha tints for this component.
----@field colour Vector4 Red, Green, Blue, and Alpha tints represented as a 4-channel vector, with each channel limited to a 0..1 range. On assignment, values outside of this range will be clamped.
+---@field colour Vector4 Red, Green, Blue, and Alpha tints represented as a 4-channel vector, with each channel limited to a 0..1 range. On assignment, values outside of this range will be clamped. In the client: It gives a copy: setting colour.w changes nothing, so assign a whole colour, which works.
 ---@field hidden boolean Controls whether this component is visible. This only applies to Lua-side visibility, and cannot be used to force built-in UI components to become visible.
 ---@field visible boolean (Read-only) Indicates whether this component is visible or not. This state refers only to the internal state of this component. For the global visibility state see `visibleGlobal`. Differs from `hidden` in that this also takes into account built-in UI component visibility.
 ---@field visibleGlobal boolean (Read-only) Indicates whether this component is visible within the UI component tree. For example, will return `false` if any parent of this component is not visible.
@@ -60,6 +60,7 @@
 ---@field staticID integer (Read-only) ID identifying the static component on which this component resides.
 ---@field categoryID integer (Read-only) ID identifying the dynamic ID category this component's using, or -1 if this is a static component.
 ---@field dynamicID integer (Read-only) ID identifying the dynamic ID category this component's using, or -1 if this is a static component.
+---@field isRestricted boolean (Read-only) Whether the component is restricted, which Component:FlagRestricted() makes it.
 local Component = {}
 
 ---Moves this component's origin to the provided coordinates, optionally taking into account the parent's dimensions,
@@ -166,6 +167,11 @@ function Component:Unsubscribe(hook) end
 ---@param hook ui.Hook The event hook to clear the listeners for.
 function Component:UnsubscribeAll(hook) end
 
+---Flags the component as restricted: reading an input field's or a label's content then gives an empty string, and
+---InputField:Setup cannot be called. Only the plugin that made the component can flag it, and a restricted component
+---cannot be unrestricted.
+function Component:FlagRestricted() end
+
 ---The `ui.Hook` table contains a list of all potential event hooks that can be attached to a component.
 ---
 ---These events are only triggered when using a touchscreen.
@@ -175,6 +181,9 @@ function Component:UnsubscribeAll(hook) end
 ---These events are associated with actions that the local player is taking in the game world.
 ---
 ---These events represent data updates received from the server which may need to be reflected on the user interface.
+---
+---In the client: ONSELECTIONCHANGED passes other values on a slider and a radial progress overlay: a slider its value
+---and then always 1, and a radial progress overlay its value and its progress, two numbers such as 3.0 and 0.3.
 ---@enum ui.Hook
 ui.Hook = {
     ---Supported by ui.Button, ui.Check Triggered whenever the user interacts with this button/check. Non-toggle buttons will always receive `1` and `0` for current/previous values respectively. Its callbacks take self : `Component<T>`, currentValue : Int, previousValue : Int.

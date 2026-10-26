@@ -20,6 +20,7 @@
 #   remove <member>                 a member the docs give and the client lacks
 #   read-only <class|field>         the field, or each field of the class, cannot be assigned
 #   no-from-id <enum>               the enumeration's table has no FromID, which every other one has
+#   operator <class> <operator>     one of Lua's operators on the class's objects, as LuaCATS writes it: add(T): R
 #   note <member|class|enum> <text> what the client does that the docs do not say, shown "In the client:"
 #   class <class> <page>            a table the docs describe in prose alone, written in the file of the page
 #
@@ -40,6 +41,7 @@ field ObjType.paramCount integer -- (Read-only) How many params this config has.
 field ObjType.isValid boolean -- (Read-only) Whether this config is valid.         # client 2026-10-25: in ObjType's metatable, and reads true for coins
 field CoordGrid.valid boolean -- (Read-only) Whether this coordinate is valid.     # client 2026-10-25: in CoordGrid's metatable, and reads true for the player's tile
 field CoordFine.valid boolean -- (Read-only) Whether this coordinate is valid.     # client 2026-10-25: in CoordFine's metatable, and reads true for the player's tile
+field ui.Component.isRestricted boolean -- (Read-only) Whether the component is restricted, which Component:FlagRestricted() makes it.   # docs: ui/component.html, its section Restricted Components alone names it
 field LocEntity.aabb AABB -- (Read-only) Returns the current bounding box for this `LocEntity`.   # client 2026-10-25: in LocEntity's metatable (the API probe's metatable audit), and reads an AABB, as NPCEntity's and PlayerEntity's pages give theirs
 field MiniMenuEntryAddedEventPayload.miniMenu MiniMenu -- (Read-only) The MiniMenu the entry has been added to.   # client 2026-10-25: in the payload's metatable, and reads the menu the entry joins
 
@@ -128,6 +130,27 @@ param ui.Canvas:AddSprite colourRGBA Long           # client 2026-10-23: as ui.C
 param ui.Canvas:AddText colourRGBA Long             # client 2026-10-23: as ui.Component.rgba
 type ObjType.cost Long                              # docs: game/config/objtype.html, "The 64-bit numeric value of this object."
 
+# ---- Lua's operators on the vectors; -a, 2 * a, a Matrix33 times a vector and a quaternion times one raise
+
+operator Vector2 add(Vector2): Vector2      # client 2026-10-23: adds the elements
+operator Vector2 sub(Vector2): Vector2      # client 2026-10-23: subtracts the elements
+operator Vector2 mul(Vector2): Vector2      # client 2026-10-23: multiplies element by element
+operator Vector2 mul(number): Vector2       # client 2026-10-23: a * 2 scales; 2 * a raises
+operator Vector2 div(Vector2): Vector2      # client 2026-10-23: divides element by element
+operator Vector2 div(number): Vector2       # client 2026-10-23: a / 2
+operator Vector3 add(Vector3): Vector3      # client 2026-10-23: adds the elements
+operator Vector3 sub(Vector3): Vector3      # client 2026-10-23: subtracts the elements
+operator Vector3 mul(Vector3): Vector3      # client 2026-10-23: multiplies element by element
+operator Vector3 mul(number): Vector3       # client 2026-10-23: a * 2 scales; 2 * a raises
+operator Vector3 div(Vector3): Vector3      # client 2026-10-23: divides element by element
+operator Vector3 div(number): Vector3       # client 2026-10-23: a / 2
+operator Vector4 add(Vector4): Vector4      # client 2026-10-23: adds the elements
+operator Vector4 sub(Vector4): Vector4      # client 2026-10-23: subtracts the elements
+operator Vector4 mul(Vector4): Vector4      # client 2026-10-23: multiplies element by element
+operator Vector4 mul(number): Vector4       # client 2026-10-23: a * 2 scales; 2 * a raises
+operator Vector4 div(Vector4): Vector4      # client 2026-10-23: divides element by element
+operator Vector4 div(number): Vector4       # client 2026-10-23: a / 2
+
 # ---- Values that may be nil, or that never are
 
 type Inv:GetSlot InvSlot                            # client 2026-10-22: GetSlot(0), GetSlot(-1) and past the last slot return an empty slot, never nil
@@ -152,6 +175,8 @@ param log format any                                # docs: core/index.html, the
 function ui.Interface:GetComponent fun(staticID: integer): ui.Component?   # docs: ui/interface.html's parameter table and example; client 2026-10-23: (staticID) works, (interfaceID, staticID) raises "no matching function call"
 function ui.Interface:GetComponent fun(staticID: integer, categoryID: integer, dynamicID: integer): ui.Component?   # docs: the same table
 function audio.SoundPlaybackParams.new fun(): audio.SoundPlaybackParams -- Creates playback parameters, each at its default.   # docs: audio/index.html's example, "local soundParams = audio.SoundPlaybackParams.new()"
+function ui.ModelGroup:GetCamera fun(cameraIndex: integer): ui.ModelCamera?   # docs: ui/decorative_components/modelgroup.html, its parameter table gives cameraIndex, which the signature leaves out; client 2026-10-26: GetCamera() raises "expected number", GetCamera(0) gives nil
+function ui.Component:FlagRestricted fun() -- Flags the component as restricted: reading an input field's or a label's content then gives an empty string, and InputField:Setup cannot be called. Only the plugin that made the component can flag it, and a restricted component cannot be unrestricted.   # docs: ui/component.html, its section Restricted Components alone names it
 function ui.ModelGroup:AddCamera fun(camera: ui.ModelCamera): integer   # client 2026-10-25: AddCamera() raises "no matching function call takes this number of arguments", where the docs give it with and without a camera
 param ui.NPCCustomisation:SetModelSlot scale number                 # client 2026-10-23: SetModelSlot(0, 1) raises "expected number" for scale, which the docs call optional
 param ui.NPCCustomisation:SetModelSlot translation Vector3          # client 2026-10-23: the same, for the parameters after scale
@@ -236,4 +261,14 @@ note ui.ModelGroup A model group can get no camera: AddCamera() without one rais
 note ui.Model.rotation Every value assigned to it was rejected: a Vector3 raises "expected userdata", and setting a field of the value read back raises "not recognized as a container". An NPC customisation's model slot turns a model.   # client 2026-10-24: Rich Death's rotation lab
 note ui.Model:SetTransform Its rotation had no visible effect on a lone model, shown by object, model or associated object, at once or over a duration; an NPC customisation's model slot turns one.   # client 2026-10-24: Rich Death's rotation lab turned six lone models on the yaw or the pitch; none turned, and none raised an error
 note ui.NPCCustomisation:SetModelSlot Its rotation turns the model in the slot, the one way found to turn a lone ui.Model; with a yaw and a pitch, the pitch seemed to be applied first.   # client 2026-10-24: Rich Death's party hat on Hans's model turned with the yaw and tilted with the pitch
+note ShapeInstance.translation It gives a copy: setting one of its elements, translation.y = 500, changes nothing, so assign a whole vector.   # client 2026-10-23: instance.translation.y = 500 leaves it 0
+note ShapeInstance.rotation It gives a copy, as translation does: assign a whole vector.   # client 2026-10-23: rotation.y = 1 leaves it 0
+note ShapeInstance.scale It gives a copy, as translation does: assign a whole vector.   # client 2026-10-23: scale.y = 2 leaves it 1
+note ShapeEntity.coordGrid It gives a copy: setting coordGrid.x changes nothing, so assign a whole coordinate.   # client 2026-10-23: coordGrid.x = x + 1 leaves it x
+note ui.Component.colour It gives a copy: setting colour.w changes nothing, so assign a whole colour, which works.   # client 2026-10-23: colour.w = 0.5 leaves it 1; a whole colour with w 0.5 reads back 0.498
+note ui.Sprite.visualMargins It gives a copy: setting one of its sides changes nothing, so assign a whole margin, which works.   # client 2026-10-23: an edit in place leaves left 0; assigning raises no error
+note ui.GroupBox.contentMargin It gives a copy: setting one of its sides changes nothing, so assign a whole margin, which works.   # client 2026-10-23: contentMargin.left = 255 leaves it 4; a whole margin with left 4 reads back 4
+note CoordFine.position It is the coordinate's own vector: setting position.y changes the coordinate's y.   # client 2026-10-23: fine.position.y = 77 makes fine.y 77
+note ui.Line.width On a line it is the line's thickness; the line's own width stays in size.width.   # client 2026-10-23: 10 after line.width = 10, while size.width stays 200
+note ui.Hook ONSELECTIONCHANGED passes other values on a slider and a radial progress overlay: a slider its value and then always 1, and a radial progress overlay its value and its progress, two numbers such as 3.0 and 0.3.   # client 2026-10-23: the API probe's panel of one control of each kind
 note ui.Component:SetPos In one check, the self percentages moved a component the opposite way to this description: SetPos(x, y, 0, 0, -0.5, -0.5) put the top-left corner of a 400 by 400 model right of and below (x, y) by half its size.   # client 2026-10-24: Rich Death, one run with a screenshot, on the plugin layer

@@ -18,7 +18,7 @@
 ---@field headerText any (Modifiable Contents) Label properties used for the header text.
 ---@field contentBackgroundSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
 ---@field headerBackgroundSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the header background.
----@field contentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component.
+---@field contentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component. In the client: It gives a copy: setting one of its sides changes nothing, so assign a whole margin, which works.
 ui.GroupBox = {}
 
 ---Creates a new GroupBox on the specified parent.

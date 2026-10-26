@@ -20,3 +20,4 @@
 ---@field hotspotX integer (Read-only) The horizontal pixel inside the source sprite where clicks are centred.
 ---@field hotspotY integer (Read-only) The vertical pixel inside the source sprite where clicks are centred.
 ---@field spriteID integer (Read-only) The ID of the source sprite.
+local CursorType = {}

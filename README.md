@@ -5,7 +5,7 @@ LuaCATS definitions of the RuneScape (RS3) Client Plugin API, for the Lua Langua
 <https://developer.runescape.com/rs/>, and the game's constants, such as `id.NPC.HANS`, from the game client.
 
 > [!WARNING]
-> In development. Don't depend on it yet.
+> RuneScape's Plugin API is not yet stable. Data is subject to change frequently.
 
 ## Using the definitions in your editor
 

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lantern - Test Docs</title>
+</head>
+<body>
+<!-- A type's page in the docs site's layout, written for the tests: an invented API that has every form the reader
+     knows, and a section it does not. -->
+<main>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<h1 id="lantern">Lantern<a class="headerlink" href="#lantern" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p><a href="light.html">Light</a> -&gt; Lantern</p>
+<p>A lantern that a <code>Lamplighter</code> lights,
+for the tests.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>A note in the overview.</p>
+</div>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<div class="language-lua highlight"><pre><span></span><code>local lantern = Lantern.new(3)
+</code></pre></div>
+<h2 id="enumerations">Enumerations<a class="headerlink" href="#enumerations" title="Permanent link">&para;</a></h2>
+<h3 id="lanternstate">LanternState<a class="headerlink" href="#lanternstate" title="Permanent link">&para;</a></h3>
+<p>Whether a lantern is lit.</p>
+<div class="md-typeset__scrollwrap"><div class="md-typeset__table"><table>
+<thead><tr><th>Name</th><th>Value</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>DARK</td><td>0</td><td>Not lit</td></tr>
+<tr><td>LIT</td><td>1</td><td>Lit</td></tr>
+</tbody>
+</table></div></div>
+<h3 id="lanterngrants">LanternGrants<a class="headerlink" href="#lanterngrants" title="Permanent link">&para;</a></h3>
+<table>
+<thead><tr><th>Value</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>lightAccess</td><td>Allows lighting</td></tr>
+</tbody>
+</table>
+<h2 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link">&para;</a></h2>
+<h3 id="lanternbrightness">Lantern(brightness)<a class="headerlink" href="#lanternbrightness" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code>function Lantern.new(brightness : Int) -&gt; Lantern
+</code></pre></div>
+<table>
+<thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+<tbody><tr><td>brightness</td><td>Int</td><td>How bright, from 1 to 5.</td></tr></tbody>
+</table>
+<h3 id="lanternother">Lantern(other)<a class="headerlink" href="#lanternother" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code>function Lantern.new(other : Lantern) -&gt; Lantern
+</code></pre></div>
+<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
+<h3 id="light">Light<a class="headerlink" href="#light" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code>function Lamp:Light(seconds : Float?) -&gt; Bool
+</code></pre></div>
+<p>Lights the lantern.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It burns <code>oil</code>.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-lua highlight"><pre><span></span><code>lantern:Light()
+</code></pre></div>
+</div>
+<table>
+<thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+<tbody><tr><td>seconds</td><td>Float?</td><td>How long it stays lit.</td></tr></tbody>
+</table>
+<table>
+<thead><tr><th>Returns</th><th>Description</th></tr></thead>
+<tbody><tr><td>Boolean</td><td>Whether it lit.</td></tr></tbody>
+</table>
+<h3 id="setcolour">SetColour<a class="headerlink" href="#setcolour" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code>function Lamp:SetColour(colour : Vector4)
+function Lamp:SetColour(red : Float, green : Float, blue : Float)
+</code></pre></div>
+<h3 id="getoil">GetOil<a class="headerlink" href="#getoil" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code>-- In whole measures, or as a fraction of a full lantern
+function Lamp:GetOil() -&gt; Int
+function Lamp:GetOilLevel() -&gt; Float
+</code></pre></div>
+<p>The oil left.</p>
+<h2 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h2>
+<table>
+<thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>brightness</td><td>Int</td><td>How bright.</td></tr>
+<tr><td>tags</td><td>[ String ]</td><td>Its tags.</td></tr>
+<tr><td>owner</td><td>Player?</td><td>Who owns it.</td></tr>
+</tbody>
+</table>
+<h2 id="history">History<a class="headerlink" href="#history" title="Permanent link">&para;</a></h2>
+<p>Lanterns are old.</p>
+</article>
+</div>
+</main>
+</body>
+</html>

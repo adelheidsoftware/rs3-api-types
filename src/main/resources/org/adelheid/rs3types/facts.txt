@@ -1,0 +1,113 @@
+# What the generator needs to know about the API that its pages do not say, one fact a line, each with its reason.
+# A place is a page and its heading's anchor, core/plugin.html#urls. The kinds, which Facts.parse describes:
+#
+#   global <type>                   its table is a global, though the docs call each of its functions with a colon
+#   caller <type>                   in its functions, it stands for the type each is called on, which extends it
+#   name <place> <type>             the type documented there, which neither its heading nor its signatures name
+#   parent <type> <parent>          the type it extends, which the docs do not write
+#   rename <place> <function>       the function documented there, which its signatures misname
+#   returns <place> <type>          what the callbacks of the event documented there return
+#   list <place> <table> <type>     the list there names the fields of a table, each of a type
+#   skip <place>                    a section the generator leaves out: no API, or written by hand in base.lua
+#   signature <place> <signature>   the signature of the function documented there, which the docs leave out
+#   owner <place> <type>            the owner of the functions documented there, which their signatures misname
+#   field <place> <field> <type>    the type of a field of a table there, which the table leaves out
+#   alias <name> <type>             the type a name the docs use stands for, which no page defines, or another does
+#   second <place> <field> <name>   the name of the second field of that name a table there lists
+#   trust <place> signature|table   which of a function's signature and its return table is right, where they disagree
+
+# The plugin's persistent database, a singleton: PersistentDB:Get(key)
+global PersistentDB
+# The client's interfaces, a singleton: ui.Interfaces:GetInterface(id)
+global ui.Interfaces
+
+# The page of the client's options is titled Client Options, and its signatures name each option by a placeholder,
+# game.options.<option name>; its overview lists the options, which are the fields of game.options
+name core/clientoptions.html#client-options ClientOption
+list core/clientoptions.html#overview game.options ClientOption
+
+# The vector page documents the methods and properties all three vectors share under Vector, and each vector apart.
+# "Whenever the Vector type appears as a parameter/return type, unless otherwise stated this represents a vector of the
+# same size as the object that function was called on": each vector has those methods with its own type
+parent Vector2 Vector
+parent Vector3 Vector
+parent Vector4 Vector
+caller Vector
+
+# The headings Reflect and NormaliseSafe show the signatures of Cross and Normalise, copied from the headings above
+rename math/vector.html#reflect Reflect
+rename math/vector.html#normalisesafe NormaliseSafe
+
+# EntityDraw's callbacks decide whether the entity is drawn: "This event requires a boolean return value"
+returns core/events.html#entitydraw boolean
+
+# Plugin.urls and Plugin.resources are tables the docs describe in prose, under Enumerations; base.lua declares them
+skip core/plugin.html#urls
+skip core/plugin.html#resources
+
+# The Remove Roof section documents Remove and Clear by their parameters alone, beside Add's signature
+signature game/world.html#remove function World.RemoveRoof.Remove(name : String)
+signature game/world.html#clear function World.RemoveRoof.Clear()
+
+# Headings over another function's signature, as the client settles them (Oneiro's check, 2026-10-23): AABB has
+# AddPosition and no AddPoint; RadioGroup has HasOption and SetOptions, and its HasEntry and SetEntries read nil.
+# GetOptionSelected follows SetOptionSelected; its signature repeats GetOptionEnabled's, above it (to confirm)
+rename math/aabb.html#addpoint AddPosition
+rename ui/interactive_components/radio_group.html#hasoption HasOption
+rename ui/interactive_components/radio_group.html#setoptions SetOptions
+rename ui/interactive_components/radio_group.html#getoptionselected GetOptionSelected
+
+# The carousel's Select shows the combo field's signature
+owner ui/interactive_components/carousel.html#select ui.Carousel
+
+# The sound instance's table writes isPaused's and id's descriptions where their types go
+field audio/index.html#properties isPaused Bool
+field audio/index.html#properties id Int
+
+# The entries of a combo field and of a list are tables the docs describe under headings of prose, which other
+# tables name, [Combo Entry]
+name ui/interactive_components/combo_field.html#combo-entry ui.ComboEntry
+name ui/interactive_components/list.html#list-entry ui.ListEntry
+
+# The model group's camera table writes transitionMaskSprite's read-only mark where its type goes; the sprite is a
+# numeric ID, as its description says
+field ui/decorative_components/modelgroup.html#properties transitionMaskSprite Int
+
+# Names the docs use that no page defines
+# The combo field's constructor returns Combo, its own type under a short name of its own
+alias Combo ui.ComboField
+# The events page types an inventory as InvTypeProxy, which is the InvType config
+alias InvTypeProxy InvType
+# The achievement tests type their variables VarPlayer, the domain of the VarType they are
+alias VarPlayer VarType
+# The group box's headerText is a ui.LabelData, which no page documents
+alias ui.LabelData any
+
+# The map element's table lists showOnMiniMap and spriteID twice; the second of each, "on the world map" and the
+# flashing sprite, is showOnWorldMap and flashSpriteID in the client (Oneiro's API probe, 2026-10-25)
+second game/config/mapelementtype.html#properties showOnMiniMap showOnWorldMap
+second game/config/mapelementtype.html#properties spriteID flashSpriteID
+
+# The component page's Interface Properties are the component's own, though a property of them is typed Interface
+name ui/component.html#interface-properties ui.Component
+# The config pages' signatures return Cursor, which their tables call CursorType, the config it is
+alias Cursor CursorType
+
+# The quest page documents its config and an enumeration both as QuestType. The global table QuestType is the
+# enumeration, QuestType.NORMAL, so the config, which has no table, is QuestTypeConfig, as the pages' lists of quests
+# are; the config's type field is the enumeration, which corrections.txt says
+name game/config/questtype.html#questtype QuestTypeConfig
+alias QuestType QuestTypeConfig
+
+# Return tables that contradict their signatures. Set's repeats Get's; Dot's is copied from Max's, fromYawPitchRoll's from
+# Vector:Abs's; ParamsConfig:Get's leaves out the string its signature gives
+trust core/persistentdb.html#set signature
+trust math/vector.html#dot signature
+trust math/quaternion.html#fromyawpitchroll signature
+trust ui/component_configs.html#get signature
+# The completion counts are counts, as their tables and names say; a corner is a Vector3, as GetCorner's table and
+# example say; GetEntity gives the entity CreateEntity made, a ShapeEntity, as its table says (to confirm in the client)
+trust game/config/achievementtype.html#getsubitemcompletioncountforprereqgroup table
+trust game/config/achievementtype.html#getsubitemcompletioncountforrequirementgroup table
+trust math/aabb.html#getcorner table
+trust game/list/shapelist.html#getentity table

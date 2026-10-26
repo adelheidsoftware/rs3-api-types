@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+		"https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<!-- The layout rules of the codebase that javac and Error Prone leave unchecked. -->
+<module name="Checker">
+	<property name="charset" value="UTF-8"/>
+	<property name="severity" value="error"/>
+	<!-- A tab counts as four columns, as .editorconfig sets it -->
+	<property name="tabWidth" value="4"/>
+
+	<module name="LineLength">
+		<property name="max" value="120"/>
+		<property name="ignorePattern" value="^(package|import) "/>
+	</module>
+	<module name="NewlineAtEndOfFile">
+		<property name="lineSeparator" value="lf"/>
+	</module>
+	<module name="RegexpSingleline">
+		<property name="format" value="\s+$"/>
+		<property name="message" value="Line has trailing whitespace."/>
+	</module>
+	<module name="RegexpMultiline">
+		<property name="format" value="\n[ \t]*\n[ \t]*\n"/>
+		<property name="message" value="Two blank lines in a row."/>
+	</module>
+	<module name="RegexpMultiline">
+		<property name="format" value="\n[ \t]*\n[ \t]*\}"/>
+		<property name="message" value="Blank line before a closing brace."/>
+	</module>
+
+	<module name="TreeWalker">
+		<module name="AvoidStarImport"/>
+		<module name="RedundantImport"/>
+		<module name="UnusedImports"/>
+		<module name="OuterTypeFilename"/>
+		<module name="OneTopLevelClass"/>
+	</module>
+</module>

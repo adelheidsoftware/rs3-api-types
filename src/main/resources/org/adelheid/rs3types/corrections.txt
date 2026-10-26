@@ -1,0 +1,157 @@
+# Corrections to the API the docs give, applied once the pages are read. Each line is "<kind> <subject> ...", then
+# " #" and how it was checked:
+#
+#   docs       the docs say so in prose or an example, though their tables and signatures do not
+#   client     checked in the beta client, with the date
+#
+# A subject is a Lua path: a class (ui.ModelGroup), a field (NPCType.opNames), a function (ui.Interface:GetComponent),
+# a field of an event's payload (EntityDrawEventPayload.npcEntity) or a global function (log). Types are LuaCATS. The
+# kinds, which Corrections.parse describes:
+#
+#   rename <member> <name>          the member's name in the client; the lines after it name it so
+#   type <member> <type>            a field's type, or what a function returns
+#   optional <member>               the field, or what the function returns, may be nil
+#   field <field> <type>            a field the docs leave out, or another type for one they give
+#   function <function> <fun(...)>  a function's form: the first line replaces the docs' forms, a further line adds one
+#   param <function> <name> <type>  a parameter's type; one that may be left out ends its name in ?
+#   values <enum> <NAME=value...>   the values of an enumeration the docs give the names of alone
+#   parent <class> <class>          the class it extends
+#   remove <member>                 a member the docs give and the client lacks
+#   read-only <class|field>         the field, or each field of the class, cannot be assigned
+#   note <member|class> <text>      what the client does that the docs do not say, shown "In the client:"
+#   class <class> <page>            a table the docs describe in prose alone, written in the file of the page
+#
+# A field, function or class line may end with " -- " and a description. The generator reports a line that matches
+# nothing in the docs, or that changes nothing as the docs now say the same: the line is then deleted.
+
+# ---- Names the client gives otherwise
+
+rename AchievementType.achievements requirements    # docs: game/config/achievementtype.html's prose and example; client 2026-10-23: requirements is the table, achievements reads nil
+rename LocType.IsActive isActive                    # client 2026-10-23: IsActive reads nil, isActive true, as NPCType's
+rename NPCType.attackOpPriority attackOpHasPriority # client 2026-10-25: attackOpPriority reads nil, attackOpHasPriority true for Hans
+
+# ---- Fields the docs leave out
+
+field NPCType.paramCount integer -- (Read-only) How many params this config has.   # client 2026-10-25: in NPCType's metatable (the API probe's metatable audit), and reads 0 for Hans
+field LocType.paramCount integer -- (Read-only) How many params this config has.   # client 2026-10-25: in LocType's metatable, and reads 0 for a loc by Lumbridge Castle
+field ObjType.paramCount integer -- (Read-only) How many params this config has.   # client 2026-10-25: in ObjType's metatable, and reads 3 for coins
+field ObjType.isValid boolean -- (Read-only) Whether this config is valid.         # client 2026-10-25: in ObjType's metatable, and reads true for coins
+field CoordGrid.valid boolean -- (Read-only) Whether this coordinate is valid.     # client 2026-10-25: in CoordGrid's metatable, and reads true for the player's tile
+field CoordFine.valid boolean -- (Read-only) Whether this coordinate is valid.     # client 2026-10-25: in CoordFine's metatable, and reads true for the player's tile
+field LocEntity.aabb AABB -- (Read-only) Returns the current bounding box for this `LocEntity`.   # client 2026-10-25: in LocEntity's metatable (the API probe's metatable audit), and reads an AABB, as NPCEntity's and PlayerEntity's pages give theirs
+field MiniMenuEntryAddedEventPayload.miniMenu MiniMenu -- (Read-only) The MiniMenu the entry has been added to.   # client 2026-10-25: in the payload's metatable, and reads the menu the entry joins
+
+# The lists' filters take a function of the entity, which their tables type as Function and describe in prose
+field LocListFilterSettings.func (fun(locEntity: LocEntity): boolean)|nil              # docs: game/list/loclist.html, "A function which returns a boolean, and which takes a LocEntity as its only parameter"
+field NPCListFilterSettings.func (fun(npcEntity: NPCEntity): boolean)|nil              # docs: game/list/npclist.html, the same of an NPCEntity
+field ObjStackListFilterSettings.func (fun(objStackEntity: ObjStackEntity): boolean)|nil   # docs: game/list/objstacklist.html, the same of an ObjStackEntity
+field PlayerListFilterSettings.func (fun(playerEntity: PlayerEntity): boolean)|nil     # docs: game/list/playerlist.html, the same of a PlayerEntity
+
+# The draw distances: the pair the docs give reads nil, and the near distance has a field of its own
+remove ShapeEntity.drawDistances                    # client 2026-10-23: reads nil, even after SetDrawDistance(100, 200)
+field ShapeEntity.drawDistance number -- (Read-only) The near draw distance for the entity. Use SetDrawDistance() to set the draw distances.   # client 2026-10-25: reads 10240.0 on a new entity, and 100.0 after SetDrawDistance(100, 200)
+
+# AchievementType's prereqs and requirements, and its descriptions, are tables the page shows in an example
+class AchievementTests game/config/achievementtype.html -- The tests of an achievement's prerequisites or requirements, a list for each kind of test.   # docs: game/config/achievementtype.html, { "skills" : [ AchievementTestSkill, ... ], "quests" : [ ... ], ... }
+field AchievementTests.skills AchievementTestSkill[]? -- (Read-only) The tests of skill levels.                 # docs: game/config/achievementtype.html
+field AchievementTests.quests AchievementTestQuest[]? -- (Read-only) The tests of completed quests.             # docs: game/config/achievementtype.html
+field AchievementTests.achievements AchievementTestAchievement[]? -- (Read-only) The tests of completed achievements.   # docs: game/config/achievementtype.html
+field AchievementTests.varTotals AchievementTestVarTotal[]? -- (Read-only) The tests of variables' totals.     # docs: game/config/achievementtype.html
+field AchievementTests.varTestBits AchievementTestVarTestBit[]? -- (Read-only) The tests of variable bits.     # docs: game/config/achievementtype.html
+class AchievementDescription game/config/achievementtype.html -- One of an achievement's descriptions, for a game mode.   # docs: game/config/achievementtype.html, [ { "type" : AchievementDescriptionType, "text" : ... } ]
+field AchievementDescription.type AchievementDescriptionType -- (Read-only) The kind of description this is.   # docs: game/config/achievementtype.html
+field AchievementDescription.text string -- (Read-only) The description's text.   # docs: game/config/achievementtype.html; client 2026-10-23: { text = "Slay a combination of ...", type = 0 }
+type AchievementType.prereqs AchievementTests       # docs: game/config/achievementtype.html; client 2026-10-23: keys achievements, quests, skills, varTestBits, varTotals
+type AchievementType.requirements AchievementTests  # docs: game/config/achievementtype.html
+type AchievementType.descriptions AchievementDescription[]   # docs: game/config/achievementtype.html
+
+# ---- Types
+
+type ui.Sprite.sprite integer|RuntimeSprite|PluginImageResource       # docs: ui/decorative_components/sprite.html's example assigns Plugin.resources.my_sprite; client 2026-10-22: Session Clock's icon shows from a plugin image
+type ui.SpriteData.sprite integer|RuntimeSprite|PluginImageResource   # docs: core/plugin.html, resources stand in for built-in ones
+type ClientOption.minMaxRange integer               # client 2026-10-23: reads one number (0 for Brightness), not the docs' pair
+note ClientOption.minMaxRange It reads one number, 0 for Brightness, not a pair.   # client 2026-10-23
+type Vector:Normalise Vector                        # docs: math/vector.html, its examples use the result; client 2026-10-23: returns the normalised vector, and normalises in place too
+type Vector2:Normalise Vector2                      # client 2026-10-23: the same
+type Vector3:Normalise Vector3                      # client 2026-10-23: the same
+type Vector4:Normalise Vector4                      # client 2026-10-23: the same
+type DBRowType:GetColumnValues table<integer, any>  # docs: game/config/dbrowtype.html, "This array may be empty, or contain nil values."
+type DBTableType:GetColumnDefaultValues table<integer, any>   # docs: game/config/dbtabletype.html, the same
+type NPCType.opNames table<integer, string>         # docs: game/config/npctype.html, "Use pairs() to iterate this list, which will provide both the op index and name"; client 2026-10-23: Hans has ops 1, 3 and 6, and 19 of 20 NPCs nearby had a gap
+type LocType.opNames table<integer, string>         # docs: game/config/loctype.html, the same
+type ObjType.groundOpNames table<integer, string>   # docs: game/config/objtype.html, the same
+type ObjType.interfaceOpNames table<integer, string>   # docs: game/config/objtype.html, the same
+type QuestTypeConfig.type QuestType                 # docs: game/config/questtype.html, "The type of quest", which the enumeration QuestType lists
+parent ui.PagedLayerHeader ui.Component             # docs: ui/layout_components/paged_layer.html, its example calls header:SetSize; client 2026-10-23: a header has SetSize
+
+# ---- Values that may be nil, or that never are
+
+type Inv:GetSlot InvSlot                            # client 2026-10-22: GetSlot(0), GetSlot(-1) and past the last slot return an empty slot, never nil
+type Inv:GetSlots InvSlot[]                         # client 2026-10-22: every slot, the empty ones included (28 for the backpack)
+note Inv:GetSlot It never returns nil: a slot outside the inventory is an empty slot, whose obj has the id -1 and whose count is 0.   # client 2026-10-22
+
+optional ObjStackEntity:GetEntry                    # docs: game/entity/objstackentity.html, "Returns nil if no entry is found at the given index."
+optional LocType.multiVar                           # client 2026-10-23: nil on a loc that is not a MultiLoc (WINCHLADDER1)
+optional NPCType.multiVar                           # client 2026-10-23: nil on an NPC that is not a MultiNPC (HANS)
+optional SeqType.replaceHeldLeft                    # client 2026-10-23: nil on an animation that replaces nothing
+optional SeqType.replaceHeldRight                   # client 2026-10-23: the same
+optional ui.ComponentDragConfig.draggedComponent    # client 2026-10-23: nil while nothing is dragged
+optional EntityDrawEventPayload.npcEntity           # docs: core/events.html, "Returns one of the listed entities, use entityType to select the correct one."; client 2026-10-23: the other two are nil
+optional EntityDrawEventPayload.playerEntity        # docs: core/events.html; client 2026-10-23: the same
+optional EntityDrawEventPayload.objStackEntity      # docs: core/events.html; client 2026-10-23: the same
+optional MiniMenuEntry.overrideText                 # client 2026-10-23: nil until a plugin sets it
+optional ui.StyleSheet.parent                       # client 2026-10-23: nil when parentID is -1 (DEFAULT)
+
+# ---- Functions and parameters
+
+param log format any                                # docs: core/index.html, the examples log a number and a table first; client 2026-10-23: log(42) logs 42
+function ui.Interface:GetComponent fun(staticID: integer): ui.Component?   # docs: ui/interface.html's parameter table and example; client 2026-10-23: (staticID) works, (interfaceID, staticID) raises "no matching function call"
+function ui.Interface:GetComponent fun(staticID: integer, categoryID: integer, dynamicID: integer): ui.Component?   # docs: the same table
+function audio.SoundPlaybackParams.new fun(): audio.SoundPlaybackParams -- Creates playback parameters, each at its default.   # docs: audio/index.html's example, "local soundParams = audio.SoundPlaybackParams.new()"
+function ui.ModelGroup:AddCamera fun(camera: ui.ModelCamera): integer   # client 2026-10-25: AddCamera() raises "no matching function call takes this number of arguments", where the docs give it with and without a camera
+param ui.NPCCustomisation:SetModelSlot scale number                 # client 2026-10-23: SetModelSlot(0, 1) raises "expected number" for scale, which the docs call optional
+param ui.NPCCustomisation:SetModelSlot translation Vector3          # client 2026-10-23: the same, for the parameters after scale
+param ui.NPCCustomisation:SetModelSlot rotationYawPitchRoll Vector3 # client 2026-10-23: the same
+note ui.NPCCustomisation:SetModelSlot Leaving out scale raises "expected number", so it and the parameters after it are given, whatever their defaults.   # client 2026-10-23: SetModelSlot(0, 1) raises
+
+# ---- Fields that cannot be assigned
+
+read-only Inv                                       # client 2026-10-22: assigning slotCount raises "cannot write to a readonly property"
+read-only InvSlot                                   # client 2026-10-22: assigning count raises the same
+read-only GrandExchangeOffer                        # docs: game/grandexchange.html, "read-only access to properties relevant to the Grand Exchange"; client 2026-10-23: assigning price raises "cannot write to a readonly property"
+read-only HTTPRequest                               # docs: core/http.html, the fields report a request's state
+read-only AchievementTestSkill                      # docs: game/config/achievementtype.html, "All properties are read-only."
+read-only AchievementTestQuest                      # docs: game/config/achievementtype.html
+read-only AchievementTestAchievement                # docs: game/config/achievementtype.html
+read-only AchievementTestVarTotal                   # docs: game/config/achievementtype.html
+read-only AchievementTestVarTestBit                 # docs: game/config/achievementtype.html
+read-only MasterQuestVarPlayer                      # docs: game/config/questtype.html, "All properties are read-only."
+read-only QuestPreReqSkill                          # docs: game/config/questtype.html
+read-only ui.Slider.valueLabel                      # client 2026-10-23: assigning raises "cannot write to a readonly property"
+read-only ui.Canvas.numElements                     # client 2026-10-23: the same
+
+# ---- Members the client lacks
+
+remove ui.Text.lineSpacing                          # client 2026-10-25: reads nil on a text, and is not in its metatable
+remove ui.Text.shadowColour                         # client 2026-10-25: the same
+remove ui.Text.shadowRGBA                           # client 2026-10-25: the same
+remove ui.Sprite.AlignTo                            # client 2026-10-25: reads nil on a sprite, and is not in its metatable; ui.Text and ui.TextData have it
+
+# ---- Enumerations the docs give the names of alone
+
+values ui.SwipeDirectionBit LEFT=2 RIGHT=1 UP=4 DOWN=8                          # client 2026-10-23
+values ui.PinchAxisBit HORIZONTAL=1 VERTICAL=2                                  # client 2026-10-23
+values ui.RadialProgressOverlayFlag AUTOMATIC=1 REVERSE=2 FLIP_HORIZONTAL=4 FLIP_VERTICAL=8   # client 2026-10-23
+values ui.PlayerOpType NONE=-1 FRIEND=0 GROUP_MEMBER=1 GROUP_BANNED=2 CLAN_MEMBER=3 CLAN_GUEST=4 FRIEND_CHAT=5   # client 2026-10-23
+values ui.SelectionChangeEvent DESELECTED=0 SELECTED=1 ERROR_MAX_SELECTED=2 ERROR_NOT_SELECTABLE=3   # client 2026-10-23; ONSELECTIONCHANGED passes 1 and 0
+values ui.InputFieldActionResult NONE=-1 ERROR=1 CONTENT_CHANGE=0 SUBMIT=2 SUBMIT_ON_ESCAPE=3 SUBMIT_ON_FOCUS_LOSS=4   # client 2026-10-23; ONCONTENTCHANGED passes 0 while typing
+values ui.CutscenePlaybackEndReason FINISHED=0 CANCELLED=1 INTERRUPTED=2 INTERFACE_CLOSED=3   # client 2026-10-23
+
+# ---- What the client does that the docs do not say
+
+note ui.ModelCamera There is no table ui.ModelCamera, so a camera cannot be made, and a model group's AddCamera takes one; a new model group has none, and its GetCamera and activeCamera give nil.   # client 2026-10-25: ui.ModelCamera is nil; AddCamera() raises; on a new group GetCamera(0) and activeCamera are nil, activeCameraID -1
+note ui.ModelGroup A model group can get no camera: AddCamera() without one raises, and ui.ModelCamera cannot be made. The client also has UpdateCamera, which the docs do not describe.   # client 2026-10-25: the API probe's models cases and metatable audit
+note ui.Model.rotation Every value assigned to it was rejected: a Vector3 raises "expected userdata", and setting a field of the value read back raises "not recognized as a container". An NPC customisation's model slot turns a model.   # client 2026-10-24: Rich Death's rotation lab
+note ui.Model:SetTransform Its rotation had no visible effect on a lone model, shown by object, model or associated object, at once or over a duration; an NPC customisation's model slot turns one.   # client 2026-10-24: Rich Death's rotation lab turned six lone models on the yaw or the pitch; none turned, and none raised an error
+note ui.NPCCustomisation:SetModelSlot Its rotation turns the model in the slot, the one way found to turn a lone ui.Model; with a yaw and a pitch, the pitch seemed to be applied first.   # client 2026-10-24: Rich Death's party hat on Hans's model turned with the yaw and tilted with the pitch
+note ui.Component:SetPos In one check, the self percentages moved a component the opposite way to this description: SetPos(x, y, 0, 0, -0.5, -0.5) put the top-left corner of a 400 by 400 model right of and below (x, y) by half its size.   # client 2026-10-24: Rich Death, one run with a screenshot, on the plugin layer

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lamps - Test Docs</title>
+</head>
+<body>
+<!-- A page in the docs site's layout, written for the tests: an invented API with the shapes the reader meets beyond
+     a single type's page. -->
+<main>
+<article class="md-content__inner md-typeset">
+<h1 id="lamps">Lamps<a class="headerlink" href="#lamps" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>Lamps and the things that hold them, for the tests.</p>
+<p>The colours, in <code>lamps.colours</code>:</p>
+<details class="note">
+<summary>Warm</summary>
+<ul>
+<li>Amber</li>
+<li>Gold</li>
+</ul>
+</details>
+<details class="note">
+<summary>Cool</summary>
+<ul>
+<li>Frost</li>
+</ul>
+</details>
+<h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
+<h3 id="count">Count<a class="headerlink" href="#count" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code>Lamps.Count() -&gt; Int
+</code></pre></div>
+<p>How many lamps there are.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-lua highlight"><pre><span></span><code>local count = Lamps.Count()
+</code></pre></div>
+</div>
+<h3 id="lightall">lightAll<a class="headerlink" href="#lightall" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code>function lightAll(seconds : Float, args : ...)
+</code></pre></div>
+<p>Lights every lamp.</p>
+<table>
+<thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>seconds</td><td>Float</td><td>How long.</td></tr>
+<tr><td>args</td><td>...</td><td>Names of lamps to leave dark.</td></tr>
+</tbody>
+</table>
+<h3 id="find">Find<a class="headerlink" href="#find" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code>function Lamps.Find(filterSet : Table) -&gt; [ Lantern ]
+</code></pre></div>
+<p>The lanterns that match.</p>
+<table>
+<thead><tr><th>Key</th><th>Type</th><th>Default value</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>lit</td><td>Bool</td><td>false</td><td>Whether lit.</td></tr>
+<tr><td>near</td><td>Lantern</td><td>-</td><td>Near this lantern.</td></tr>
+</tbody>
+</table>
+<table>
+<thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+<tbody><tr><td>filterSet</td><td>Table</td><td>No</td><td>The tests.</td></tr></tbody>
+</table>
+<h3 id="trim">Trim<a class="headerlink" href="#trim" title="Permanent link">&para;</a></h3>
+<p>Trims every wick.</p>
+<table>
+<thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+<tbody><tr><td>length</td><td>Int</td><td>How short.</td></tr></tbody>
+</table>
+<h3 id="dim">Dim<a class="headerlink" href="#dim" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code>function Lamps.Brighten(amount : Float)
+</code></pre></div>
+<p>Dims every lamp.</p>
+<h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
+<h3 id="lampswick">lamps.Wick<a class="headerlink" href="#lampswick" title="Permanent link">&para;</a></h3>
+<p>The wick of a lamp.</p>
+<h4 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h4>
+<h5 id="constructor">Constructor<a class="headerlink" href="#constructor" title="Permanent link">&para;</a></h5>
+<div class="language-lua highlight"><pre><span></span><code>function lamps.Wick.new() -&gt; Wick
+</code></pre></div>
+<h5 id="burn">Burn<a class="headerlink" href="#burn" title="Permanent link">&para;</a></h5>
+<div class="language-lua highlight"><pre><span></span><code>function lamps.Wick:Burn(seconds : Float?) -&gt; Bool
+</code></pre></div>
+<p>Burns the wick.</p>
+<h4 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h4>
+<table>
+<thead><tr><th>Name</th><th>Type</th><th>Writeable</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>length</td><td>Float</td><td><span class="twemoji"><svg class="lucide lucide-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/></svg></span></td><td>How long.</td></tr>
+<tr><td>glow</td><td>The glow it gives.</td><td></td><td></td></tr>
+<tr><td>shade</td><td>LampShade</td><td></td><td>The shade over it.</td></tr>
+</tbody>
+</table>
+<h3 id="lamp-holders">Lamp Holders<a class="headerlink" href="#lamp-holders" title="Permanent link">&para;</a></h3>
+<h4 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link">&para;</a></h4>
+<h5 id="hold">Hold<a class="headerlink" href="#hold" title="Permanent link">&para;</a></h5>
+<div class="language-lua highlight"><pre><span></span><code>function LampHolder&lt;T&gt;:Hold(lantern : Lantern)
+</code></pre></div>
+<p>Holds a lantern.</p>
+<h3 id="lampsglow">lamps.Glow<a class="headerlink" href="#lampsglow" title="Permanent link">&para;</a></h3>
+<p>A glow, which lamps give off.</p>
+<h3 id="care">Care<a class="headerlink" href="#care" title="Permanent link">&para;</a></h3>
+<p>Keep lamps clean.</p>
+<h3 id="lampshade-properties">LampShade Properties<a class="headerlink" href="#lampshade-properties" title="Permanent link">&para;</a></h3>
+<table>
+<thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead>
+<tbody><tr><td>colour</td><td>String</td><td>Its colour.</td></tr></tbody>
+</table>
+<h3 id="lampshook">lamps.Hook<a class="headerlink" href="#lampshook" title="Permanent link">&para;</a></h3>
+<p>The hooks a lamp takes.</p>
+<details class="info">
+<summary>Associated Enumerations</summary>
+<h4 id="lampsflicker">lamps.Flicker<a class="headerlink" href="#lampsflicker" title="Permanent link">&para;</a></h4>
+<p>How a flame flickers.</p>
+<table>
+<thead><tr><th>Name</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>STEADY</td><td>0</td></tr>
+<tr><td>WILD</td><td>1</td></tr>
+</tbody>
+</table>
+</details>
+<details class="info">
+<summary>Light Events</summary>
+<table>
+<thead><tr><th>Name</th><th>Parameters</th><th>Description</th></tr></thead>
+<tbody><tr><td>ONLIT<br>Supported by lanterns</td><td>self : Lantern<br>seconds : Float</td><td>Triggered when lit.</td></tr></tbody>
+</table>
+</details>
+<h3 id="lamp-sizes">Lamp Sizes<a class="headerlink" href="#lamp-sizes" title="Permanent link">&para;</a></h3>
+<table>
+<thead><tr><th>Value</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>small</td><td>A small lamp.</td></tr>
+<tr><td>large</td><td>A large lamp.</td></tr>
+</tbody>
+</table>
+<h2 id="methods_2">Methods<a class="headerlink" href="#methods_2" title="Permanent link">&para;</a></h2>
+<h3 id="index">Index<a class="headerlink" href="#index" title="Permanent link">&para;</a></h3>
+<p>The lantern at an index.</p>
+<table>
+<thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+<tbody><tr><td>index</td><td>Int</td><td>Its index.</td></tr></tbody>
+</table>
+<table>
+<thead><tr><th>Getter Returns</th><th>Description</th></tr></thead>
+<tbody><tr><td>Lantern</td><td>The lantern.</td></tr></tbody>
+</table>
+</article>
+</main>
+</body>
+</html>

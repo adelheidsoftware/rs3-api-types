@@ -1,0 +1,17 @@
+# Gradle
+.gradle/
+build/
+
+# The docs pages the generator fetched, which belong to Jagex and are never committed
+cache/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Visual Studio Code
+.vscode/
+
+# macOS
+.DS_Store

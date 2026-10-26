@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Events - Test Docs</title>
+</head>
+<body>
+<!-- An events page in the docs site's layout, written for the tests: events with payloads, one without, and one whose
+     callbacks return a value. -->
+<main>
+<article class="md-content__inner md-typeset">
+<h1 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>Things that happen to lanterns.</p>
+<h2 id="supported-events">Supported events<a class="headerlink" href="#supported-events" title="Permanent link">&para;</a></h2>
+<h3 id="lanternlit">LanternLit<a class="headerlink" href="#lanternlit" title="Permanent link">&para;</a></h3>
+<p>Called when a lantern is lit.</p>
+<table>
+<thead><tr><th>Payload variable</th><th>Type</th><th>Writeable</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>lantern</td><td>Lantern</td><td><span class="twemoji"><svg class="lucide lucide-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/></svg></span></td><td>The lantern lit.</td></tr>
+<tr><td>flame<br>spark</td><td>Integer<br>Float</td><td></td><td>The flame's size, or the spark's.</td></tr>
+<tr><td>label</td><td>Integer<br>String</td><td><span class="twemoji"><svg class="lucide lucide-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span></td><td>The label, as a number or a name.</td></tr>
+</tbody>
+</table>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-lua highlight"><pre><span></span><code>function onLit(event)
+    log(event.lantern)
+end
+</code></pre></div>
+</div>
+<h3 id="tick">Tick<a class="headerlink" href="#tick" title="Permanent link">&para;</a></h3>
+<p>Called each tick.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This event has no payload data.</p>
+</div>
+<h3 id="lanterndraw">LanternDraw<a class="headerlink" href="#lanterndraw" title="Permanent link">&para;</a></h3>
+<p>Called before a lantern is drawn.</p>
+<table>
+<thead><tr><th>Payload variable</th><th>Type</th><th>Writeable</th><th>Description</th></tr></thead>
+<tbody><tr><td>lantern</td><td>Lantern</td><td></td><td>The lantern.</td></tr></tbody>
+</table>
+</article>
+</main>
+</body>
+</html>

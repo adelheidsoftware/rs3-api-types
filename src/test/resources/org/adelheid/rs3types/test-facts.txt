@@ -1,0 +1,10 @@
+# The facts the tests' site needs, in facts.txt's format
+
+list core/lamps.html#overview lamps.colours Lantern
+signature core/lamps.html#trim function Lamps.Trim(length : Int)
+rename core/lamps.html#dim Dim
+field core/lamps.html#properties glow lamps.Glow
+returns core/events.html#lanterndraw boolean
+
+# A fact no page needs, which the run reports
+global Nowhere

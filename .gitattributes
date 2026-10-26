@@ -1,0 +1,11 @@
+# Text files use LF line endings, in the repository and in every checkout.
+* text=auto eol=lf
+
+# The wrapper scripts must keep their native line endings on every platform.
+/gradlew text eol=lf
+*.bat text eol=crlf
+*.jar binary
+
+# The generated stubs and the test pages are compared byte for byte with the generator's output and input.
+*.lua text eol=lf
+*.html text eol=lf

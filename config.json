@@ -1,0 +1,7 @@
+{
+    "name": "RS3 Client Plugin API",
+    "files": ["plugin%.json"],
+    "settings": {
+        "Lua.runtime.version": "Lua 5.4"
+    }
+}

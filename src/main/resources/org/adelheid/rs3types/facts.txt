@@ -90,8 +90,9 @@ alias Combo ui.ComboField
 alias InvTypeProxy InvType
 # The achievement tests type their variables VarPlayer, the domain of the VarType they are
 alias VarPlayer VarType
-# The group box's headerText is a ui.LabelData, which no page documents
-alias ui.LabelData any
+# The group box's headerText is a ui.LabelData, which no page documents; the client's is a jag::ui::TextData
+# (2026-10-26), and its example sets content and font
+alias ui.LabelData ui.TextData
 
 # The map element's table lists showOnMiniMap and spriteID twice; the second of each, "on the world map" and the
 # flashing sprite, is showOnWorldMap and flashSpriteID in the client (Oneiro's API probe, 2026-10-25)

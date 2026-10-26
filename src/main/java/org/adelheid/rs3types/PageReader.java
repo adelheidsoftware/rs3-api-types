@@ -46,8 +46,11 @@ final class PageReader {
 	/** An item of a list of aliases, {@code r/g/b -> x/y/z}. */
 	private static final Pattern ALIAS = Pattern.compile("(\\S+)\\s*->\\s*(\\S+)");
 	private static final Pattern SLASH = Pattern.compile("/");
-	/** The mark of a field that cannot be assigned at the start of its description, however the docs capitalise it. */
-	private static final Pattern READ_ONLY_MARK = Pattern.compile("^\\((?i:read-only)\\)");
+	/**
+	 * The mark of a field that cannot be assigned at the start of its description, however the docs capitalise it, and
+	 * past the stray asterisk the docs put before ui.PagedCarousel's.
+	 */
+	private static final Pattern READ_ONLY_MARK = Pattern.compile("^\\*?\\((?i:read-only)\\)");
 	/** A type's name alone, with no sentence about it. */
 	private static final Pattern TYPE_ALONE = Pattern.compile("[A-Z]\\w*(\\.\\w+)*");
 	/** The note of a Properties section whose table lists no field that can be assigned. */
@@ -1218,12 +1221,54 @@ final class PageReader {
 			}
 			String parent = facts.parent(name);
 			Boolean global = facts.isGlobal(name) ? Boolean.TRUE : type.global;
-			docs.add(new ApiPage.TypeDoc(name, generics.getOrDefault(name, List.of()),
+			docs.add(new ApiPage.TypeDoc(name, namedGenerics(generics.getOrDefault(name, List.of()), memberTypes(type)),
 					parent != null ? parent : type.parent, type.description, type.functions, type.properties,
 					type.indexes, global, List.of()));
 		});
+		// A type described in prose alone is one of the page's types where it has another's fields, as
+		// ui.TextDataConfig those of ui.TextData, which are added once every page is read
+		Map<String, List<String>> prose = new LinkedHashMap<>(described);
+		described.forEach((name, description) -> {
+			if (facts.fields(name) != null) {
+				docs.add(new ApiPage.TypeDoc(name, List.of(), null, description, List.of(), List.of(), List.of(), null,
+						List.of()));
+				prose.remove(name);
+			}
+		});
 		List<ApiPage.TypeDoc> withCallers = docs.stream().map(type -> withCallerFunctions(type, docs)).toList();
-		return new ApiPage(path, withCallers, globals.functions, enums, events, otherNames, described);
+		return new ApiPage(path, withCallers, globals.functions, enums, events, otherNames, prose);
+	}
+
+	/**
+	 * The type parameters that one of the member types names: the others type nothing, as the {@code T} of the docs'
+	 * {@code PluginResource<T>}, which none of its members names.
+	 */
+	static List<String> namedGenerics(List<String> parameters, List<String> memberTypes) {
+		return parameters.stream()
+				.filter(parameter -> {
+					Pattern named = Pattern.compile("\\b" + Pattern.quote(parameter) + "\\b");
+					return memberTypes.stream().anyMatch(memberType -> named.matcher(memberType).find());
+				})
+				.toList();
+	}
+
+	/** The docs' types of a type's fields, keys and values, and its functions' parameters and results. */
+	private static List<String> memberTypes(TypeBuilder type) {
+		List<String> types = new ArrayList<>();
+		type.properties.forEach(property -> types.add(property.type()));
+		type.indexes.forEach(index -> {
+			types.add(index.key());
+			types.add(index.value());
+		});
+		for (ApiPage.FunctionDoc function : type.functions) {
+			function.params().forEach(param -> types.add(param.type()));
+			function.returns().forEach(value -> types.add(value.type()));
+			for (Signature form : function.forms()) {
+				form.params().forEach(param -> types.add(param.type()));
+				types.addAll(form.returns());
+			}
+		}
+		return types;
 	}
 
 	/**

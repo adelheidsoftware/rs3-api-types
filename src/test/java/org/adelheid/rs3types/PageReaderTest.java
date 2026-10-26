@@ -99,12 +99,19 @@ class PageReaderTest {
 				new ArrayList<>());
 		assertEquals(List.of("Lamps", "lamps.colours", "LampsFindSettings", "lamps.Wick", "LampHolder", "LampShade"),
 				lamps.types().stream().map(ApiPage.TypeDoc::name).toList());
-		// A type its heading does not name takes its signatures' name, with their placeholders as its generics
-		assertEquals(List.of("T"), lamps.types().get(4).generics());
+		// A type its heading does not name takes its signatures' name; their placeholder T, which no member names,
+		// types nothing
+		assertEquals(List.of(), lamps.types().get(4).generics());
 		assertEquals(List.of("lightAll"), lamps.globals().stream().map(ApiPage.FunctionDoc::name).toList());
 		assertEquals(List.of("lamps.Hook", "lamps.Flicker"),
 				lamps.enums().stream().map(ApiPage.EnumDoc::name).toList());
 		assertEquals(List.of("A glow, which lamps give off."), lamps.described().get("lamps.Glow"));
+	}
+
+	@Test
+	void keepsTheTypeParametersAMemberNames() {
+		assertEquals(List.of("T"), PageReader.namedGenerics(List.of("T", "U"), List.of("Int", "Table<T>")));
+		assertEquals(List.of(), PageReader.namedGenerics(List.of("T"), List.of("Tile", "String")));
 	}
 
 	@Test
@@ -158,6 +165,22 @@ class PageReaderTest {
 		// The second type of sprite stands where its description goes, and parent spells its mark otherwise
 		assertEquals(List.of(new ApiPage.PropertyDoc("sprite", "Int/RuntimeSprite", "(Read-only)"),
 				new ApiPage.PropertyDoc("parent", "Sprite?", "(Read-only) Its parent.")), sprite.properties());
+	}
+
+	@Test
+	void readsTheReadOnlyMarkPastAStrayAsterisk() {
+		ApiPage.TypeDoc carousel = read("""
+				<h1 id="carousel">Carousel</h1>
+				<h2 id="properties">Properties</h2>
+				<table>
+				<thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead>
+				<tbody>
+				<tr><td>isSwitching</td><td>Bool</td><td>*<strong>(Read-only)</strong><br/>Whether it switches.</td></tr>
+				</tbody>
+				</table>
+				""", "").types().get(0);
+		assertEquals(List.of(new ApiPage.PropertyDoc("isSwitching", "Bool", "(Read-only) Whether it switches.")),
+				carousel.properties());
 	}
 
 	@Test

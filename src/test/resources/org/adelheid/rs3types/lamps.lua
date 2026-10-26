@@ -60,7 +60,7 @@ function lamps.Wick.new() end
 ---@return boolean
 function lamps.Wick:Burn(seconds) end
 
----@class LampHolder<T>
+---@class LampHolder
 local LampHolder = {}
 
 ---Holds a lantern.

@@ -107,7 +107,11 @@ function ui.Model:ResetEnvironment() end
 ---@field minAutoExposure number Controls the minimum calculated exposure for a scene, used in tonemapping. Defaults to `0.0`.
 ---@field maxAutoExposure number Controls the maximum calculated exposure for a scene, used in tonemapping. Defaults to `1.0`.
 ---@field bloomScale number Controls the intensity of bloom visuals. Defaults to `1.0`.
-local ModelEnvironment = {}
+ui.ModelEnvironment = {}
+
+---Creates a model environment, each of its properties at its default.
+---@return ui.ModelEnvironment
+function ui.ModelEnvironment.new() end
 
 ---Contains customisation data used when drawing NPC models.
 ---@class ui.NPCCustomisation

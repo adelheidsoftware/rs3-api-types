@@ -15,11 +15,20 @@
 #   alias <name> <type>             the type a name the docs use stands for, which no page defines, or another does
 #   second <place> <field> <name>   the name of the second field of that name a table there lists
 #   trust <place> signature|table   which of a function's signature and its return table is right, where they disagree
+#   fields <type> <other> [<field>...]  it has the other type's fields but those named, as the docs say in prose
 
 # The plugin's persistent database, a singleton: PersistentDB:Get(key)
 global PersistentDB
 # The client's interfaces, a singleton: ui.Interfaces:GetInterface(id)
 global ui.Interfaces
+# The client's stylesheets, a singleton: ui.StyleSheets:Find(id), ui.StyleSheets[id]
+global ui.StyleSheets
+
+# "TextDataConfigs are simplified versions of TextData [...] Essentially they contain all of the same properties and
+# data, except the content property is omitted and no methods are available"; SpriteDataConfigs likewise of SpriteData,
+# "except the sprite, spriteID, and runtimeSprite properties are omitted"
+fields ui.TextDataConfig ui.TextData content
+fields ui.SpriteDataConfig ui.SpriteData sprite spriteID runtimeSprite
 
 # The page of the client's options is titled Client Options, and its signatures name each option by a placeholder,
 # game.options.<option name>; its overview lists the options, which are the fields of game.options

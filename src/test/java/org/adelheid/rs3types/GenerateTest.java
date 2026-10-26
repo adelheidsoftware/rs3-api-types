@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -47,6 +48,28 @@ class GenerateTest {
 	}
 
 	@Test
+	void givesATypeTheFieldsOfAnother() throws IOException {
+		Path library = root.resolve("library");
+		DocsSite site = new DocsSite(Fixtures.SITE, root.resolve("cache"), DocsSite.Mode.CACHED, Fixtures::serve);
+		Facts facts = Facts.parse(Fixtures.read("test-facts.txt") + "fields lamps.Glow lamps.Wick length shine\n");
+
+		List<String> reports =
+				Generate.generate(site, library, root.resolve("constants"), facts, Corrections.parse(""));
+
+		// lamps.Glow, which the page describes in prose alone, has the wick's fields but its length
+		String lamps = Files.readString(library.resolve("core/lamps.lua"), StandardCharsets.UTF_8);
+		assertTrue(lamps.contains("""
+				---A glow, which lamps give off.
+				---@class lamps.Glow
+				---@field glow lamps.Glow The glow it gives.
+				---@field shade LampShade The shade over it.
+				local Glow = {}
+				"""), lamps);
+		assertTrue(reports.contains("facts.txt: lamps.Glow leaves out shine, which lamps.Wick does not have."),
+				reports::toString);
+	}
+
+	@Test
 	void readsEachKindOfFact() {
 		Facts facts = Facts.parse("""
 				global Store
@@ -61,6 +84,7 @@ class GenerateTest {
 				owner core/a.html#f ui.Carousel
 				field core/a.html#g isPaused Bool
 				alias Combo ui.ComboField
+				fields ui.TextDataConfig ui.TextData content
 				""");
 		assertEquals(true, facts.isGlobal("Store"));
 		assertEquals(true, facts.isCaller("Vector"));
@@ -74,6 +98,7 @@ class GenerateTest {
 		assertEquals("ui.Carousel", facts.owner("core/a.html#f"));
 		assertEquals("Bool", facts.field("core/a.html#g", "isPaused"));
 		assertEquals("ui.ComboField", facts.aliases().get("Combo"));
+		assertEquals(List.of("ui.TextData", "content"), facts.fields("ui.TextDataConfig"));
 		assertNull(facts.name("core/a.html#c"));
 		assertEquals(List.of(), facts.unused());
 	}

@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +78,7 @@ public final class Generate {
 			}
 		}
 		pages = corrections.apply(pages, reports);
+		pages = withSharedFields(pages, facts, reports);
 		String base = baseFile();
 		Set<String> defined = defined(pages, base);
 		Map<String, String> aliases = aliases(pages, defined, facts, reports);
@@ -107,6 +109,46 @@ public final class Generate {
 		ConstantsWriter.write(constants, library, configTypes(constants, aliases, defined, reports));
 		facts.unused().forEach(fact -> reports.add("facts.txt: " + fact + ", which no page needs any more."));
 		return reports;
+	}
+
+	/**
+	 * The pages with the fields each {@code fields} fact gives a type: the other type's, as corrected, but for those
+	 * the fact leaves out and those the type has itself. A field to leave out that the other type lacks is reported,
+	 * as the docs may have changed.
+	 */
+	private static List<ApiPage> withSharedFields(List<ApiPage> pages, Facts facts, List<String> reports) {
+		Map<String, ApiPage.TypeDoc> types = new HashMap<>();
+		pages.forEach(page -> page.types().forEach(type -> types.put(type.name(), type)));
+		List<ApiPage> shared = new ArrayList<>();
+		for (ApiPage page : pages) {
+			List<ApiPage.TypeDoc> pageTypes = new ArrayList<>();
+			for (ApiPage.TypeDoc type : page.types()) {
+				List<String> fact = facts.fields(type.name());
+				ApiPage.TypeDoc other = fact == null ? null : types.get(fact.get(0));
+				if (fact == null || other == null) {
+					if (fact != null) {
+						reports.add("facts.txt: " + type.name() + " has the fields of " + fact.get(0)
+								+ ", which no page defines.");
+					}
+					pageTypes.add(type);
+					continue;
+				}
+				List<String> leftOut = fact.subList(1, fact.size());
+				leftOut.stream()
+						.filter(name -> other.properties().stream().noneMatch(property -> property.name().equals(name)))
+						.forEach(name -> reports.add("facts.txt: " + type.name() + " leaves out " + name + ", which "
+								+ other.name() + " does not have."));
+				List<ApiPage.PropertyDoc> properties = new ArrayList<>(type.properties());
+				other.properties().stream()
+						.filter(property -> !leftOut.contains(property.name())
+								&& properties.stream().noneMatch(own -> own.name().equals(property.name())))
+						.forEach(properties::add);
+				pageTypes.add(type.withProperties(properties));
+			}
+			shared.add(new ApiPage(page.path(), pageTypes, page.globals(), page.enums(), page.events(),
+					page.otherNames(), page.described()));
+		}
+		return shared;
 	}
 
 	/**

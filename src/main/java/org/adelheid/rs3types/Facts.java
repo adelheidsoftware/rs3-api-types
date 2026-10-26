@@ -64,11 +64,13 @@ final class Facts {
 	 *       page does, whose name the docs use for two types;
 	 *   <li>{@code second <place> <field> <name>}: the name of the second field of that name a table there lists;
 	 *   <li>{@code trust <place> signature|table}: which of the function's signature and its return table is right,
-	 *       where they disagree.
+	 *       where they disagree;
+	 *   <li>{@code fields <type> <other> [<field>...]}: it has the other type's fields but those named, as the docs
+	 *       say in prose.
 	 * </ul>
 	 *
 	 * <p>A fact about a field is about the field of its place, so its subject is {@code <place>.<field>}; a signature
-	 * is the rest of its line.
+	 * is the rest of its line, and the fields a type leaves out are the rest of its.
 	 */
 	static Facts parse(String text) {
 		Map<String, Fact> facts = new LinkedHashMap<>();
@@ -87,6 +89,10 @@ final class Facts {
 			if (words.get(0).equals("signature") && words.size() >= 3) {
 				String rest = stripped.substring(stripped.indexOf(words.get(1)) + words.get(1).length()).strip();
 				facts.put("signature " + words.get(1), new Fact(stripped, List.of(rest)));
+				continue;
+			}
+			if (words.get(0).equals("fields") && words.size() >= 3) {
+				facts.put("fields " + words.get(1), new Fact(stripped, words.subList(2, words.size())));
 				continue;
 			}
 			Integer expected = arguments.get(words.get(0));
@@ -164,6 +170,12 @@ final class Facts {
 	 */
 	@Nullable String trust(String place) {
 		return value("trust", place);
+	}
+
+	/** The type whose fields a type has, then the fields of that type it leaves out; null for none. */
+	@Nullable List<String> fields(String type) {
+		Fact fact = fact("fields", type);
+		return fact == null ? null : fact.values();
 	}
 
 	/** The types the names the docs use stand for, by those names, from the {@code alias} facts. */

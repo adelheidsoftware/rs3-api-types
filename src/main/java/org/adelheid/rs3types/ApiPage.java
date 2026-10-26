@@ -40,7 +40,7 @@ record ApiPage(String path, List<TypeDoc> types, List<FunctionDoc> globals, List
 	 * A type.
 	 *
 	 * @param name its Lua name, {@code ui.Text}
-	 * @param generics the names of its type parameters, {@code T} for {@code PluginResource<T>}
+	 * @param generics the names of the type parameters its members name, {@code T} where a function gives a {@code T}
 	 * @param parent the type it extends, {@code ui.Component}; null for none
 	 * @param description its overview's paragraphs, and those of the sections of prose about it
 	 * @param indexes what indexing it gives, as {@code ui.StyleSheets[id]} gives a style sheet

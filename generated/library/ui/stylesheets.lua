@@ -37,14 +37,14 @@ function StyleSheet:HasValue(property) end
 ---new ones.
 ---@class ui.StyleSheets
 ---@field [integer] ui.StyleSheet Retrieves the existing stylesheet associated with the provided ID, or creates a new one if missing.
-local StyleSheets = {}
+ui.StyleSheets = {}
 
 ---Attempts to retrieve the existing stylesheet associated with the provided ID.
 ---@param styleSheetID integer Numeric ID associated with the stylesheet to be retrieved.
 ---@return ui.StyleSheet? # The stylesheet associated with the provided ID, or nil if missing.
-function StyleSheets:Find(styleSheetID) end
+function ui.StyleSheets:Find(styleSheetID) end
 
 ---Checks whether a stylesheet associated with the provided ID already exists.
 ---@param styleSheetID integer Numeric ID associated with the stylesheet to check.
 ---@return boolean # True if there's already a stylesheet with the provided ID, false otherwise.
-function StyleSheets:Contains(styleSheetID) end
+function ui.StyleSheets:Contains(styleSheetID) end

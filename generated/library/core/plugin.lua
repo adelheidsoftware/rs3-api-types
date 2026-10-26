@@ -30,7 +30,7 @@ function Plugin.HasPermission(permission) end
 ---references to it are freed, or until the user manually unloads it.
 ---
 ---Warning: Image resources are limited to a maximum size of 1024x1024 pixels currently.
----@class PluginResource<T>
+---@class PluginResource
 ---@field path string (Read-only) The disk path to this resource.
 ---@field loaded boolean (Read-only) Whether the resource's data is currently loaded and ready to use.
 ---@field inUse boolean (Read-only) Whether or not the resource is being used anywhere currently.

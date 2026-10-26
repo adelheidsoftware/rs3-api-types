@@ -183,6 +183,22 @@ local ScrollBar = {}
 ---Essentially they contain all of the same properties and data, except the `content` property is omitted and no methods
 ---are available.
 ---@class ui.TextDataConfig
+---@field font integer The font to use when drawing this text.
+---@field lineSpacing integer Spacing between text lines in interface units. Defaults to the font's spacing if set to zero.
+---@field alignHorizontal ui.AlignMode Horizontal alignment for this text.
+---@field alignVertical ui.AlignMode Vertical alignment for this text.
+---@field maxLines integer Maximum number of lines to display. Can be set to 0 to allow an unlimited number of lines.
+---@field alpha number Visibility for this text, ranging from 0 (fully transparent) to 1 (opaque).
+---@field colour Vector4 Colour used when drawing this text.
+---@field rgba Long Hex-encoded red/green/blue/alpha colour code used when drawing this text.
+---@field shadowColour Vector4 Colour used when drawing this text's shadow if enabled.
+---@field shadowRGBA Long Hex-encoded red/green/blue/alpha colour code used when drawing this text's shadow if enabled.
+---@field isShadowed boolean Whether or not to draw this text with a shadow effect for better legibility. Defaults to false.
+ui.TextDataConfig = {}
+
+---Creates a text config, whose properties can then be set and which components can share.
+---@return ui.TextDataConfig
+function ui.TextDataConfig.new() end
 
 ---SpriteDataConfigs are simplified versions of SpriteData, containing only the properties necessary for drawing a
 ---sprite, allowing them to be initialised separately and shared across components.
@@ -190,6 +206,19 @@ local ScrollBar = {}
 ---Essentially they contain all of the same properties and data, except the `sprite`, `spriteID`, and `runtimeSprite`
 ---properties are omitted and no methods are available.
 ---@class ui.SpriteDataConfig
+---@field visualMargins ui.Margin (Modifiable Contents) Offsets used to split this sprite's graphics into multiple segments for drawing. See image layout for information on how they're used.
+---@field outlineWidth integer Thickness of the sprite's outline. Only used when the containing component is associated with an object.
+---@field rotationRadians number Rotation of this sprite in radians.
+---@field rotationDegrees number Rotation of this sprite in degrees.
+---@field alpha number Visibility for this sprite, ranging from 0 (fully transparent) to 1 (opaque).
+---@field colour Vector4 Colour used when drawing this sprite.
+---@field rgba Long Hex-encoded red/green/blue/alpha colour code used when drawing this sprite.
+---@field shadowColour Vector4 Colour used when drawing this sprite's shadow. If alpha is 0, no shadow will be drawn.
+---@field shadowRGBA Long Hex-encoded red/green/blue/alpha colour code used when drawing this sprite. If alpha is 0, no shadow will be drawn.
+---@field isFlippedHorizontally boolean Flag indicating whether or not this sprite is drawn mirrored horizontally.
+---@field isFlippedVertical boolean Flag indicating whether or not this sprite is drawn mirrored vertical.
+---@field isTiling boolean Flag indicating whether or not this sprite uses tiled visuals.
+local SpriteDataConfig = {}
 
 ---An opaque object representing a sprite generated at runtime.
 ---

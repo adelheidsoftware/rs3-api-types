@@ -62,6 +62,12 @@ ui.InputFieldKeyHandlingMode = {
     CHAT = 1,
 }
 
+---The name of one of the values, as `ui.InputFieldKeyHandlingMode.FromID(ui.InputFieldKeyHandlingMode.DEFAULT)` is `"DEFAULT"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.InputFieldKeyHandlingMode.FromID(value) end
+
 ---Contains the available filter modes for filtering user inputs written to an InputField component.
 ---@enum ui.InputFieldFilterMode
 ui.InputFieldFilterMode = {
@@ -76,6 +82,12 @@ ui.InputFieldFilterMode = {
     ---Only numbers allowed, with the resulting number always being represented as a string.
     NUMBERS_AS_TEXT = 4,
 }
+
+---The name of one of the values, as `ui.InputFieldFilterMode.FromID(ui.InputFieldFilterMode.NONE)` is `"NONE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.InputFieldFilterMode.FromID(value) end
 
 ---Contains the potential result type for the most recent input action on an InputField component.
 ---
@@ -103,6 +115,12 @@ ui.InputFieldActionResult = {
     SUBMIT_ON_FOCUS_LOSS = 4,
 }
 
+---The name of one of the values, as `ui.InputFieldActionResult.FromID(ui.InputFieldActionResult.NONE)` is `"NONE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.InputFieldActionResult.FromID(value) end
+
 ---Contains the visibility modes available for text in InputFields.
 ---@enum ui.TextContentVisibilityMode
 ui.TextContentVisibilityMode = {
@@ -113,3 +131,9 @@ ui.TextContentVisibilityMode = {
     ---All text is replaced by `*` characters.
     HIDDEN = 2,
 }
+
+---The name of one of the values, as `ui.TextContentVisibilityMode.FromID(ui.TextContentVisibilityMode.VISIBLE)` is `"VISIBLE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.TextContentVisibilityMode.FromID(value) end

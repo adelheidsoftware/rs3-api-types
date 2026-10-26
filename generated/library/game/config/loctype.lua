@@ -100,3 +100,9 @@ LocShapeType = {
     WALL_L_ALT = 23,
     WALLDECOR_DIAGONAL_BOTH_ALT = 24,
 }
+
+---The name of one of the values, as `LocShapeType.FromID(LocShapeType.WALL_STRAIGHT)` is `"WALL_STRAIGHT"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function LocShapeType.FromID(value) end

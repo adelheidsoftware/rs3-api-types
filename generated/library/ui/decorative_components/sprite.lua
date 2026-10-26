@@ -65,3 +65,9 @@ ui.ObjectQuantityDisplayMode = {
     ---The quantity indicator is displayed if there's more than one object in the stack.
     MULTIPLE = 2,
 }
+
+---The name of one of the values, as `ui.ObjectQuantityDisplayMode.FromID(ui.ObjectQuantityDisplayMode.NEVER)` is `"NEVER"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.ObjectQuantityDisplayMode.FromID(value) end

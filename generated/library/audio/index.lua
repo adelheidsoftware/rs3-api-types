@@ -109,6 +109,12 @@ audio.SoundType = {
     INTERFACE_ANIMATION = 12,
 }
 
+---The name of one of the values, as `audio.SoundType.FromID(audio.SoundType.INVALID)` is `"INVALID"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function audio.SoundType.FromID(value) end
+
 ---Identifies the audio bus a sound instance is playing into, used by the audio mixer system. These are used to identify
 ---certain elements used during audio playback, such as the desired volume based on game settings.
 ---@enum audio.AudioBus
@@ -131,6 +137,12 @@ audio.AudioBus = {
     LOCATION_GENERIC_SUB = 15,
 }
 
+---The name of one of the values, as `audio.AudioBus.FromID(audio.AudioBus.MASTER)` is `"MASTER"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function audio.AudioBus.FromID(value) end
+
 ---Controls how spatial audio applies to this sound instance.
 ---@enum audio.EmitterShape
 audio.EmitterShape = {
@@ -145,3 +157,9 @@ audio.EmitterShape = {
     ---The emitter doesn't use spatial audio.
     NONE = 4,
 }
+
+---The name of one of the values, as `audio.EmitterShape.FromID(audio.EmitterShape.SPHERE)` is `"SPHERE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function audio.EmitterShape.FromID(value) end

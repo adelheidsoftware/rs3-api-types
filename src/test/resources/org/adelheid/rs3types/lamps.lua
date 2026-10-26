@@ -83,9 +83,21 @@ function lightAll(seconds, ...) end
 ---@field ONLIT lamps.Hook Supported by lanterns Triggered when lit. Its callbacks take self : Lantern, seconds : Float.
 lamps.Hook = {}
 
+---The name of one of the values, as `lamps.Hook.FromID(lamps.Hook.ONLIT)` is `"ONLIT"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function lamps.Hook.FromID(value) end
+
 ---How a flame flickers.
 ---@enum lamps.Flicker
 lamps.Flicker = {
     STEADY = 0,
     WILD = 1,
 }
+
+---The name of one of the values, as `lamps.Flicker.FromID(lamps.Flicker.STEADY)` is `"STEADY"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function lamps.Flicker.FromID(value) end

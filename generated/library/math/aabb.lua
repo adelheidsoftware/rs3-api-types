@@ -106,3 +106,9 @@ BoxCornerType = {
     LEFT_BOTTOM_FAR = 6,
     RIGHT_BOTTOM_FAR = 7,
 }
+
+---The name of one of the values, as `BoxCornerType.FromID(BoxCornerType.LEFT_TOP_NEAR)` is `"LEFT_TOP_NEAR"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function BoxCornerType.FromID(value) end

@@ -31,6 +31,12 @@ GrandExchangeOfferType = {
     SELL = 1,
 }
 
+---The name of one of the values, as `GrandExchangeOfferType.FromID(GrandExchangeOfferType.BUY)` is `"BUY"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function GrandExchangeOfferType.FromID(value) end
+
 ---Repesentation of a stage for a offer on the Grand Exchange.
 ---@enum GrandExchangeOfferStage
 GrandExchangeOfferStage = {
@@ -41,3 +47,9 @@ GrandExchangeOfferStage = {
     ABORTING = 4,
     FINISHED = 5,
 }
+
+---The name of one of the values, as `GrandExchangeOfferStage.FromID(GrandExchangeOfferStage.EMPTY)` is `"EMPTY"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function GrandExchangeOfferStage.FromID(value) end

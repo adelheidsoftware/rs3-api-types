@@ -33,7 +33,7 @@ final class Corrections {
 	private static final Map<String, Integer> KINDS = Map.ofEntries(Map.entry("rename", 1), Map.entry("type", -1),
 			Map.entry("optional", 0), Map.entry("field", -1), Map.entry("function", -1), Map.entry("param", -1),
 			Map.entry("values", -1), Map.entry("parent", 1), Map.entry("remove", 0), Map.entry("read-only", 0),
-			Map.entry("note", -1), Map.entry("class", 1));
+			Map.entry("no-from-id", 0), Map.entry("note", -1), Map.entry("class", 1));
 	/** The kinds that may end with a description, after {@code --}: those that add what the docs leave out. */
 	private static final Set<String> DESCRIBED = Set.of("field", "function", "class");
 	private static final String DESCRIPTION = " -- ";
@@ -76,6 +76,7 @@ final class Corrections {
 	 *   <li>{@code parent <class> <class>}: the class it extends;
 	 *   <li>{@code remove <member>}: a member the docs give and the client lacks;
 	 *   <li>{@code read-only <class|field>}: the field, or each field of the class, cannot be assigned;
+	 *   <li>{@code no-from-id <enum>}: the enumeration's table has no {@code FromID}, which the others' have;
 	 *   <li>{@code note <member|class|enum> <text>}: what the client does that the docs do not say, shown "In the
 	 *       client:";
 	 *   <li>{@code class <Class> <page>}: a table the docs describe in prose alone, in the file of a page, whose
@@ -146,6 +147,7 @@ final class Corrections {
 					type -> withParent(type, correction.rest()));
 			case "note" -> note(pages, correction.subject(), correction.rest());
 			case "read-only" -> readOnly(pages, correction.subject());
+			case "no-from-id" -> changeEnum(pages, correction.subject(), ApiPage.EnumDoc::withoutFromId);
 			case "field" -> field(pages, correction.subject(), correction.rest(), correction.description());
 			case "function" -> function(pages, correction.subject(), correction.rest(), correction.description(),
 					replaced);
@@ -448,7 +450,7 @@ final class Corrections {
 				values.add(new ApiPage.EnumValue(value.name(), given.getOrDefault(value.name(), value.value()),
 						value.description()));
 			}
-			return new ApiPage.EnumDoc(enumeration.name(), enumeration.description(), values);
+			return enumeration.withValues(values);
 		});
 		return found && known[0];
 	}
@@ -461,8 +463,8 @@ final class Corrections {
 		}
 		String written = path.substring(dot + 1);
 		boolean[] found = {false};
-		changeEnum(pages, path.substring(0, dot), enumeration -> new ApiPage.EnumDoc(enumeration.name(),
-				enumeration.description(), enumeration.values().stream().map(value -> {
+		changeEnum(pages, path.substring(0, dot), enumeration -> enumeration.withValues(enumeration.values().stream()
+				.map(value -> {
 					if (!value.name().equals(written)) {
 						return value;
 					}
@@ -496,8 +498,8 @@ final class Corrections {
 				type.global()))) {
 			return true;
 		}
-		if (changeEnum(pages, path, enumeration -> new ApiPage.EnumDoc(enumeration.name(),
-				append(enumeration.description(), sentence), enumeration.values()))) {
+		if (changeEnum(pages, path,
+				enumeration -> enumeration.withDescription(append(enumeration.description(), sentence)))) {
 			return true;
 		}
 		return changeMember(pages, path,

@@ -172,6 +172,12 @@ AchievementProgressType = {
     DEPRECATED = -4,
 }
 
+---The name of one of the values, as `AchievementProgressType.FromID(AchievementProgressType.READY)` is `"READY"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function AchievementProgressType.FromID(value) end
+
 ---Alternate achievement descriptions are available for various game modes.
 ---
 ---These types are provided along with the relevant string by the `AcheivementType.descriptions` property.
@@ -185,6 +191,12 @@ AchievementDescriptionType = {
     GROUP_IRONMAN_SIZE_5 = 5,
 }
 
+---The name of one of the values, as `AchievementDescriptionType.FromID(AchievementDescriptionType.DEFAULT)` is `"DEFAULT"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function AchievementDescriptionType.FromID(value) end
+
 ---An achievement's display behaviour is controlled by this enumeration, and is provided by the
 ---`AchievementType.hiddenType` property.
 ---@enum AchievementHiddenType
@@ -196,3 +208,9 @@ AchievementHiddenType = {
     ---Achievement is hidden until all requirements are completed.
     UNTIL_COMPLETE = 2,
 }
+
+---The name of one of the values, as `AchievementHiddenType.FromID(AchievementHiddenType.NEVER)` is `"NEVER"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function AchievementHiddenType.FromID(value) end

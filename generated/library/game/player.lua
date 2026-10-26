@@ -97,3 +97,9 @@ SkillType = {
     ARCHAEOLOGY = 27,
     NECROMANCY = 28,
 }
+
+---The name of one of the values, as `SkillType.FromID(SkillType.ATTACK)` is `"ATTACK"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function SkillType.FromID(value) end

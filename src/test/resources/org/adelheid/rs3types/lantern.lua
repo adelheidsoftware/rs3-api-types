@@ -46,6 +46,18 @@ LanternState = {
     LIT = 1,
 }
 
+---The name of one of the values, as `LanternState.FromID(LanternState.DARK)` is `"DARK"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function LanternState.FromID(value) end
+
 ---@class LanternGrants
 ---@field lightAccess LanternGrants Allows lighting
 LanternGrants = {}
+
+---The name of one of the values, as `LanternGrants.FromID(LanternGrants.lightAccess)` is `"lightAccess"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function LanternGrants.FromID(value) end

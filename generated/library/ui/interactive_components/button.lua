@@ -58,3 +58,9 @@ ui.TriggerMode = {
     ---The button's action will trigger similarly to ONPRESS and will repeat every so often while held down.
     REPEAT = 3,
 }
+
+---The name of one of the values, as `ui.TriggerMode.FromID(ui.TriggerMode.ONPRESS_FINISH)` is `"ONPRESS_FINISH"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.TriggerMode.FromID(value) end

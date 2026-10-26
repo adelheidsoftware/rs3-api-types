@@ -99,12 +99,29 @@ record ApiPage(String path, List<TypeDoc> types, List<FunctionDoc> globals, List
 	record IndexDoc(String key, String value, String description) {
 	}
 
-	/** An enumeration, with its values in the order the docs list them. */
-	record EnumDoc(String name, List<String> description, List<EnumValue> values) {
+	/**
+	 * An enumeration, with its values in the order the docs list them.
+	 *
+	 * @param fromId whether its table has {@code FromID}, which names a value, as the client gives 51 of its 58
+	 *     enumeration tables (the API probe, 2026-10-23); a {@code no-from-id} correction names the others
+	 */
+	record EnumDoc(String name, List<String> description, List<EnumValue> values, boolean fromId) {
 
 		EnumDoc {
 			description = List.copyOf(description);
 			values = List.copyOf(values);
+		}
+
+		EnumDoc withDescription(List<String> description) {
+			return new EnumDoc(name, description, values, fromId);
+		}
+
+		EnumDoc withValues(List<EnumValue> values) {
+			return new EnumDoc(name, description, values, fromId);
+		}
+
+		EnumDoc withoutFromId() {
+			return new EnumDoc(name, description, values, false);
 		}
 	}
 

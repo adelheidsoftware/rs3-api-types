@@ -162,6 +162,12 @@ MiniMenuEntryType = {
     PLUGIN = 10,
 }
 
+---The name of one of the values, as `MiniMenuEntryType.FromID(MiniMenuEntryType.NONE)` is `"NONE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function MiniMenuEntryType.FromID(value) end
+
 ---The type of action for each entry. `MiniMenuActionVerbType.OP` is the most common.
 ---@enum MiniMenuActionVerbType
 MiniMenuActionVerbType = {
@@ -170,6 +176,12 @@ MiniMenuActionVerbType = {
     OP = 2,
     UNSPECIFIED = 3,
 }
+
+---The name of one of the values, as `MiniMenuActionVerbType.FromID(MiniMenuActionVerbType.ATTACK)` is `"ATTACK"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function MiniMenuActionVerbType.FromID(value) end
 
 ---All available types of action that can be found in a MiniMenuEntry.
 ---
@@ -309,3 +321,9 @@ MiniMenuActionType = {
     ---MiniMenuEntryType: NPC. Data Property: NPCData.
     OP_NPC6_LOWPRIORITY = 3003,
 }
+
+---The name of one of the values, as `MiniMenuActionType.FromID(MiniMenuActionType.TGT_LOC)` is `"TGT_LOC"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function MiniMenuActionType.FromID(value) end

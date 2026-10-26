@@ -254,18 +254,36 @@ final class LuaCatsWriter {
 				out.append('\n');
 			}
 			out.append(enumeration.name()).append(" = {}\n");
-			return;
-		}
-		out.append("---@enum ").append(enumeration.name()).append('\n');
-		out.append(enumeration.name()).append(" = {\n");
-		for (ApiPage.EnumValue value : enumeration.values()) {
-			if (!value.description().isEmpty()) {
-				out.append("    ---").append(value.description()).append('\n');
+		} else {
+			out.append("---@enum ").append(enumeration.name()).append('\n');
+			out.append(enumeration.name()).append(" = {\n");
+			for (ApiPage.EnumValue value : enumeration.values()) {
+				if (!value.description().isEmpty()) {
+					out.append("    ---").append(value.description()).append('\n');
+				}
+				out.append("    ").append(key(value.name())).append(" = ")
+						.append(literal(String.valueOf(value.value()))).append(",\n");
 			}
-			out.append("    ").append(key(value.name())).append(" = ").append(literal(String.valueOf(value.value())))
-					.append(",\n");
+			out.append("}\n");
 		}
-		out.append("}\n");
+		if (enumeration.fromId() && !enumeration.values().isEmpty()) {
+			fromId(enumeration);
+		}
+	}
+
+	/**
+	 * An enumeration's FromID, which names one of its values. LuaLS takes an enum's table to have its values alone, so
+	 * the function is declared with its warning about a field added to it turned off.
+	 */
+	private void fromId(ApiPage.EnumDoc enumeration) {
+		String name = enumeration.name();
+		String first = enumeration.values().get(0).name();
+		out.append("\n---The name of one of the values, as `").append(name).append(".FromID(").append(name).append('.')
+				.append(first).append(")` is `\"").append(first).append("\"`.\n")
+				.append("---@param value integer\n")
+				.append("---@return string\n")
+				.append("---@diagnostic disable-next-line: inject-field\n")
+				.append("function ").append(name).append(".FromID(value) end\n");
 	}
 
 	/**

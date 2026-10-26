@@ -43,3 +43,9 @@ RotationType = {
     ONEEIGHTY = 2,
     TWOSEVENTY = 3,
 }
+
+---The name of one of the values, as `RotationType.FromID(RotationType.ZERO)` is `"ZERO"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function RotationType.FromID(value) end

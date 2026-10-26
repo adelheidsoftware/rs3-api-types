@@ -54,3 +54,9 @@ ui.GroupBoxHeaderAlignMode = {
     ---The header is positioned against the right side of the component.
     RIGHT = 2,
 }
+
+---The name of one of the values, as `ui.GroupBoxHeaderAlignMode.FromID(ui.GroupBoxHeaderAlignMode.LEFT)` is `"LEFT"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.GroupBoxHeaderAlignMode.FromID(value) end

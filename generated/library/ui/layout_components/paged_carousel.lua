@@ -44,3 +44,9 @@ ui.CarouselButtonDisplayMode = {
     ---Indicates the carousel's buttons should be displayed on its left and right sides.
     SIDES = 0,
 }
+
+---The name of one of the values, as `ui.CarouselButtonDisplayMode.FromID(ui.CarouselButtonDisplayMode.SIDES)` is `"SIDES"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.CarouselButtonDisplayMode.FromID(value) end

@@ -124,3 +124,9 @@ ui.ModelCameraTransition = {
     ---The transition source fades out as the transition target fades in.
     CROSSFADE = 2,
 }
+
+---The name of one of the values, as `ui.ModelCameraTransition.FromID(ui.ModelCameraTransition.NONE)` is `"NONE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.ModelCameraTransition.FromID(value) end

@@ -108,3 +108,9 @@ HeightOffsetType = {
     ---Offsets the height by the total height of the LocEntity, i.e. a table.
     LOCATION = 2,
 }
+
+---The name of one of the values, as `HeightOffsetType.FromID(HeightOffsetType.NONE)` is `"NONE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function HeightOffsetType.FromID(value) end

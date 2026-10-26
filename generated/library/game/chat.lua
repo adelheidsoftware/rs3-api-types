@@ -89,3 +89,9 @@ ChatType = {
     GROUP_IRONMAN_NOTIFICATION = 144,
     GENERAL_LINKABLE = 145,
 }
+
+---The name of one of the values, as `ChatType.FromID(ChatType.GENERAL)` is `"GENERAL"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ChatType.FromID(value) end

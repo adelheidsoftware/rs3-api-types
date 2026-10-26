@@ -152,3 +152,9 @@ ValueType = {
     ---Its values are Integer.
     VORBIS = 57,
 }
+
+---The name of one of the values, as `ValueType.FromID(ValueType.UNSUPPORTED)` is `"UNSUPPORTED"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ValueType.FromID(value) end

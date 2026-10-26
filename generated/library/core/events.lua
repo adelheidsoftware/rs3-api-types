@@ -17,6 +17,12 @@ EntityType = {
     COMBINED_LOCATION_SECTION = 12,
 }
 
+---The name of one of the values, as `EntityType.FromID(EntityType.LOCATION)` is `"LOCATION"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function EntityType.FromID(value) end
+
 ---These are provided as part of the GameStateChanged event payload.
 ---@enum GameState
 GameState = {
@@ -31,6 +37,12 @@ GameState = {
     SWITCH_WORLD = 37,
     LOADING = 40,
 }
+
+---The name of one of the values, as `GameState.FromID(GameState.BOOT)` is `"BOOT"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function GameState.FromID(value) end
 
 ---The payload of the Logic event.
 ---@class LogicEventPayload

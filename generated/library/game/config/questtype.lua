@@ -69,6 +69,12 @@ QuestType = {
     TUTORIAL = 2,
 }
 
+---The name of one of the values, as `QuestType.FromID(QuestType.NORMAL)` is `"NORMAL"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function QuestType.FromID(value) end
+
 ---@enum QuestDifficulty
 QuestDifficulty = {
     NOVICE = 0,
@@ -78,3 +84,9 @@ QuestDifficulty = {
     GRANDMASTER = 4,
     MULTIDIFFICULTY = 5,
 }
+
+---The name of one of the values, as `QuestDifficulty.FromID(QuestDifficulty.NOVICE)` is `"NOVICE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function QuestDifficulty.FromID(value) end

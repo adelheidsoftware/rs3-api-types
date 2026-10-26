@@ -249,6 +249,12 @@ ui.ComponentType = {
     GROUP_BOX = 24,
 }
 
+---The name of one of the values, as `ui.ComponentType.FromID(ui.ComponentType.LINE)` is `"LINE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.ComponentType.FromID(value) end
+
 ---Enumeration identifying how an element should be aligned.
 ---@enum ui.AlignMode
 ui.AlignMode = {
@@ -261,6 +267,12 @@ ui.AlignMode = {
     ---This element will be aligned to the top-left corner, and justified so as to occupy the full width if possible.
     JUSTIFY = 3,
 }
+
+---The name of one of the values, as `ui.AlignMode.FromID(ui.AlignMode.TOPLEFT)` is `"TOPLEFT"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.AlignMode.FromID(value) end
 
 ---Enumeration identifying how an element should be scaled based on its aspect ratio.
 ---@enum ui.AspectRatioMode

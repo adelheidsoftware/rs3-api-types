@@ -44,3 +44,9 @@ ui.RadialProgressOverlayFlag = {
     ---Inverts the overlay's visuals vertical.
     FLIP_VERTICAL = 8,
 }
+
+---The name of one of the values, as `ui.RadialProgressOverlayFlag.FromID(ui.RadialProgressOverlayFlag.AUTOMATIC)` is `"AUTOMATIC"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.RadialProgressOverlayFlag.FromID(value) end

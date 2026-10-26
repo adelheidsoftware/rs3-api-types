@@ -44,6 +44,12 @@ PreAnimMove = {
     DEFAULT = 4,
 }
 
+---The name of one of the values, as `PreAnimMove.FromID(PreAnimMove.DELAY_MOVE)` is `"DELAY_MOVE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function PreAnimMove.FromID(value) end
+
 ---@enum PostAnimMove
 PostAnimMove = {
     DELAY_MOVE = 0,
@@ -52,9 +58,21 @@ PostAnimMove = {
     DEFAULT = 3,
 }
 
+---The name of one of the values, as `PostAnimMove.FromID(PostAnimMove.DELAY_MOVE)` is `"DELAY_MOVE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function PostAnimMove.FromID(value) end
+
 ---@enum AnimationDuplicateBehaviour
 AnimationDuplicateBehaviour = {
     CONTINUE = 0,
     RESET = 1,
     LOOP_RESET = 2,
 }
+
+---The name of one of the values, as `AnimationDuplicateBehaviour.FromID(AnimationDuplicateBehaviour.CONTINUE)` is `"CONTINUE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function AnimationDuplicateBehaviour.FromID(value) end

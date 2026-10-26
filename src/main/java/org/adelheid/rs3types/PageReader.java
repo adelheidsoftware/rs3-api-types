@@ -820,7 +820,7 @@ final class PageReader {
 				note(block, description);
 			}
 		}
-		enums.add(new ApiPage.EnumDoc(heading.text, description, values));
+		enums.add(new ApiPage.EnumDoc(heading.text, description, values, true));
 	}
 
 	/**

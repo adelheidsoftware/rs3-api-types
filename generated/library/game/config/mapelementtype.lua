@@ -61,6 +61,12 @@ MapElementHorizontalAlign = {
     RIGHT = 2,
 }
 
+---The name of one of the values, as `MapElementHorizontalAlign.FromID(MapElementHorizontalAlign.LEFT)` is `"LEFT"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function MapElementHorizontalAlign.FromID(value) end
+
 ---@enum MapElementVerticalAlign
 MapElementVerticalAlign = {
     ---Aligned to top.
@@ -71,6 +77,12 @@ MapElementVerticalAlign = {
     BOTTOM = 2,
 }
 
+---The name of one of the values, as `MapElementVerticalAlign.FromID(MapElementVerticalAlign.TOP)` is `"TOP"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function MapElementVerticalAlign.FromID(value) end
+
 ---@enum MapElementTextSize
 MapElementTextSize = {
     ---Use small text size.
@@ -80,3 +92,9 @@ MapElementTextSize = {
     ---Use large text size.
     LARGE = 2,
 }
+
+---The name of one of the values, as `MapElementTextSize.FromID(MapElementTextSize.SMALL)` is `"SMALL"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function MapElementTextSize.FromID(value) end

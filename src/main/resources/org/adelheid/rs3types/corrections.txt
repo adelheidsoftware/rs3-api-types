@@ -19,6 +19,7 @@
 #   parent <class> <class>          the class it extends
 #   remove <member>                 a member the docs give and the client lacks
 #   read-only <class|field>         the field, or each field of the class, cannot be assigned
+#   no-from-id <enum>               the enumeration's table has no FromID, which every other one has
 #   note <member|class|enum> <text> what the client does that the docs do not say, shown "In the client:"
 #   class <class> <page>            a table the docs describe in prose alone, written in the file of the page
 #
@@ -211,6 +212,17 @@ rename PluginResourceLoadResult.errorExceedsLimits ERROR_EXCEEDS_LIMITS # client
 rename PluginResourceLoadResult.errorConstruction ERROR_CONSTRUCTION    # client 2026-10-26: errorConstruction reads nil; FromID(4) is "ERROR_CONSTRUCTION"
 values PluginResourceLoadResult SUCCESS=0 ERROR_FILESYSTEM=1 ERROR_DECODE=2 ERROR_EXCEEDS_LIMITS=3 ERROR_CONSTRUCTION=4   # client 2026-10-26: FromID names 0 to 4 so
 note PluginPermissions Each value is a userdata of its own, not a number.   # client 2026-10-26: the API probe reads httpAccess, chatAccess and trackingAccess as sol.jag::scripting::PluginPermission
+
+# ---- Enumerations without FromID: the client gives FromID, which names a value (GameKey.FromID(GameKey.P) is "P"), to
+# 51 of its 58 enumeration tables, the generator to every enumeration but these
+
+no-from-id PersistentDBType                         # client 2026-10-23: the API probe, "tables without FromID"
+no-from-id PluginPermissions                        # client 2026-10-23: the same
+no-from-id ShapeEntityAlignType                     # client 2026-10-23: the same
+no-from-id ui.AspectRatioMode                       # client 2026-10-23: the same
+no-from-id ui.CutscenePlaybackEndReason             # client 2026-10-23: the same
+no-from-id ui.Hook                                  # client 2026-10-23: the same
+no-from-id ui.SelectionChangeEvent                  # client 2026-10-23: the same
 
 # ---- What the client has that no page documents
 

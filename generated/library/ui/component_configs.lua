@@ -186,6 +186,12 @@ ui.DragRenderBehaviour = {
     INVISIBLE = 3,
 }
 
+---The name of one of the values, as `ui.DragRenderBehaviour.FromID(ui.DragRenderBehaviour.TRANSPARENT_OVERLAY)` is `"TRANSPARENT_OVERLAY"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.DragRenderBehaviour.FromID(value) end
+
 ---Identifies the type of player that's been associated with a component.
 ---@enum ui.PlayerOpType
 ui.PlayerOpType = {
@@ -205,6 +211,12 @@ ui.PlayerOpType = {
     FRIEND_CHAT = 5,
 }
 
+---The name of one of the values, as `ui.PlayerOpType.FromID(ui.PlayerOpType.NONE)` is `"NONE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.PlayerOpType.FromID(value) end
+
 ---Bitmasks for the available pinch axii, can be added together to combine them.
 ---@enum ui.PinchAxisBit
 ui.PinchAxisBit = {
@@ -213,6 +225,12 @@ ui.PinchAxisBit = {
     ---Allows vertical pinch gestures.
     VERTICAL = 2,
 }
+
+---The name of one of the values, as `ui.PinchAxisBit.FromID(ui.PinchAxisBit.HORIZONTAL)` is `"HORIZONTAL"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.PinchAxisBit.FromID(value) end
 
 ---Bitmasks for the available swipe directions, can be added together to combine them.
 ---@enum ui.SwipeDirectionBit
@@ -226,3 +244,9 @@ ui.SwipeDirectionBit = {
     ---Allows swipe down gestures.
     DOWN = 8,
 }
+
+---The name of one of the values, as `ui.SwipeDirectionBit.FromID(ui.SwipeDirectionBit.LEFT)` is `"LEFT"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.SwipeDirectionBit.FromID(value) end

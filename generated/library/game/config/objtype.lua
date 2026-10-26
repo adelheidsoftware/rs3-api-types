@@ -63,3 +63,9 @@ ObjStackType = {
     ---Objects of this type can never be stacked. This type is always used for objects with ObjVars.
     NEVER = 2,
 }
+
+---The name of one of the values, as `ObjStackType.FromID(ObjStackType.SOMETIMES)` is `"SOMETIMES"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ObjStackType.FromID(value) end

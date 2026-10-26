@@ -75,6 +75,12 @@ ModifierKey = {
     ANY_INC_META = 15,
 }
 
+---The name of one of the values, as `ModifierKey.FromID(ModifierKey.SHIFT)` is `"SHIFT"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ModifierKey.FromID(value) end
+
 ---@enum GameKey
 GameKey = {
     F1 = 1,
@@ -161,6 +167,12 @@ GameKey = {
     PAGE_UP = 104,
     PAGE_DOWN = 105,
 }
+
+---The name of one of the values, as `GameKey.FromID(GameKey.F1)` is `"F1"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function GameKey.FromID(value) end
 
 ---@enum SystemKey
 SystemKey = {
@@ -250,3 +262,9 @@ SystemKey = {
     HASH = 222,
     CONSOLE = 7331,
 }
+
+---The name of one of the values, as `SystemKey.FromID(SystemKey.BACKSPACE)` is `"BACKSPACE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function SystemKey.FromID(value) end

@@ -69,3 +69,9 @@ PluginResourceLoadResult = {
     ---Failed to construct this resource even though loading succeeded. This can occur when attempting to load a resource during shutdown for example.
     ERROR_CONSTRUCTION = 4,
 }
+
+---The name of one of the values, as `PluginResourceLoadResult.FromID(PluginResourceLoadResult.SUCCESS)` is `"SUCCESS"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function PluginResourceLoadResult.FromID(value) end

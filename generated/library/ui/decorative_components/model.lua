@@ -180,3 +180,9 @@ ui.ModelType = {
     ---Gendered variant of a model for a wearable inventory item. Note the model ID represents an inventory slot ID rather than a specific object ID.
     INV_WOMANWEAR_MODEL = 9,
 }
+
+---The name of one of the values, as `ui.ModelType.FromID(ui.ModelType.NONE)` is `"NONE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.ModelType.FromID(value) end

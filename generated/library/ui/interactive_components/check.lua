@@ -40,3 +40,9 @@ ui.CheckAlignMode = {
     ---Contents are aligned to the right and the button appears after the label.
     RIGHT = 1,
 }
+
+---The name of one of the values, as `ui.CheckAlignMode.FromID(ui.CheckAlignMode.INLINE)` is `"INLINE"`.
+---@param value integer
+---@return string
+---@diagnostic disable-next-line: inject-field
+function ui.CheckAlignMode.FromID(value) end

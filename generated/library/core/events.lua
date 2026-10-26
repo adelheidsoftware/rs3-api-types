@@ -54,8 +54,8 @@ function GameState.FromID(value) end
 
 ---The payload of the OptionalDependencyChanged event.
 ---@class OptionalDependencyChangedEventPayload
----@field pluginIdentifier string (Read-only) The identifier name of the optional dependency plugin.
----@field enabled boolean (Read-only) Whether the optional dependency plugin is now enabled or disabled.
+---@field pluginIdentifier string (Read-only) The identifier name of the optional dependency plugin. In the client: It is the alias the plugin's manifest gives the dependency, the name of its global: "pui" for "optionalDependencies": { "pui": 6398181 }.
+---@field enabled boolean (Read-only) Whether the optional dependency plugin is now enabled or disabled. In the client: When it is false, the dependency's global is already nil, and when it is true, set again. A plugin that starts with the dependency loaded also gets one event with it true, right after its start.
 
 ---The payload of the OptionalPermissionChanged event.
 ---@class OptionalPermissionChangedEventPayload

@@ -1,0 +1,4 @@
+# The namespaces of the client's id, config and var tables, as the constants dump found them
+id Achievement BaseAnimSet Category Component Cursor DBRow DBTable Enum Font Headbar Hitmark Interface Inv Loc MapElement Material Model Music NPC Obj Param Quest Seq Sound Sprite Struct StyleSheet UIAnim UIAnimCurve VarClan VarClanSetting VarClient VarPlayer VarPlayerGroup
+config Achievement BaseAnimSet Cursor DBRow DBTable Enum Font Headbar Hitmark Inv Loc MapElement NPC Obj Param Quest Seq Struct
+var VarClan VarClanSetting VarClient VarPlayer VarPlayerGroup

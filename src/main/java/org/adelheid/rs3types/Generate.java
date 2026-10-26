@@ -19,11 +19,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
- * Generates {@code library/} from the docs site: reads every page the navigation links, learns from all of them the
- * other names their signatures give the types, and writes a definition file for each page that documents the API,
- * beside the hand-written {@code base.lua}. What the reader or the writer does not understand is printed at the end.
- * Run from the repository's root, as {@code ./gradlew generate} does: {@code --refresh} fetches every page again, and
- * {@code --offline} reads the cache alone.
+ * Generates {@code generated/library/} from the docs site: reads every page the navigation links, learns from all of
+ * them the other names their signatures give the types, and writes a definition file for each page that documents the
+ * API, beside the hand-written {@code base.lua}. What the reader or the writer does not understand is printed at the
+ * end. Run from the repository's root, as {@code ./gradlew generate} does: {@code --refresh} fetches every page again,
+ * and {@code --offline} reads the cache alone.
  */
 public final class Generate {
 
@@ -49,18 +49,20 @@ public final class Generate {
 		}
 		Path root = Path.of("").toAbsolutePath();
 		DocsSite site = new DocsSite(DocsSite.DOCS, root.resolve("cache"), mode, DocsSite.http());
-		List<String> reports = generate(site, root.resolve("library"), Facts.load(), Corrections.load());
+		List<String> reports = generate(site, root.resolve("generated/library"), root.resolve("generated/constants"),
+				Facts.load(), Corrections.load());
 		PrintStream out = System.out;
 		reports.forEach(out::println);
-		out.println(reports.isEmpty() ? "library/ is up to date with the docs."
+		out.println(reports.isEmpty() ? "generated/ is up to date with the docs."
 				: reports.size() + " things in the docs the generator did not understand.");
 	}
 
 	/**
-	 * Rewrites a library folder from a site, with the corrections applied, returning what the reader and the writer did
-	 * not understand and the corrections that found nothing to correct.
+	 * Rewrites a library folder from a site, with the corrections applied, and the LuaCATS of the constants a folder's
+	 * CSVs give, returning what the reader and the writer did not understand and the corrections that found nothing to
+	 * correct.
 	 */
-	static List<String> generate(DocsSite site, Path library, Facts facts, Corrections corrections)
+	static List<String> generate(DocsSite site, Path library, Path constants, Facts facts, Corrections corrections)
 			throws IOException {
 		List<String> reports = new ArrayList<>();
 		List<ApiPage> pages = new ArrayList<>();
@@ -102,6 +104,7 @@ public final class Generate {
 				reports.add(page + ": names the type " + name + ", which no page defines.");
 			}
 		});
+		ConstantsWriter.write(constants, library, configTypes(constants, aliases, defined, reports));
 		facts.unused().forEach(fact -> reports.add("facts.txt: " + fact + ", which no page needs any more."));
 		return reports;
 	}
@@ -145,6 +148,26 @@ public final class Generate {
 			}
 		});
 		return aliases;
+	}
+
+	/**
+	 * The type of each config namespace's configs, by the namespace: its name and {@code Type}, {@code NPCType} for
+	 * {@code NPC}, or the type an alias gives that name, as {@code QuestTypeConfig} for {@code QuestType}. One no page
+	 * defines is reported, and is {@code any}.
+	 */
+	private static Map<String, String> configTypes(Path constants, Map<String, String> aliases, Set<String> defined,
+			List<String> reports) throws IOException {
+		Map<String, String> types = new TreeMap<>();
+		for (String namespace : Constants.tables(constants).getOrDefault("config", List.of())) {
+			String type = aliases.getOrDefault(namespace + "Type", namespace + "Type");
+			if (!defined.contains(type)) {
+				reports.add("generated/constants/tables.txt: config." + namespace + " holds " + type
+						+ ", which no page defines.");
+				type = "any";
+			}
+			types.put(namespace, type);
+		}
+		return types;
 	}
 
 	/** The types the pages and base.lua define: classes, enumerations, payloads, and the tables of namespaces. */

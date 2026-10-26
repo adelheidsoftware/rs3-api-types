@@ -26,7 +26,8 @@ class GenerateTest {
 		Files.writeString(library.resolve("gone/removed.lua"), "-- a page the site no longer has\n");
 		DocsSite site = new DocsSite(Fixtures.SITE, root.resolve("cache"), DocsSite.Mode.CACHED, Fixtures::serve);
 
-		List<String> reports = Generate.generate(site, library, Fixtures.facts(), Corrections.parse(""));
+		List<String> reports = Generate.generate(site, library, root.resolve("constants"), Fixtures.facts(),
+				Corrections.parse(""));
 
 		for (String name : List.of("lantern", "lamps", "events")) {
 			assertEquals(Fixtures.read(name + ".lua"),

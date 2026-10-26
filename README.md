@@ -1,32 +1,54 @@
 # rs3-api-types
 
 LuaCATS definitions of the RuneScape (RS3) Client Plugin API, for the Lua Language Server (LuaLS) and for tools such as
-[Oneiro](https://github.com/adelheidsoftware/oneiro). They are generated from Jagex's public documentation at
-<https://developer.runescape.com/rs/>.
+[Oneiro](https://github.com/adelheidsoftware/oneiro). The API is generated from Jagex's public documentation at
+<https://developer.runescape.com/rs/>, and the game's constants, such as `id.NPC.HANS`, from the game client.
 
 > [!WARNING]
-> In development. The generator reads every page of the docs but does not understand all of them yet, so `library/` is
-> incomplete, and the game's constants, such as `id.NPC.HANS`, are still to come. Don't depend on it yet.
+> In development. Don't depend on it yet.
 
 ## Using the definitions in your editor
 
-Clone this repository next to your plugin, and point LuaLS at its `library/` folder in your plugin's `.luarc.json`:
+Clone this repository next to your plugin, and point LuaLS at its `generated/library/` folder in your plugin's
+`.luarc.json`:
 
 ```json
 {
     "runtime.version": "Lua 5.4",
-    "workspace.library": ["../rs3-api-types/library"]
+    "workspace.library": ["../rs3-api-types/generated/library"]
 }
 ```
 
+That types `id.NPC.HANS` as an integer and `config.NPC.HANS` as an `NPCType`, but doesn't know the names. For the
+names, with each ID's value, add `generated/constants/` too. There are over 800,000, so LuaLS takes about half a minute
+longer to start:
+
+```json
+{
+    "runtime.version": "Lua 5.4",
+    "workspace.library": ["../rs3-api-types/generated/library", "../rs3-api-types/generated/constants"]
+}
+```
+
+## What's here
+
+- `generated/library/`: the API's definitions, one file per page of the docs.
+- `generated/constants/`: a CSV of each namespace of the game's `id` table, `id,NAME`, with a variable's value type,
+  base variable and bit mask after them, as the client's console command `pan` gives them; and a definition file of
+  each namespace's names.
+- `src/`: the generator. `tools/constants-dump/`: the development plugin that dumps the constants from the client.
+
+Everything in `generated/` is written by the generator, so don't edit it by hand.
+
 ## Regenerating
 
-`library/` is generated, so don't edit it by hand. The generator needs JDK 25, which Gradle downloads if you have none:
+The generator needs JDK 25, which Gradle downloads if you have none:
 
 ```sh
-./gradlew generate            # fetches the pages the cache lacks, then rewrites library/
+./gradlew generate            # fetches the pages the cache lacks, then rewrites generated/
 ./gradlew generate -Prefresh  # fetches every page again
 ./gradlew generate -Poffline  # reads only the pages already in cache/
+./gradlew constants           # reads the constants dump from the beta client, then generates
 ```
 
 It fetches the docs one page at a time, a second apart, and keeps them in `cache/`, which is never committed. At the end
@@ -41,9 +63,13 @@ it lists anything in the docs it did not understand. Three files of its own fill
 
 When the docs catch up with a fact or a correction, the generator reports it so it can be deleted.
 
+The constants come from the game client after each game update: run the dump plugin as
+[its README](tools/constants-dump/README.md) says, then `./gradlew constants`, which prints how each namespace
+changed.
+
 `./gradlew build` compiles the generator and runs its tests.
 
 ## Licence
 
-The generator is licensed under the MIT licence. The API's names and descriptions in `library/` belong to Jagex; see
-[NOTICE.md](NOTICE.md).
+The generator is licensed under the MIT licence. The API's names and descriptions and the game's constants in
+`generated/` belong to Jagex; see [NOTICE.md](NOTICE.md).

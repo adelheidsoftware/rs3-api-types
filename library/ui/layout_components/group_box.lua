@@ -45,8 +45,12 @@ function ui.GroupBox:SetHeaderLayout(width, height, offsetX, offsetY, alignment)
 ---Specifies how the groupbox header will be positioned horizontally.
 ---
 ---Info: Headers are always positioned at the top of the component regardless of alignment.
----@class ui.GroupBoxHeaderAlignMode
----@field LEFT ui.GroupBoxHeaderAlignMode The header is positioned against the left side of the component.
----@field CENTRE ui.GroupBoxHeaderAlignMode The header is centred on the component.
----@field RIGHT ui.GroupBoxHeaderAlignMode The header is positioned against the right side of the component.
-ui.GroupBoxHeaderAlignMode = {}
+---@enum ui.GroupBoxHeaderAlignMode
+ui.GroupBoxHeaderAlignMode = {
+    ---The header is positioned against the left side of the component.
+    LEFT = 0,
+    ---The header is centred on the component.
+    CENTRE = 1,
+    ---The header is positioned against the right side of the component.
+    RIGHT = 2,
+}

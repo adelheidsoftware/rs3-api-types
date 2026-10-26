@@ -66,9 +66,9 @@ function ui.Size.new() end
 ---@field maxLines integer Maximum number of lines to display. Can be set to 0 to allow an unlimited number of lines.
 ---@field alpha number Visibility for this text, ranging from 0 (fully transparent) to 1 (opaque).
 ---@field colour Vector4 Colour used when drawing this text.
----@field rgba integer Hex-encoded red/green/blue/alpha colour code used when drawing this text.
+---@field rgba Long Hex-encoded red/green/blue/alpha colour code used when drawing this text.
 ---@field shadowColour Vector4 Colour used when drawing this text's shadow if enabled.
----@field shadowRGBA integer Hex-encoded red/green/blue/alpha colour code used when drawing this text's shadow if enabled.
+---@field shadowRGBA Long Hex-encoded red/green/blue/alpha colour code used when drawing this text's shadow if enabled.
 ---@field isShadowed boolean Whether or not to draw this text with a shadow effect for better legibility. Defaults to false.
 local TextData = {}
 
@@ -130,9 +130,9 @@ function TextData:GetConfigCopy() end
 ---@field rotationDegrees number Rotation of this sprite in degrees.
 ---@field alpha number Visibility for this sprite, ranging from 0 (fully transparent) to 1 (opaque).
 ---@field colour Vector4 Colour used when drawing this sprite.
----@field rgba integer Hex-encoded red/green/blue/alpha colour code used when drawing this sprite.
+---@field rgba Long Hex-encoded red/green/blue/alpha colour code used when drawing this sprite.
 ---@field shadowColour Vector4 Colour used when drawing this sprite's shadow. If alpha is 0, no shadow will be drawn.
----@field shadowRGBA integer Hex-encoded red/green/blue/alpha colour code used when drawing this sprite. If alpha is 0, no shadow will be drawn.
+---@field shadowRGBA Long Hex-encoded red/green/blue/alpha colour code used when drawing this sprite. If alpha is 0, no shadow will be drawn.
 ---@field isFlippedHorizontally boolean Flag indicating whether or not this sprite is drawn mirrored horizontally.
 ---@field isFlippedVertical boolean Flag indicating whether or not this sprite is drawn mirrored vertical.
 ---@field isTiling boolean Flag indicating whether or not this sprite uses tiled visuals.
@@ -197,44 +197,78 @@ function ui.Margin.new() end
 ---@class RuntimeSprite
 
 ---Enumeration representing a component's type.
----@class ui.ComponentType
----@field LINE ui.ComponentType A line component.
----@field RECTANGLE ui.ComponentType A rectangle component.
----@field LABEL ui.ComponentType A text component.
----@field SPRITE ui.ComponentType A sprite component.
----@field MODEL ui.ComponentType A model component.
----@field MODEL_GROUP ui.ComponentType A model group component.
----@field RADIAL_PROGRESS_OVERLAY ui.ComponentType A radial progress overlay component.
----@field CUTSCENE_LAYER ui.ComponentType A cutscene layer component.
----@field CANVAS ui.ComponentType A canvas component.
----@field BUTTON ui.ComponentType A button component.
----@field CHECK ui.ComponentType A check component.
----@field LIST ui.ComponentType A list component.
----@field INPUTFIELD ui.ComponentType An input field component.
----@field SLIDER ui.ComponentType A slider component.
----@field COMBO ui.ComponentType A combo field component.
----@field PAGED_LAYER_HEADER ui.ComponentType A paged layer header component.
----@field CAROUSEL ui.ComponentType A carousel component.
----@field PAGED_CAROUSEL ui.ComponentType A paged carousel component.
----@field RADIO_GROUP ui.ComponentType A radio group component.
----@field LAYER ui.ComponentType A layer component.
----@field PANEL ui.ComponentType A panel component.
----@field GRID ui.ComponentType A grid component.
----@field PAGED_LAYER ui.ComponentType A paged layer component.
----@field GROUP_BOX ui.ComponentType A groupbox component.
-ui.ComponentType = {}
+---@enum ui.ComponentType
+ui.ComponentType = {
+    ---A line component.
+    LINE = 0,
+    ---A rectangle component.
+    RECTANGLE = 1,
+    ---A text component.
+    LABEL = 2,
+    ---A sprite component.
+    SPRITE = 3,
+    ---A model component.
+    MODEL = 4,
+    ---A model group component.
+    MODEL_GROUP = 5,
+    ---A radial progress overlay component.
+    RADIAL_PROGRESS_OVERLAY = 6,
+    ---A cutscene layer component.
+    CUTSCENE_LAYER = 7,
+    ---A canvas component.
+    CANVAS = 8,
+    ---A button component.
+    BUTTON = 9,
+    ---A check component.
+    CHECK = 10,
+    ---A list component.
+    LIST = 11,
+    ---An input field component.
+    INPUTFIELD = 12,
+    ---A slider component.
+    SLIDER = 13,
+    ---A combo field component.
+    COMBO = 14,
+    ---A paged layer header component.
+    PAGED_LAYER_HEADER = 15,
+    ---A carousel component.
+    CAROUSEL = 16,
+    ---A paged carousel component.
+    PAGED_CAROUSEL = 17,
+    ---A radio group component.
+    RADIO_GROUP = 18,
+    ---A layer component.
+    LAYER = 20,
+    ---A panel component.
+    PANEL = 21,
+    ---A grid component.
+    GRID = 22,
+    ---A paged layer component.
+    PAGED_LAYER = 23,
+    ---A groupbox component.
+    GROUP_BOX = 24,
+}
 
 ---Enumeration identifying how an element should be aligned.
----@class ui.AlignMode
----@field TOPLEFT ui.AlignMode This element will be aligned to the top-left corner.
----@field CENTRE ui.AlignMode This element will be aligned to the centre.
----@field BOTTOMRIGHT ui.AlignMode This element will be aligned to the bottom-right corner.
----@field JUSTIFY ui.AlignMode This element will be aligned to the top-left corner, and justified so as to occupy the full width if possible.
-ui.AlignMode = {}
+---@enum ui.AlignMode
+ui.AlignMode = {
+    ---This element will be aligned to the top-left corner.
+    TOPLEFT = 0,
+    ---This element will be aligned to the centre.
+    CENTRE = 1,
+    ---This element will be aligned to the bottom-right corner.
+    BOTTOMRIGHT = 2,
+    ---This element will be aligned to the top-left corner, and justified so as to occupy the full width if possible.
+    JUSTIFY = 3,
+}
 
 ---Enumeration identifying how an element should be scaled based on its aspect ratio.
----@class ui.AspectRatioMode
----@field NO_SCALING ui.AspectRatioMode This element will ignore aspect ratio settings.
----@field SCALE_WIDTH ui.AspectRatioMode This element will stretch horizontally so it matches its target aspect ratio.
----@field SCALE_HEIGHT ui.AspectRatioMode This element will stretch vertically so it matches its target aspect ratio.
-ui.AspectRatioMode = {}
+---@enum ui.AspectRatioMode
+ui.AspectRatioMode = {
+    ---This element will ignore aspect ratio settings.
+    NO_SCALING = 0,
+    ---This element will stretch horizontally so it matches its target aspect ratio.
+    SCALE_WIDTH = 1,
+    ---This element will stretch vertically so it matches its target aspect ratio.
+    SCALE_HEIGHT = 2,
+}

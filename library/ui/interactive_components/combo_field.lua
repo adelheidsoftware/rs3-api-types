@@ -20,21 +20,21 @@
 ---@field entries ui.ComboEntry[] (Read-only) Array containing the entries present on this combofield.
 ---@field numEntries integer (Read-only) Indicates how many entries are present on this combofield.
 ---@field mouseoverForegroundColour Vector4 Colour used for the foreground when the cursor is positioned over an entry.
----@field mouseoverForegroundRGBA integer Hex-encoded red/green/blue/alpha colour code used for the foreground when the cursor is positioned over an entry.
+---@field mouseoverForegroundRGBA Long Hex-encoded red/green/blue/alpha colour code used for the foreground when the cursor is positioned over an entry.
 ---@field mouseoverBackgroundColour Vector4 Colour used for the background when the cursor is positioned over an entry.
----@field mouseoverBackgroundRGBA integer Hex-encoded red/green/blue/alpha colour code used for the background when the cursor is positioned over an entry.
+---@field mouseoverBackgroundRGBA Long Hex-encoded red/green/blue/alpha colour code used for the background when the cursor is positioned over an entry.
 ---@field selectedForegroundColour Vector4 Colour used for the foreground for the currently selected entry.
----@field selectedForegroundRGBA integer Hex-encoded red/green/blue/alpha colour code used for the foreground for the currently selected entry.
+---@field selectedForegroundRGBA Long Hex-encoded red/green/blue/alpha colour code used for the foreground for the currently selected entry.
 ---@field selectedBackgroundColour Vector4 Colour used for the background for the currently selected entry.
----@field selectedBackgroundRGBA integer Hex-encoded red/green/blue/alpha colour code used for the background for the currently selected entry.
+---@field selectedBackgroundRGBA Long Hex-encoded red/green/blue/alpha colour code used for the background for the currently selected entry.
 ---@field disabledForegroundColour Vector4 Colour used for the foreground of disabled entries.
----@field disabledForegroundRGBA integer Hex-encoded red/green/blue/alpha colour code used for the foreground of disabled entries.
+---@field disabledForegroundRGBA Long Hex-encoded red/green/blue/alpha colour code used for the foreground of disabled entries.
 ---@field caretColour Vector4 Colour used for the input section's caret.
----@field caretRGBA integer Hex-encoded red/green/blue/alpha colour code used for the input section's caret.
+---@field caretRGBA Long Hex-encoded red/green/blue/alpha colour code used for the input section's caret.
 ---@field errorCaretColour Vector4 Colour used for the input section's caret when an error occurs.
----@field errorCaretRGBA integer Hex-encoded red/green/blue/alpha colour code used for the input section's caret when an error occurs.
+---@field errorCaretRGBA Long Hex-encoded red/green/blue/alpha colour code used for the input section's caret when an error occurs.
 ---@field selectionHighlightColour Vector4 Colour used for the input selection overlay.
----@field selectionHighlightRGBA integer Hex-encoded red/green/blue/alpha colour code used for the input selection overlay.
+---@field selectionHighlightRGBA Long Hex-encoded red/green/blue/alpha colour code used for the input selection overlay.
 ---@field contentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component.
 ---@field headerMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component's dropdown header.
 ---@field entryText ui.TextData (Modifiable Contents) Text properties used when displaying entries for this combo.

@@ -157,15 +157,26 @@ function ui.NPCCustomisation:SetModelSlotRematerial(modelSlot, rematerialSlot, s
 function ui.NPCCustomisation:SetModelSlotRecolour(modelSlot, recolourSlot, sourceColourHSL, replacementColourHSL) end
 
 ---Identifies how a generic model ID should be interpreted by a model component.
----@class ui.ModelType
----@field NONE ui.ModelType No/invalid model.
----@field MODEL ui.ModelType Plain model with no specialized game behaviour or usage.
----@field NPC_HEAD ui.ModelType Model used in the chat interface for a NPC.
----@field PLAYER_HEAD ui.ModelType Model used in the chat interface for a player. Note the player ID can represent a known or snapshotted player, with the local player being identified by `-1` ID.
----@field OBJECT ui.ModelType Model used for an object.
----@field PLAYER_MODEL ui.ModelType Model used for a player. Note the player ID can represent a known or snapshotted player, with the local player being identified by `-1` ID.
----@field NPC_MODEL ui.ModelType Model used for a NPC.
----@field PLAYER_HEAD_NOWORN ui.ModelType Model used in the chat interface for a player, without any items equipped. Note the player ID can represent a known or snapshotted player, with the local player being identified by `-1` ID.
----@field INV_MANWEAR_MODEL ui.ModelType Gendered variant of a model for a wearable inventory item. Note the model ID represents an inventory slot ID rather than a specific object ID.
----@field INV_WOMANWEAR_MODEL ui.ModelType Gendered variant of a model for a wearable inventory item. Note the model ID represents an inventory slot ID rather than a specific object ID.
-ui.ModelType = {}
+---@enum ui.ModelType
+ui.ModelType = {
+    ---No/invalid model.
+    NONE = 0,
+    ---Plain model with no specialized game behaviour or usage.
+    MODEL = 1,
+    ---Model used in the chat interface for a NPC.
+    NPC_HEAD = 2,
+    ---Model used in the chat interface for a player. Note the player ID can represent a known or snapshotted player, with the local player being identified by `-1` ID.
+    PLAYER_HEAD = 3,
+    ---Model used for an object.
+    OBJECT = 4,
+    ---Model used for a player. Note the player ID can represent a known or snapshotted player, with the local player being identified by `-1` ID.
+    PLAYER_MODEL = 5,
+    ---Model used for a NPC.
+    NPC_MODEL = 6,
+    ---Model used in the chat interface for a player, without any items equipped. Note the player ID can represent a known or snapshotted player, with the local player being identified by `-1` ID.
+    PLAYER_HEAD_NOWORN = 7,
+    ---Gendered variant of a model for a wearable inventory item. Note the model ID represents an inventory slot ID rather than a specific object ID.
+    INV_MANWEAR_MODEL = 8,
+    ---Gendered variant of a model for a wearable inventory item. Note the model ID represents an inventory slot ID rather than a specific object ID.
+    INV_WOMANWEAR_MODEL = 9,
+}

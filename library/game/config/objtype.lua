@@ -18,7 +18,7 @@
 ---@field isMembers boolean (Read-only) Whether this object is for members.
 ---@field category integer (Read-only) The category type of this config. Returns `-1` if none is set. Category name is available using `id.Category.FromID()`.
 ---@field teamID integer (Read-only) Assigns this team ID to a PlayerEntity if the object is worn.
----@field cost integer (Read-only) The 64-bit numeric value of this object.
+---@field cost Long (Read-only) The 64-bit numeric value of this object.
 ---@field stackType ObjStackType (Read-only) The stacking behaviour of this config.
 ---@field isStockmarket boolean (Read-only) Whether this object can be traded on the Grand Exchange.
 ---@field stockmarketBuyLimit integer (Read-only) How many of this item can be bought on the Grand Exchage during a 4-hour period.

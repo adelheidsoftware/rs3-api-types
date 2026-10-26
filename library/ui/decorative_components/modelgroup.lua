@@ -115,8 +115,12 @@ function ModelCamera:SetYawPitchRoll(yawPitchRoll, durationMs) end
 function ModelCamera:SetClipPlanes(near, far) end
 
 ---Determines how transitions between multiple model group cameras are handled visually.
----@class ui.ModelCameraTransition
----@field NONE ui.ModelCameraTransition The transition happens immediately.
----@field FADE ui.ModelCameraTransition The transition source fades out over time.
----@field CROSSFADE ui.ModelCameraTransition The transition source fades out as the transition target fades in.
-ui.ModelCameraTransition = {}
+---@enum ui.ModelCameraTransition
+ui.ModelCameraTransition = {
+    ---The transition happens immediately.
+    NONE = 0,
+    ---The transition source fades out over time.
+    FADE = 1,
+    ---The transition source fades out as the transition target fades in.
+    CROSSFADE = 2,
+}

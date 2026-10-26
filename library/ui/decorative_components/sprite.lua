@@ -25,7 +25,7 @@
 ---@field isFlippedVertical boolean Flag indicating whether or not this sprite is drawn mirrored vertical.
 ---@field isTiling boolean Flag indicating whether or not this sprite uses tiled visuals.
 ---@field shadowColour Vector4 Colour used when drawing this sprite's shadow. If alpha is 0, no shadow will be drawn.
----@field shadowRGBA integer Hex-encoded red/green/blue/alpha colour code used when drawing this sprite. If alpha is 0, no shadow will be drawn.
+---@field shadowRGBA Long Hex-encoded red/green/blue/alpha colour code used when drawing this sprite. If alpha is 0, no shadow will be drawn.
 ui.Sprite = {}
 
 ---Creates a new sprite component on the specified parent.
@@ -56,8 +56,12 @@ function ui.Sprite:GetConfigCopy() end
 ---object.
 ---
 ---Info: The font used for the quantity indicator is currently hardcoded.
----@class ui.ObjectQuantityDisplayMode
----@field NEVER ui.ObjectQuantityDisplayMode The quantity indicator is never displayed.
----@field ALWAYS ui.ObjectQuantityDisplayMode The quantity indicator is always displayed.
----@field MULTIPLE ui.ObjectQuantityDisplayMode The quantity indicator is displayed if there's more than one object in the stack.
-ui.ObjectQuantityDisplayMode = {}
+---@enum ui.ObjectQuantityDisplayMode
+ui.ObjectQuantityDisplayMode = {
+    ---The quantity indicator is never displayed.
+    NEVER = 0,
+    ---The quantity indicator is always displayed.
+    ALWAYS = 1,
+    ---The quantity indicator is displayed if there's more than one object in the stack.
+    MULTIPLE = 2,
+}

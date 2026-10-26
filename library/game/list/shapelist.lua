@@ -85,7 +85,7 @@ function ShapeList.DestroyEntity(entity) end
 ---name.
 ---@class ShapeData
 ---@field positions Vector3[] A list of 3D positions.
----@field rgba integer[] A list of 32-bit colours. The number of colours in this array must match the number of positions, or be empty. If empty, the default colour value is `0xFFFFFFFF`.
+---@field rgba Long[] A list of 32-bit colours. The number of colours in this array must match the number of positions, or be empty. If empty, the default colour value is `0xFFFFFFFF`.
 ---@field tris integer[] A list of position index triplets which represent a single triangle. Indices are 0-indexed.
 ---@field lines integer[] A list of position index pairs which represent a single line. Indices are 0-indexed.
 ShapeData = {}
@@ -129,14 +129,14 @@ function ShapeData.Unregister(name) end
 ---@field shapeDataName string? The name of a registered ShapeData to draw.
 ---@field shapeData ShapeData? The ShapeData to draw directly.
 ---@field shapePositions Vector3[]? The raw shape data positions to draw.
----@field shapeRGBA integer[]? The raw shape data colours to draw.
+---@field shapeRGBA Long[]? The raw shape data colours to draw.
 ---@field shapeTris integer[]? The raw shape data triangle indices to draw.
 ---@field shapeLines integer[]? The raw shape data line indices to draw.
 ---@field translation Vector3? A positional offset transform applied to the shape when it is drawn. Allows shape data constructed in local-space to be drawn in world-space. Defaults to `0,0,0`.
 ---@field rotation Vector3? A rotational transform applied to the shape when it is drawn. `X = Yaw, Y = Pitch, Z = Roll` Defaults to `0,0,0`.
 ---@field scale Vector3? A scaling transform applied to the shape when it is drawn. Defaults to `1,1,1`.
 ---@field ignoreDepth boolean? Controls how the shape handles depth testing when drawing: `true` - Always draws on top of world geometry `false` - Draws behind occluding world geometry. Defaults to `false`.
----@field colour integer? A 32-bit colour which is multiplied against the RGBA data of the shape being drawn. Defaults to `0xFFFFFFFF`.
+---@field colour Long? A 32-bit colour which is multiplied against the RGBA data of the shape being drawn. Defaults to `0xFFFFFFFF`.
 ---@field lineWidth number? The drawn thickness of any lines defined by the shape data. Maximum value is `10.0`. Defaults to `2.0`.
 ---@field asBillboard boolean? Whether the shape should always rotate to face the camera. This rotation is applied around the centre of final AABB of the drawn shape. Defaults to `false`.
 
@@ -147,7 +147,7 @@ function ShapeData.Unregister(name) end
 ---@field rotation Vector3? A rotational transform applied to the lines when they are drawn. `X = Yaw, Y = Pitch, Z = Roll` Defaults to `0,0,0`.
 ---@field scale Vector3? A scaling transform applied to the lines when they are drawn. Defaults to `1,1,1`.
 ---@field ignoreDepth boolean? Controls how the lines handle depth testing when drawing: `true` - Always draws on top of world geometry `false` - Draws behind occluding world geometry. Defaults to `false`.
----@field colour integer? The 32-bit colour to use as the line colour. Defaults to `0xFFFFFFFF`.
+---@field colour Long? The 32-bit colour to use as the line colour. Defaults to `0xFFFFFFFF`.
 ---@field lineWidth number? The drawn thickness of the lines. Maximum value is `10.0`. Defaults to `2.0`.
 
 ---A `ShapeInstance` is a dynamic object which contains some ShapeData and automatically handles drawing itself in the
@@ -163,7 +163,7 @@ function ShapeData.Unregister(name) end
 ---@field scale Vector3 (Writeable) A scaling transform applied to the shape when it is drawn. Defaults to `1,1,1`.
 ---@field visible boolean (Writeable) Whether the instance should be drawn. Defaults to `true`.
 ---@field ignoreDepth boolean (Writeable) Controls how the instance handles depth testing when drawing: `true` - Always draws on top of world geometry `false` - Draws behind occluding world geometry. Defaults to `false`.
----@field colour integer (Writeable) A 32-bit colour which is multiplied against the RGBA data of the ShapeData being drawn. Defaults to `0xFFFFFFFF`.
+---@field colour Long (Writeable) A 32-bit colour which is multiplied against the RGBA data of the ShapeData being drawn. Defaults to `0xFFFFFFFF`.
 ---@field lineWidth number (Writeable) The drawn thickness of any lines defined by the instance's ShapeData. Maximum value is `10.0`. Defaults to `2.0`.
 ---@field asBillboard boolean (Writeable) Whether the shape should always rotate to face the camera. This rotation is applied around the centre of final AABB of the drawn shape. Defaults to `false`.
 local ShapeInstance = {}
@@ -199,7 +199,7 @@ function ShapeInstance:Destroy() end
 ---@field coordFine CoordFine (Writeable) The coordinate at which the entity is placed. Automatically sets its height to align with the ground. Replaces any value set for `coordGrid`.
 ---@field visible boolean (Writeable) Whether the entity should be drawn. Defaults to `true`.
 ---@field ignoreDepth boolean (Writeable) Controls how the entity handles depth testing when drawing: `true` - Always draws on top of world geometry `false` - Draws behind occluding world geometry. Defaults to `false`.
----@field colour integer (Writeable) A 32-bit colour which is multiplied against the RGBA data of the ShapeData being drawn. Defaults to `0xFFFFFFFF`.
+---@field colour Long (Writeable) A 32-bit colour which is multiplied against the RGBA data of the ShapeData being drawn. Defaults to `0xFFFFFFFF`.
 ---@field lineWidth number (Writeable) The drawn thickness of any lines defined by the entity's ShapeData. Maximum value is `10.0`. Defaults to `2.0`.
 ---@field alignType ShapeEntityAlignType (Writeable) How the entity's shape data should align with the ground. See ShapeEntityAlignType. Defaults to `NONE`.
 ---@field heightOffset number (Writeable) How high above the ground level the entity should be drawn. Defaults to `0.0`.

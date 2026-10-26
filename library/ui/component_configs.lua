@@ -174,12 +174,17 @@ function ComponentParamsConfig:Get(paramID) end
 function ComponentParamsConfig:CheckExists(paramID) end
 
 ---Enumeration identifying how a component that is actively being dragged by the user should be rendered.
----@class ui.DragRenderBehaviour
----@field TRANSPARENT_OVERLAY ui.DragRenderBehaviour The dragged component will be rendered as semi-translucent and over other components.
----@field OPAQUE ui.DragRenderBehaviour The dragged component will be drawn as normal.
----@field OPAQUE_OVERLAY ui.DragRenderBehaviour The dragged component will be drawn as normal and over other components.
----@field INVISIBLE ui.DragRenderBehaviour The dragged component won't be drawn.
-ui.DragRenderBehaviour = {}
+---@enum ui.DragRenderBehaviour
+ui.DragRenderBehaviour = {
+    ---The dragged component will be rendered as semi-translucent and over other components.
+    TRANSPARENT_OVERLAY = 0,
+    ---The dragged component will be drawn as normal.
+    OPAQUE = 1,
+    ---The dragged component will be drawn as normal and over other components.
+    OPAQUE_OVERLAY = 2,
+    ---The dragged component won't be drawn.
+    INVISIBLE = 3,
+}
 
 ---Identifies the type of player that's been associated with a component.
 ---@enum ui.PlayerOpType

@@ -29,9 +29,14 @@ ui.Check = {}
 function ui.Check.new(parent, categoryID, dynamicID) end
 
 ---Specifies how the contents of a check component should be positioned.
----@class ui.CheckAlignMode
----@field INLINE ui.CheckAlignMode Contents are aligned to the left and the button appears after the label.
----@field INLINE_INVERTED ui.CheckAlignMode Contents are aligned to the right and the button appears before the label.
----@field LEFT ui.CheckAlignMode Contents are aligned to the left and the button appears before the label.
----@field RIGHT ui.CheckAlignMode Contents are aligned to the right and the button appears after the label.
-ui.CheckAlignMode = {}
+---@enum ui.CheckAlignMode
+ui.CheckAlignMode = {
+    ---Contents are aligned to the left and the button appears after the label.
+    INLINE = 0,
+    ---Contents are aligned to the right and the button appears before the label.
+    INLINE_INVERTED = 2,
+    ---Contents are aligned to the left and the button appears before the label.
+    LEFT = -1,
+    ---Contents are aligned to the right and the button appears after the label.
+    RIGHT = 1,
+}

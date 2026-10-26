@@ -48,16 +48,24 @@ function PluginResource:Load() end
 function PluginResource:Unload() end
 
 ---Contains all permissions a plugin may request.
+---
+---In the client: Each value is a userdata of its own, not a number.
 ---@class PluginPermissions
 ---@field httpAccess PluginPermissions Allows the use of HTTP-related functionality if provided. Makes use of base URLs specified in the plugin's manifest file.
 ---@field chatAccess PluginPermissions Allows the use of Chat-related functionality if provided.
 ---@field trackingAccess PluginPermissions Allows the use of Tracking ID-related functionality if provided.
 PluginPermissions = {}
 
----@class PluginResourceLoadResult
----@field success PluginResourceLoadResult The resource has been loaded successfully.
----@field errorFilesystem PluginResourceLoadResult Failed to read the resource from disk.
----@field errorDecode PluginResourceLoadResult Failed to decode the resource, it may be using an unsupported format.
----@field errorExceedsLimits PluginResourceLoadResult Failed to load the resource as it exceeds limits.
----@field errorConstruction PluginResourceLoadResult Failed to construct this resource even though loading succeeded. This can occur when attempting to load a resource during shutdown for example.
-PluginResourceLoadResult = {}
+---@enum PluginResourceLoadResult
+PluginResourceLoadResult = {
+    ---The resource has been loaded successfully.
+    SUCCESS = 0,
+    ---Failed to read the resource from disk.
+    ERROR_FILESYSTEM = 1,
+    ---Failed to decode the resource, it may be using an unsupported format.
+    ERROR_DECODE = 2,
+    ---Failed to load the resource as it exceeds limits.
+    ERROR_EXCEEDS_LIMITS = 3,
+    ---Failed to construct this resource even though loading succeeded. This can occur when attempting to load a resource during shutdown for example.
+    ERROR_CONSTRUCTION = 4,
+}

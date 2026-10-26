@@ -32,7 +32,7 @@
 ---@field xyGlobal Vector2 (Read-only) Current absolute XY position for this component.
 ---@field alpha number Controls how opaque this component appears, ranges from 0 (fully transparent) to 1 (opaque).
 ---@field rgb integer Hexadecimal colour code representing the Red, Green, and Blue tints for this component.
----@field rgba integer Hexadecimal colour code representing the Red, Green, Blue, And Alpha tints for this component.
+---@field rgba Long Hexadecimal colour code representing the Red, Green, Blue, And Alpha tints for this component.
 ---@field colour Vector4 Red, Green, Blue, and Alpha tints represented as a 4-channel vector, with each channel limited to a 0..1 range. On assignment, values outside of this range will be clamped.
 ---@field hidden boolean Controls whether this component is visible. This only applies to Lua-side visibility, and cannot be used to force built-in UI components to become visible.
 ---@field visible boolean (Read-only) Indicates whether this component is visible or not. This state refers only to the internal state of this component. For the global visibility state see `visibleGlobal`. Differs from `hidden` in that this also takes into account built-in UI component visibility.
@@ -175,59 +175,111 @@ function Component:UnsubscribeAll(hook) end
 ---These events are associated with actions that the local player is taking in the game world.
 ---
 ---These events represent data updates received from the server which may need to be reflected on the user interface.
----@class ui.Hook
----@field ONBUTTONPRESSED ui.Hook Supported by ui.Button, ui.Check Triggered whenever the user interacts with this button/check. Non-toggle buttons will always receive `1` and `0` for current/previous values respectively. Its callbacks take self : `Component<T>`, currentValue : Int, previousValue : Int.
----@field ONCONTENTCHANGED ui.Hook Supported by ui.InputField Triggered whenever a user interacts with an input field component in a way that may affect its contents. Its callbacks take self : `Component<T>`, reason : ui.InputFieldActionResult, newContents : String.
----@field ONSELECTIONCHANGED ui.Hook Supported by ui.Carousel, ui.PagedLayer, ui.Slider `entryID` represents the component's entry that's had its selected status changed, while a `selectedStatus` of `1` indicates this entry has been selected and `0` indicates it has been deselected. Its callbacks take self : `Component<T>`, entryID : Int, selectedStatus : Int. Supported by ui.ComboField, ui.List, ui.RadioGroup `entryID` represents the component's entry that's had its selected status changed. Its callbacks take self : `Component<T>`, entryID : Int, selectionEventType : ui.SelectionChangeEvent. Supported by ui.RadialProgressOverlay Triggered whenever this radial's progress changes. `progressPc` is received as a 0..1 number representing 0 to 100%. Its callbacks take self : `Component<T>`, curValue : Float, progressPc.
----@field ONCUTSCENEFINISHED ui.Hook Supported by ui.CutsceneLayer Triggered when a cutscene finishes playing on a cutscene layer component. Its callbacks take self : `Component<T>`, reason : ui.CutscenePlaybackEndReason.
----@field ONCLICK ui.Hook Triggered when the user clicks the left mouse button or taps on this component. Its callbacks take self : `Component<T>`, x : Int, y : Int.
----@field ONCLICKREPEAT ui.Hook Triggered when the user clicks the left mouse button or taps on this component. Its callbacks take self : `Component<T>`, x : Int, y : Int.
----@field ONRELEASE ui.Hook Triggered when the user stops clicking on this component or stops a tap gesture. Its callbacks take self : `Component<T>`, x : Int, y : Int.
----@field ONHOLD ui.Hook Triggered while the user is clicking on this component. Its callbacks take self : `Component<T>`, x : Int, y : Int.
----@field ONMOUSEOVER ui.Hook Triggered when the cursor enters this component's region. Its callbacks take self : `Component<T>`, x : Int, y : Int.
----@field ONMOUSEREPEAT ui.Hook Triggered while the cursor is over this component's region. Its callbacks take self : `Component<T>`, x : Int, y : Int.
----@field ONMOUSELEAVE ui.Hook Triggered when the cursor leaves this component's region. Its callbacks take self : `Component<T>`, x : Int, y : Int.
----@field ONDRAG ui.Hook Triggered when the user starts dragging this component. Its callbacks take self : `Component<T>`, dragStartX : Int, dragStartY : Int.
----@field ONDRAGCOMPLETE ui.Hook Triggered when the user finishes dragging this component. Its callbacks take self : `Component<T>`, dragDestination : `Component<T>`, dragEndX : Int, dragEndY : Int.
----@field ONSCROLLWHEEL ui.Hook Triggered when the user moves the mouse's scrollwheel. Its callbacks take self : `Component<T>`, scrollWheelYDelta : Int.
----@field ONKEY ui.Hook Triggered when the user inputs a key on their keyboard. Its callbacks take self : `Component<T>`, keyCode : Int, keyChar : Int.
----@field ONSWIPEVERTICAL ui.Hook Triggered whenever a horizontal swipe motion occurs. Its callbacks take self : `Component<T>`, swipeCurrentX : Int, swipeCurrentY : Int.
----@field ONSWIPEHORIZONTAL ui.Hook Triggered whenever a vertical swipe motion occurs. Its callbacks take self : `Component<T>`, swipeCurrentX : Int, swipeCurrentY : Int.
----@field ONSWIPECOMPLETE ui.Hook Triggered when a swipe gesture terminates. Its callbacks take self : `Component<T>`.
----@field ONPINCHHORIZONTAL ui.Hook Triggered whenever a horizontal pinch motion occurs. Direction is `-1` for inwards pinch gestures, and 1 for outwards. Its callbacks take self : `Component<T>`, direction : Int.
----@field ONPINCHVERTICAL ui.Hook Triggered whenever a vertical pinch motion occurs. Direction is `-1` for inwards pinch gestures, and 1 for outwards. Its callbacks take self : `Component<T>`, direction : Int.
----@field ONPINCHCOMPLETE ui.Hook Triggered when a pinch gesture terminates. Its callbacks take self : `Component<T>`.
----@field ONGAMEPADBUTTON ui.Hook Its callbacks take self : `Component<T>`, buttonID : Int, buttonValue : Int.
----@field ONGAMEPADBUTTONHELD ui.Hook Its callbacks take self : `Component<T>`, buttonID : Int.
----@field ONGAMEPADAXIS ui.Hook Its callbacks take self : `Component<T>`, axisID : Int, axisValue : Int.
----@field ONGAMEPADTRIGGER ui.Hook Its callbacks take self : `Component<T>`, triggerID : Int, triggerValue : Int.
----@field ONOP ui.Hook Triggered whenever the user interacts with something in the game world, or with a UI component that has ops specified for its interactions. Its callbacks take self : `Component<T>`, opID : Int, opBaseName : String.
----@field ONOPT ui.Hook Triggered when the user selects another UI component while in target selection mode. Its callbacks take self : `Component<T>`, target : `Component<T>`.
----@field ONTARGETENTER ui.Hook Triggered when the component enters target selection mode. Its callbacks take self : `Component<T>`.
----@field ONTARGETLEAVE ui.Hook Triggered when the component leaves target selection mode. Its callbacks take self : `Component<T>`.
----@field ONVARPTRANSMIT ui.Hook Triggered when the game client receives a server transmission for player variables. Its callbacks take self : `Component<T>`.
----@field ONINVTRANSMIT ui.Hook Triggered when the game client receives a server transmission for inventories. Its callbacks take self : `Component<T>`.
----@field ONSTATTRANSMIT ui.Hook Triggered when the game client receives a server transmission for stats. Its callbacks take self : `Component<T>`.
----@field ONVARCTRANSMIT ui.Hook Triggered when the game client receives a server transmission for client variables. Its callbacks take self : `Component<T>`.
----@field ONVARCSTRTRANSMIT ui.Hook Triggered when the game client receives a server transmission for client string variables. Its callbacks take self : `Component<T>`.
----@field ONVARCLANTRANSMIT ui.Hook Triggered when the game client receives a server transmission for clan variables. Its callbacks take self : `Component<T>`.
----@field ONCHATTRANSMIT ui.Hook Triggered when the game client receives a server transmission for chat messages. Its callbacks take self : `Component<T>`.
----@field ONFRIENDTRANSMIT ui.Hook Triggered when the game client receives a server transmission for friends data. Its callbacks take self : `Component<T>`.
----@field ONCLANTRANSMIT ui.Hook Triggered when the game client receives a server transmission for clan data. Its callbacks take self : `Component<T>`.
----@field ONCLANSETTINGSTRANSMIT ui.Hook Triggered when the game client receives a server transmission for clan settings data. Its callbacks take self : `Component<T>`.
----@field ONCLANCHANNELTRANSMIT ui.Hook Triggered when the game client receives a server transmission for clan chat messages. Its callbacks take self : `Component<T>`.
----@field ONRELATIONSHIPSETTRANSMIT ui.Hook Triggered when the game client receives a server transmission for friends/clans/ignore lists. Its callbacks take self : `Component<T>`.
----@field ONMISCTRANSMIT ui.Hook Triggered when the game client receives a server transmission for miscellaneous data. Its callbacks take self : `Component<T>`.
----@field ONSTOCKTRANSMIT ui.Hook Triggered when the game client receives a server transmission for stock data. Its callbacks take self : `Component<T>`.
----@field ONPLAYERGROUPTRANSMIT ui.Hook Triggered when the game client receives a server transmission involving the current player group state. Its callbacks take self : `Component<T>`.
----@field ONPLAYERGROUPVARPTRANSMIT ui.Hook Triggered when the game client receives a server transmission for the current group's player variable. Its callbacks take self : `Component<T>`.
----@field ONCAMERAUPDATETRANSMIT ui.Hook Triggered when the game client receives a server transmission involving camera changes. Its callbacks take self : `Component<T>`.
----@field ONTIMER ui.Hook Triggered once per logic tick. Prefer using PluginLogic over this as it's a more general solution. Its callbacks take self : `Component<T>`.
----@field ONDIALOGABORT ui.Hook Triggered manually by the server. Its callbacks take self : `Component<T>`.
----@field ONSUBCHANGE ui.Hook Triggered whenever a sub-interface loads. Its callbacks take self : `Component<T>`.
----@field ONCAMFINISHED ui.Hook Triggered whenever a server-controlled camera motion finishes. Its callbacks take self : `Component<T>`.
----@field ONRESIZE ui.Hook Triggered whenever this component has its dimensions changed. Its callbacks take self : `Component<T>`.
-ui.Hook = {}
+---@enum ui.Hook
+ui.Hook = {
+    ---Supported by ui.Button, ui.Check Triggered whenever the user interacts with this button/check. Non-toggle buttons will always receive `1` and `0` for current/previous values respectively. Its callbacks take self : `Component<T>`, currentValue : Int, previousValue : Int.
+    ONBUTTONPRESSED = 49,
+    ---Supported by ui.InputField Triggered whenever a user interacts with an input field component in a way that may affect its contents. Its callbacks take self : `Component<T>`, reason : ui.InputFieldActionResult, newContents : String.
+    ONCONTENTCHANGED = 50,
+    ---Supported by ui.Carousel, ui.PagedLayer, ui.Slider `entryID` represents the component's entry that's had its selected status changed, while a `selectedStatus` of `1` indicates this entry has been selected and `0` indicates it has been deselected. Its callbacks take self : `Component<T>`, entryID : Int, selectedStatus : Int. Supported by ui.ComboField, ui.List, ui.RadioGroup `entryID` represents the component's entry that's had its selected status changed. Its callbacks take self : `Component<T>`, entryID : Int, selectionEventType : ui.SelectionChangeEvent. Supported by ui.RadialProgressOverlay Triggered whenever this radial's progress changes. `progressPc` is received as a 0..1 number representing 0 to 100%. Its callbacks take self : `Component<T>`, curValue : Float, progressPc.
+    ONSELECTIONCHANGED = 51,
+    ---Supported by ui.CutsceneLayer Triggered when a cutscene finishes playing on a cutscene layer component. Its callbacks take self : `Component<T>`, reason : ui.CutscenePlaybackEndReason.
+    ONCUTSCENEFINISHED = 53,
+    ---Triggered when the user clicks the left mouse button or taps on this component. Its callbacks take self : `Component<T>`, x : Int, y : Int.
+    ONCLICK = 0,
+    ---Triggered when the user clicks the left mouse button or taps on this component. Its callbacks take self : `Component<T>`, x : Int, y : Int.
+    ONCLICKREPEAT = 1,
+    ---Triggered when the user stops clicking on this component or stops a tap gesture. Its callbacks take self : `Component<T>`, x : Int, y : Int.
+    ONRELEASE = 2,
+    ---Triggered while the user is clicking on this component. Its callbacks take self : `Component<T>`, x : Int, y : Int.
+    ONHOLD = 3,
+    ---Triggered when the cursor enters this component's region. Its callbacks take self : `Component<T>`, x : Int, y : Int.
+    ONMOUSEOVER = 4,
+    ---Triggered while the cursor is over this component's region. Its callbacks take self : `Component<T>`, x : Int, y : Int.
+    ONMOUSEREPEAT = 5,
+    ---Triggered when the cursor leaves this component's region. Its callbacks take self : `Component<T>`, x : Int, y : Int.
+    ONMOUSELEAVE = 6,
+    ---Triggered when the user starts dragging this component. Its callbacks take self : `Component<T>`, dragStartX : Int, dragStartY : Int.
+    ONDRAG = 7,
+    ---Triggered when the user finishes dragging this component. Its callbacks take self : `Component<T>`, dragDestination : `Component<T>`, dragEndX : Int, dragEndY : Int.
+    ONDRAGCOMPLETE = 8,
+    ---Triggered when the user moves the mouse's scrollwheel. Its callbacks take self : `Component<T>`, scrollWheelYDelta : Int.
+    ONSCROLLWHEEL = 9,
+    ---Triggered when the user inputs a key on their keyboard. Its callbacks take self : `Component<T>`, keyCode : Int, keyChar : Int.
+    ONKEY = 10,
+    ---Triggered whenever a horizontal swipe motion occurs. Its callbacks take self : `Component<T>`, swipeCurrentX : Int, swipeCurrentY : Int.
+    ONSWIPEVERTICAL = 43,
+    ---Triggered whenever a vertical swipe motion occurs. Its callbacks take self : `Component<T>`, swipeCurrentX : Int, swipeCurrentY : Int.
+    ONSWIPEHORIZONTAL = 44,
+    ---Triggered when a swipe gesture terminates. Its callbacks take self : `Component<T>`.
+    ONSWIPECOMPLETE = 45,
+    ---Triggered whenever a horizontal pinch motion occurs. Direction is `-1` for inwards pinch gestures, and 1 for outwards. Its callbacks take self : `Component<T>`, direction : Int.
+    ONPINCHHORIZONTAL = 47,
+    ---Triggered whenever a vertical pinch motion occurs. Direction is `-1` for inwards pinch gestures, and 1 for outwards. Its callbacks take self : `Component<T>`, direction : Int.
+    ONPINCHVERTICAL = 46,
+    ---Triggered when a pinch gesture terminates. Its callbacks take self : `Component<T>`.
+    ONPINCHCOMPLETE = 48,
+    ---Its callbacks take self : `Component<T>`, buttonID : Int, buttonValue : Int.
+    ONGAMEPADBUTTON = 11,
+    ---Its callbacks take self : `Component<T>`, buttonID : Int.
+    ONGAMEPADBUTTONHELD = 12,
+    ---Its callbacks take self : `Component<T>`, axisID : Int, axisValue : Int.
+    ONGAMEPADAXIS = 13,
+    ---Its callbacks take self : `Component<T>`, triggerID : Int, triggerValue : Int.
+    ONGAMEPADTRIGGER = 14,
+    ---Triggered whenever the user interacts with something in the game world, or with a UI component that has ops specified for its interactions. Its callbacks take self : `Component<T>`, opID : Int, opBaseName : String.
+    ONOP = 37,
+    ---Triggered when the user selects another UI component while in target selection mode. Its callbacks take self : `Component<T>`, target : `Component<T>`.
+    ONOPT = 38,
+    ---Triggered when the component enters target selection mode. Its callbacks take self : `Component<T>`.
+    ONTARGETENTER = 15,
+    ---Triggered when the component leaves target selection mode. Its callbacks take self : `Component<T>`.
+    ONTARGETLEAVE = 16,
+    ---Triggered when the game client receives a server transmission for player variables. Its callbacks take self : `Component<T>`.
+    ONVARPTRANSMIT = 17,
+    ---Triggered when the game client receives a server transmission for inventories. Its callbacks take self : `Component<T>`.
+    ONINVTRANSMIT = 18,
+    ---Triggered when the game client receives a server transmission for stats. Its callbacks take self : `Component<T>`.
+    ONSTATTRANSMIT = 19,
+    ---Triggered when the game client receives a server transmission for client variables. Its callbacks take self : `Component<T>`.
+    ONVARCTRANSMIT = 20,
+    ---Triggered when the game client receives a server transmission for client string variables. Its callbacks take self : `Component<T>`.
+    ONVARCSTRTRANSMIT = 21,
+    ---Triggered when the game client receives a server transmission for clan variables. Its callbacks take self : `Component<T>`.
+    ONVARCLANTRANSMIT = 22,
+    ---Triggered when the game client receives a server transmission for chat messages. Its callbacks take self : `Component<T>`.
+    ONCHATTRANSMIT = 23,
+    ---Triggered when the game client receives a server transmission for friends data. Its callbacks take self : `Component<T>`.
+    ONFRIENDTRANSMIT = 24,
+    ---Triggered when the game client receives a server transmission for clan data. Its callbacks take self : `Component<T>`.
+    ONCLANTRANSMIT = 25,
+    ---Triggered when the game client receives a server transmission for clan settings data. Its callbacks take self : `Component<T>`.
+    ONCLANSETTINGSTRANSMIT = 26,
+    ---Triggered when the game client receives a server transmission for clan chat messages. Its callbacks take self : `Component<T>`.
+    ONCLANCHANNELTRANSMIT = 27,
+    ---Triggered when the game client receives a server transmission for friends/clans/ignore lists. Its callbacks take self : `Component<T>`.
+    ONRELATIONSHIPSETTRANSMIT = 28,
+    ---Triggered when the game client receives a server transmission for miscellaneous data. Its callbacks take self : `Component<T>`.
+    ONMISCTRANSMIT = 29,
+    ---Triggered when the game client receives a server transmission for stock data. Its callbacks take self : `Component<T>`.
+    ONSTOCKTRANSMIT = 30,
+    ---Triggered when the game client receives a server transmission involving the current player group state. Its callbacks take self : `Component<T>`.
+    ONPLAYERGROUPTRANSMIT = 31,
+    ---Triggered when the game client receives a server transmission for the current group's player variable. Its callbacks take self : `Component<T>`.
+    ONPLAYERGROUPVARPTRANSMIT = 32,
+    ---Triggered when the game client receives a server transmission involving camera changes. Its callbacks take self : `Component<T>`.
+    ONCAMERAUPDATETRANSMIT = 33,
+    ---Triggered once per logic tick. Prefer using PluginLogic over this as it's a more general solution. Its callbacks take self : `Component<T>`.
+    ONTIMER = 36,
+    ---Triggered manually by the server. Its callbacks take self : `Component<T>`.
+    ONDIALOGABORT = 39,
+    ---Triggered whenever a sub-interface loads. Its callbacks take self : `Component<T>`.
+    ONSUBCHANGE = 40,
+    ---Triggered whenever a server-controlled camera motion finishes. Its callbacks take self : `Component<T>`.
+    ONCAMFINISHED = 41,
+    ---Triggered whenever this component has its dimensions changed. Its callbacks take self : `Component<T>`.
+    ONRESIZE = 42,
+}
 
 ---Identifies the source of a `ONSELECTIONCHANGED` event on a component's entry.
 ---@enum ui.SelectionChangeEvent

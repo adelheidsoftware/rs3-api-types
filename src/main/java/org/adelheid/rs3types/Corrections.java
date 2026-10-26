@@ -63,7 +63,8 @@ final class Corrections {
 	 * after {@code #}:
 	 *
 	 * <ul>
-	 *   <li>{@code rename <member> <name>}: the member's name in the client, which the other lines name it by;
+	 *   <li>{@code rename <member|Enum.VALUE> <name>}: the name of the member, or of the enumeration's value, in the
+	 *       client, which the other lines name it by;
 	 *   <li>{@code type <member> <type>}: a field's type, or what a function returns, {@code nil} for nothing;
 	 *   <li>{@code optional <member>}: the field, or what the function returns, may be nil;
 	 *   <li>{@code field <Class.field> <type>}: a field the docs do not give, or another type for one they do;
@@ -75,7 +76,8 @@ final class Corrections {
 	 *   <li>{@code parent <class> <class>}: the class it extends;
 	 *   <li>{@code remove <member>}: a member the docs give and the client lacks;
 	 *   <li>{@code read-only <class|field>}: the field, or each field of the class, cannot be assigned;
-	 *   <li>{@code note <member|class> <text>}: what the client does that the docs do not say, shown "In the client:";
+	 *   <li>{@code note <member|class|enum> <text>}: what the client does that the docs do not say, shown "In the
+	 *       client:";
 	 *   <li>{@code class <Class> <page>}: a table the docs describe in prose alone, in the file of a page, whose
 	 *       fields are {@code field} lines.
 	 * </ul>
@@ -158,7 +160,7 @@ final class Corrections {
 		return switch (correction.kind()) {
 			case "rename" -> changeMember(pages, path,
 					property -> new ApiPage.PropertyDoc(rest, property.type(), property.description()),
-					function -> renamed(function, rest));
+					function -> renamed(function, rest)) || renameValue(pages, path, rest);
 			case "type" -> changeMember(pages, path,
 					property -> new ApiPage.PropertyDoc(property.name(), lua(rest), property.description()),
 					function -> withReturns(function, rest.equals("nil") ? List.of() : List.of(lua(rest))));
@@ -433,23 +435,50 @@ final class Corrections {
 			int equals = assignment.indexOf('=');
 			given.put(assignment.substring(0, equals), assignment.substring(equals + 1));
 		}
+		// Each name the line gives must be one of the enumeration's
+		boolean[] known = {false};
+		boolean found = changeEnum(pages, name, enumeration -> {
+			known[0] = given.keySet().stream().allMatch(assigned -> enumeration.values().stream()
+					.anyMatch(value -> value.name().equals(assigned)));
+			if (!known[0]) {
+				return enumeration;
+			}
+			List<ApiPage.EnumValue> values = new ArrayList<>();
+			for (ApiPage.EnumValue value : enumeration.values()) {
+				values.add(new ApiPage.EnumValue(value.name(), given.getOrDefault(value.name(), value.value()),
+						value.description()));
+			}
+			return new ApiPage.EnumDoc(enumeration.name(), enumeration.description(), values);
+		});
+		return found && known[0];
+	}
+
+	/** Renames a value of an enumeration, {@code PluginResourceLoadResult.success}; false for none. */
+	private static boolean renameValue(List<ApiPage> pages, String path, String name) {
+		int dot = path.lastIndexOf('.');
+		if (dot < 0) {
+			return false;
+		}
+		String written = path.substring(dot + 1);
+		boolean[] found = {false};
+		changeEnum(pages, path.substring(0, dot), enumeration -> new ApiPage.EnumDoc(enumeration.name(),
+				enumeration.description(), enumeration.values().stream().map(value -> {
+					if (!value.name().equals(written)) {
+						return value;
+					}
+					found[0] = true;
+					return new ApiPage.EnumValue(name, value.value(), value.description());
+				}).toList()));
+		return found[0];
+	}
+
+	private static boolean changeEnum(List<ApiPage> pages, String name, UnaryOperator<ApiPage.EnumDoc> change) {
 		for (int page = 0; page < pages.size(); page++) {
 			ApiPage each = pages.get(page);
 			List<ApiPage.EnumDoc> enums = new ArrayList<>(each.enums());
 			for (int index = 0; index < enums.size(); index++) {
-				ApiPage.EnumDoc enumeration = enums.get(index);
-				if (enumeration.name().equals(name)) {
-					boolean known = given.keySet().stream().allMatch(assigned -> enumeration.values().stream()
-							.anyMatch(value -> value.name().equals(assigned)));
-					if (!known) {
-						return false;
-					}
-					List<ApiPage.EnumValue> values = new ArrayList<>();
-					for (ApiPage.EnumValue value : enumeration.values()) {
-						values.add(new ApiPage.EnumValue(value.name(), given.getOrDefault(value.name(), value.value()),
-								value.description()));
-					}
-					enums.set(index, new ApiPage.EnumDoc(enumeration.name(), enumeration.description(), values));
+				if (enums.get(index).name().equals(name)) {
+					enums.set(index, change.apply(enums.get(index)));
 					pages.set(page, new ApiPage(each.path(), each.types(), each.globals(), enums, each.events(),
 							each.otherNames(), each.described()));
 					return true;
@@ -459,11 +488,16 @@ final class Corrections {
 		return false;
 	}
 
+	/** A note on a class, an enumeration, or a member. */
 	private static boolean note(List<ApiPage> pages, String path, String text) {
 		String sentence = "In the client: " + text;
 		if (changeType(pages, path, type -> new ApiPage.TypeDoc(type.name(), type.generics(), type.parent(),
 				append(type.description(), sentence), type.functions(), type.properties(), type.indexes(),
 				type.global()))) {
+			return true;
+		}
+		if (changeEnum(pages, path, enumeration -> new ApiPage.EnumDoc(enumeration.name(),
+				append(enumeration.description(), sentence), enumeration.values()))) {
 			return true;
 		}
 		return changeMember(pages, path,

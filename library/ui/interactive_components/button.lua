@@ -47,9 +47,14 @@ function ui.Button.new(parent, categoryID, dynamicID) end
 function ui.Button:SetAssociatedObject(objectID, quantity) end
 
 ---Contains the various options for how a button could be triggered by a user or the application.
----@class ui.TriggerMode
----@field ONPRESS_FINISH ui.TriggerMode The button's action will be triggered once the button press animation finishes.
----@field ONPRESS ui.TriggerMode The button's action will be triggered immediately after the user clicks/taps on the button.
----@field ONRELEASE ui.TriggerMode The button's action will only be triggered once the user releases the click/tap on the button.
----@field REPEAT ui.TriggerMode The button's action will trigger similarly to ONPRESS and will repeat every so often while held down.
-ui.TriggerMode = {}
+---@enum ui.TriggerMode
+ui.TriggerMode = {
+    ---The button's action will be triggered once the button press animation finishes.
+    ONPRESS_FINISH = 0,
+    ---The button's action will be triggered immediately after the user clicks/taps on the button.
+    ONPRESS = 1,
+    ---The button's action will only be triggered once the user releases the click/tap on the button.
+    ONRELEASE = 2,
+    ---The button's action will trigger similarly to ONPRESS and will repeat every so often while held down.
+    REPEAT = 3,
+}

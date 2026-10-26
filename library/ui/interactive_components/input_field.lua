@@ -19,13 +19,13 @@
 ---@field inputMode ui.InputFieldKeyHandlingMode Identifies how inputs will be handled by this input field.
 ---@field emptyText string Text to be displayed while this input field is empty.
 ---@field caretColour Vector4 Colour used for the cursor.
----@field caretRGBA integer Hex-encoded red/green/blue/alpha colour code for the cursor.
+---@field caretRGBA Long Hex-encoded red/green/blue/alpha colour code for the cursor.
 ---@field errorCaretColour Vector4 Colour used for the cursor when an error occurs.
----@field errorCaretRGBA integer Hex-encoded red/green/blue/alpha colour code used for the cursor when an error occurs.
+---@field errorCaretRGBA Long Hex-encoded red/green/blue/alpha colour code used for the cursor when an error occurs.
 ---@field selectionHighlightColour Vector4 Colour used for the text selection overlay.
----@field selectionHighlightRGBA integer Hex-encoded red/green/blue/alpha colour code used for the text selection overlay.
+---@field selectionHighlightRGBA Long Hex-encoded red/green/blue/alpha colour code used for the text selection overlay.
 ---@field emptyTextColour Vector4 Colour used for the text displayed while the input field is empty.
----@field emptyTextRGBA integer Hex-encoded red/green/blue/alpha colour code used for the text displayed while the input field is empty.
+---@field emptyTextRGBA Long Hex-encoded red/green/blue/alpha colour code used for the text displayed while the input field is empty.
 ---@field contentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component.
 ---@field text ui.TextData (Modifiable Contents) Text properties used when displaying this input field. Note using `text.content` will not yield the actual contents of the input field, and you must instead use the `content` property present on the input field itself.
 ---@field containerSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
@@ -54,19 +54,28 @@ function ui.InputField.new(parent, categoryID, dynamicID) end
 function ui.InputField:Setup(visibility, filter, maxLength) end
 
 ---Identifies what inputs will be handled by an InputField component.
----@class ui.InputFieldKeyHandlingMode
----@field DEFAULT ui.InputFieldKeyHandlingMode Handles all inputs.
----@field CHAT ui.InputFieldKeyHandlingMode Ignores keyboard arrow key inputs.
-ui.InputFieldKeyHandlingMode = {}
+---@enum ui.InputFieldKeyHandlingMode
+ui.InputFieldKeyHandlingMode = {
+    ---Handles all inputs.
+    DEFAULT = 0,
+    ---Ignores keyboard arrow key inputs.
+    CHAT = 1,
+}
 
 ---Contains the available filter modes for filtering user inputs written to an InputField component.
----@class ui.InputFieldFilterMode
----@field NONE ui.InputFieldFilterMode No filtering, all inputs allowed.
----@field ALPHANUMERIC ui.InputFieldFilterMode No symbol inputs allowed.
----@field NUMERIC ui.InputFieldFilterMode Only numbers allowed.
----@field QUANTITY ui.InputFieldFilterMode Only allows numbers and english quantity designators (eg. `1K` representing `1000`, `1M` representing `1000000`).
----@field NUMBERS_AS_TEXT ui.InputFieldFilterMode Only numbers allowed, with the resulting number always being represented as a string.
-ui.InputFieldFilterMode = {}
+---@enum ui.InputFieldFilterMode
+ui.InputFieldFilterMode = {
+    ---No filtering, all inputs allowed.
+    NONE = 0,
+    ---No symbol inputs allowed.
+    ALPHANUMERIC = 1,
+    ---Only numbers allowed.
+    NUMERIC = 2,
+    ---Only allows numbers and english quantity designators (eg. `1K` representing `1000`, `1M` representing `1000000`).
+    QUANTITY = 3,
+    ---Only numbers allowed, with the resulting number always being represented as a string.
+    NUMBERS_AS_TEXT = 4,
+}
 
 ---Contains the potential result type for the most recent input action on an InputField component.
 ---
@@ -95,8 +104,12 @@ ui.InputFieldActionResult = {
 }
 
 ---Contains the visibility modes available for text in InputFields.
----@class ui.TextContentVisibilityMode
----@field VISIBLE ui.TextContentVisibilityMode Text is always visible.
----@field SHOW_LAST ui.TextContentVisibilityMode All text other than the last character is hidden, replaced by `*` characters.
----@field HIDDEN ui.TextContentVisibilityMode All text is replaced by `*` characters.
-ui.TextContentVisibilityMode = {}
+---@enum ui.TextContentVisibilityMode
+ui.TextContentVisibilityMode = {
+    ---Text is always visible.
+    VISIBLE = 0,
+    ---All text other than the last character is hidden, replaced by `*` characters.
+    SHOW_LAST = 1,
+    ---All text is replaced by `*` characters.
+    HIDDEN = 2,
+}

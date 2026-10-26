@@ -20,16 +20,16 @@
 ---@field spriteMouseOverID integer (Read-only) The ID of the sprite associated with the MapElement when a mouse hovers over it on the map.
 ---@field text string (Read-only) The text displayed for this element on the map.
 ---@field textColour Vector4 (Read-only) The colour of the text displayed on the map.
----@field textRGBA integer (Read-only) The colour of the text displayed on the map as an integer.
+---@field textRGBA Long (Read-only) The colour of the text displayed on the map as an integer.
 ---@field textMouseOverColour Vector4 (Read-only) The colour of the text displayed on the when a mouse hovers over it on the map.
----@field textMouseOverRGBA integer (Read-only) The colour of the text displayed on the when a mouse hovers over it on the map as an integer.
+---@field textMouseOverRGBA Long (Read-only) The colour of the text displayed on the when a mouse hovers over it on the map as an integer.
 ---@field textSize MapElementTextSize (Read-only) The text size used to display the element's text on the map.
 ---@field textOffsetX integer (Read-only) The text offset on the X-axis used when displaying the element's text on the map.
 ---@field textOffsetZ integer (Read-only) The text offset on the Z-axis used when displaying the element's text on the map.
 ---@field textBGFillColour Vector4 (Read-only) The colour of the background for the text displayed on the map.
----@field textBGFillRGBA integer (Read-only) The colour of the background for the text displayed on the map as an integer.
+---@field textBGFillRGBA Long (Read-only) The colour of the background for the text displayed on the map as an integer.
 ---@field textBGOutlineColour Vector4 (Read-only) The colour of the background for the text displayed on the map.
----@field textBGOutlineRGBA integer (Read-only) The colour of the background outline for the text displayed on the when a mouse hovers over it on the map as an integer.
+---@field textBGOutlineRGBA Long (Read-only) The colour of the background outline for the text displayed on the when a mouse hovers over it on the map as an integer.
 ---@field showOnMiniMap boolean (Read-only) Is this config displayed on the minimap.
 ---@field showOnWorldMap boolean (Read-only) Is this config displayed on the world map.
 ---@field category integer (Read-only) The MapElement category this config is associated with.

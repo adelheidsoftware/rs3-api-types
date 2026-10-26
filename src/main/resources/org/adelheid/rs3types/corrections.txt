@@ -8,7 +8,8 @@
 # a field of an event's payload (EntityDrawEventPayload.npcEntity) or a global function (log). Types are LuaCATS. The
 # kinds, which Corrections.parse describes:
 #
-#   rename <member> <name>          the member's name in the client; the lines after it name it so
+#   rename <member|Enum.VALUE> <name>  the name of the member, or the value, in the client; the lines after it name
+#                                   it so
 #   type <member> <type>            a field's type, or what a function returns
 #   optional <member>               the field, or what the function returns, may be nil
 #   field <field> <type>            a field the docs leave out, or another type for one they give
@@ -18,7 +19,7 @@
 #   parent <class> <class>          the class it extends
 #   remove <member>                 a member the docs give and the client lacks
 #   read-only <class|field>         the field, or each field of the class, cannot be assigned
-#   note <member|class> <text>      what the client does that the docs do not say, shown "In the client:"
+#   note <member|class|enum> <text> what the client does that the docs do not say, shown "In the client:"
 #   class <class> <page>            a table the docs describe in prose alone, written in the file of the page
 #
 # A field, function or class line may end with " -- " and a description. The generator reports a line that matches
@@ -84,6 +85,48 @@ type ObjType.interfaceOpNames table<integer, string>   # docs: game/config/objty
 type QuestTypeConfig.type QuestType                 # docs: game/config/questtype.html, "The type of quest", which the enumeration QuestType lists
 parent ui.PagedLayerHeader ui.Component             # docs: ui/layout_components/paged_layer.html, its example calls header:SetSize; client 2026-10-23: a header has SetSize
 
+# ---- Integers past 32 bits, as base.lua's Long: colours read back unsigned, up to 0xFFFFFFFF
+
+type ShapeData.rgba Long[]                          # docs: game/shapes.html, "32-bit Integer Default: 0xFFFFFFFF"; client 2026-10-23: a colour of 0xFF8800FF reads back as 4287103231, and a negative one as its 32 bits
+type ShapeListDrawSettings.shapeRGBA Long[]?        # docs: game/shapes.html; client 2026-10-23: as ShapeInstance.colour
+type ShapeListDrawSettings.colour Long?             # docs: game/shapes.html; client 2026-10-23: as ShapeInstance.colour
+type ShapeListDrawLineSettings.colour Long?         # docs: game/shapes.html; client 2026-10-23: as ShapeInstance.colour
+type ShapeInstance.colour Long                      # docs: game/shapes.html; client 2026-10-23: 0xFF8800FF reads back 4287103231
+type ShapeEntity.colour Long                        # docs: game/shapes.html; client 2026-10-23: as ShapeInstance.colour
+type ui.Component.rgba Long                         # docs: ui/component.html, a hex RGBA code; client 2026-10-23: colours read back unsigned
+type ui.TextData.rgba Long                          # client 2026-10-23: as ui.Component.rgba
+type ui.TextData.shadowRGBA Long                    # client 2026-10-23: as ui.Component.rgba
+type ui.SpriteData.rgba Long                        # client 2026-10-23: as ui.Component.rgba
+type ui.SpriteData.shadowRGBA Long                  # client 2026-10-23: as ui.Component.rgba
+type ui.Sprite.shadowRGBA Long                      # client 2026-10-23: as ui.Component.rgba
+type ui.ComboField.mouseoverForegroundRGBA Long     # client 2026-10-23: as ui.Component.rgba
+type ui.ComboField.mouseoverBackgroundRGBA Long     # client 2026-10-23: as ui.Component.rgba
+type ui.ComboField.selectedForegroundRGBA Long      # client 2026-10-23: as ui.Component.rgba
+type ui.ComboField.selectedBackgroundRGBA Long      # client 2026-10-23: as ui.Component.rgba
+type ui.ComboField.disabledForegroundRGBA Long      # client 2026-10-23: as ui.Component.rgba
+type ui.ComboField.caretRGBA Long                   # client 2026-10-23: as ui.Component.rgba
+type ui.ComboField.errorCaretRGBA Long              # client 2026-10-23: as ui.Component.rgba
+type ui.ComboField.selectionHighlightRGBA Long      # client 2026-10-23: as ui.Component.rgba
+type ui.InputField.caretRGBA Long                   # client 2026-10-23: as ui.Component.rgba
+type ui.InputField.errorCaretRGBA Long              # client 2026-10-23: as ui.Component.rgba
+type ui.InputField.selectionHighlightRGBA Long      # client 2026-10-23: as ui.Component.rgba
+type ui.InputField.emptyTextRGBA Long               # client 2026-10-23: as ui.Component.rgba
+type MapElementType.textRGBA Long                   # client 2026-10-23: reads 4294923577, which 32 signed bits cannot hold
+type MapElementType.textMouseOverRGBA Long          # client 2026-10-23: textRGBA reads past 32 signed bits, so this colour can too
+type MapElementType.textBGFillRGBA Long             # client 2026-10-23: the same
+type MapElementType.textBGOutlineRGBA Long          # client 2026-10-23: the same
+param ui.Canvas:AddLine colourRGBA Long             # client 2026-10-23: as ui.Component.rgba
+param ui.Canvas:AddOutline colourRGBA Long          # client 2026-10-23: as ui.Component.rgba
+param ui.Canvas:AddRectangle colourRGBA Long        # client 2026-10-23: as ui.Component.rgba
+param ui.Canvas:AddGradientH startColourRGBA Long   # client 2026-10-23: as ui.Component.rgba
+param ui.Canvas:AddGradientH endColourRGBA Long     # client 2026-10-23: as ui.Component.rgba
+param ui.Canvas:AddGradientV startColourRGBA Long   # client 2026-10-23: as ui.Component.rgba
+param ui.Canvas:AddGradientV endColourRGBA Long     # client 2026-10-23: as ui.Component.rgba
+param ui.Canvas:AddTriangle colourRGBA Long         # client 2026-10-23: as ui.Component.rgba
+param ui.Canvas:AddSprite colourRGBA Long           # client 2026-10-23: as ui.Component.rgba
+param ui.Canvas:AddText colourRGBA Long             # client 2026-10-23: as ui.Component.rgba
+type ObjType.cost Long                              # docs: game/config/objtype.html, "The 64-bit numeric value of this object."
+
 # ---- Values that may be nil, or that never are
 
 type Inv:GetSlot InvSlot                            # client 2026-10-22: GetSlot(0), GetSlot(-1) and past the last slot return an empty slot, never nil
@@ -146,6 +189,33 @@ values ui.PlayerOpType NONE=-1 FRIEND=0 GROUP_MEMBER=1 GROUP_BANNED=2 CLAN_MEMBE
 values ui.SelectionChangeEvent DESELECTED=0 SELECTED=1 ERROR_MAX_SELECTED=2 ERROR_NOT_SELECTABLE=3   # client 2026-10-23; ONSELECTIONCHANGED passes 1 and 0
 values ui.InputFieldActionResult NONE=-1 ERROR=1 CONTENT_CHANGE=0 SUBMIT=2 SUBMIT_ON_ESCAPE=3 SUBMIT_ON_FOCUS_LOSS=4   # client 2026-10-23; ONCONTENTCHANGED passes 0 while typing
 values ui.CutscenePlaybackEndReason FINISHED=0 CANCELLED=1 INTERRUPTED=2 INTERFACE_CLOSED=3   # client 2026-10-23
+values ui.AlignMode TOPLEFT=0 CENTRE=1 BOTTOMRIGHT=2 JUSTIFY=3   # client 2026-10-26: the API probe
+values ui.AspectRatioMode NO_SCALING=0 SCALE_WIDTH=1 SCALE_HEIGHT=2   # client 2026-10-26: the API probe
+values ui.CarouselButtonDisplayMode SIDES=0   # client 2026-10-26: the API probe
+values ui.CheckAlignMode INLINE=0 INLINE_INVERTED=2 LEFT=-1 RIGHT=1   # client 2026-10-26: the API probe
+values ui.ComponentType LINE=0 RECTANGLE=1 LABEL=2 SPRITE=3 MODEL=4 MODEL_GROUP=5 RADIAL_PROGRESS_OVERLAY=6 CUTSCENE_LAYER=7 CANVAS=8 BUTTON=9 CHECK=10 LIST=11 INPUTFIELD=12 SLIDER=13 COMBO=14 PAGED_LAYER_HEADER=15 CAROUSEL=16 PAGED_CAROUSEL=17 RADIO_GROUP=18 LAYER=20 PANEL=21 GRID=22 PAGED_LAYER=23 GROUP_BOX=24   # client 2026-10-26: the API probe
+values ui.DragRenderBehaviour TRANSPARENT_OVERLAY=0 OPAQUE=1 OPAQUE_OVERLAY=2 INVISIBLE=3   # client 2026-10-26: the API probe
+values ui.GroupBoxHeaderAlignMode LEFT=0 CENTRE=1 RIGHT=2   # client 2026-10-26: the API probe
+values ui.Hook ONBUTTONPRESSED=49 ONCONTENTCHANGED=50 ONSELECTIONCHANGED=51 ONCUTSCENEFINISHED=53 ONCLICK=0 ONCLICKREPEAT=1 ONRELEASE=2 ONHOLD=3 ONMOUSEOVER=4 ONMOUSEREPEAT=5 ONMOUSELEAVE=6 ONDRAG=7 ONDRAGCOMPLETE=8 ONSCROLLWHEEL=9 ONKEY=10 ONSWIPEVERTICAL=43 ONSWIPEHORIZONTAL=44 ONSWIPECOMPLETE=45 ONPINCHHORIZONTAL=47 ONPINCHVERTICAL=46 ONPINCHCOMPLETE=48 ONGAMEPADBUTTON=11 ONGAMEPADBUTTONHELD=12 ONGAMEPADAXIS=13 ONGAMEPADTRIGGER=14 ONOP=37 ONOPT=38 ONTARGETENTER=15 ONTARGETLEAVE=16 ONVARPTRANSMIT=17 ONINVTRANSMIT=18 ONSTATTRANSMIT=19 ONVARCTRANSMIT=20 ONVARCSTRTRANSMIT=21 ONVARCLANTRANSMIT=22 ONCHATTRANSMIT=23 ONFRIENDTRANSMIT=24 ONCLANTRANSMIT=25 ONCLANSETTINGSTRANSMIT=26 ONCLANCHANNELTRANSMIT=27 ONRELATIONSHIPSETTRANSMIT=28 ONMISCTRANSMIT=29 ONSTOCKTRANSMIT=30 ONPLAYERGROUPTRANSMIT=31 ONPLAYERGROUPVARPTRANSMIT=32 ONCAMERAUPDATETRANSMIT=33 ONTIMER=36 ONDIALOGABORT=39 ONSUBCHANGE=40 ONCAMFINISHED=41 ONRESIZE=42   # client 2026-10-26: the API probe
+values ui.InputFieldFilterMode NONE=0 ALPHANUMERIC=1 NUMERIC=2 QUANTITY=3 NUMBERS_AS_TEXT=4   # client 2026-10-26: the API probe
+values ui.InputFieldKeyHandlingMode DEFAULT=0 CHAT=1   # client 2026-10-26: the API probe
+values ui.ModelCameraTransition NONE=0 FADE=1 CROSSFADE=2   # client 2026-10-26: the API probe
+values ui.ModelType NONE=0 MODEL=1 NPC_HEAD=2 PLAYER_HEAD=3 OBJECT=4 PLAYER_MODEL=5 NPC_MODEL=6 PLAYER_HEAD_NOWORN=7 INV_MANWEAR_MODEL=8 INV_WOMANWEAR_MODEL=9   # client 2026-10-26: the API probe
+values ui.ObjectQuantityDisplayMode NEVER=0 ALWAYS=1 MULTIPLE=2   # client 2026-10-26: the API probe
+values ui.TextContentVisibilityMode VISIBLE=0 SHOW_LAST=1 HIDDEN=2   # client 2026-10-26: the API probe
+values ui.TriggerMode ONPRESS_FINISH=0 ONPRESS=1 ONRELEASE=2 REPEAT=3   # client 2026-10-26: the API probe
+rename PluginResourceLoadResult.success SUCCESS                         # client 2026-10-26: success reads nil; FromID(0) is "SUCCESS"
+rename PluginResourceLoadResult.errorFilesystem ERROR_FILESYSTEM        # client 2026-10-26: errorFilesystem reads nil; FromID(1) is "ERROR_FILESYSTEM"
+rename PluginResourceLoadResult.errorDecode ERROR_DECODE                # client 2026-10-26: errorDecode reads nil; FromID(2) is "ERROR_DECODE"
+rename PluginResourceLoadResult.errorExceedsLimits ERROR_EXCEEDS_LIMITS # client 2026-10-26: errorExceedsLimits reads nil; FromID(3) is "ERROR_EXCEEDS_LIMITS"
+rename PluginResourceLoadResult.errorConstruction ERROR_CONSTRUCTION    # client 2026-10-26: errorConstruction reads nil; FromID(4) is "ERROR_CONSTRUCTION"
+values PluginResourceLoadResult SUCCESS=0 ERROR_FILESYSTEM=1 ERROR_DECODE=2 ERROR_EXCEEDS_LIMITS=3 ERROR_CONSTRUCTION=4   # client 2026-10-26: FromID names 0 to 4 so
+note PluginPermissions Each value is a userdata of its own, not a number.   # client 2026-10-26: the API probe reads httpAccess, chatAccess and trackingAccess as sol.jag::scripting::PluginPermission
+
+# ---- What the client has that no page documents
+
+class utils core/index.html -- Helpers the client has, which no page of the docs describes.   # client 2026-10-26: the API probe, a table holding CalcTextWidth alone
+function utils.CalcTextWidth fun(fontID: integer, text: string): integer -- The width of a text in a font.   # client 2026-10-26: CalcTextWidth(id.Font.MUSEO_SANS_15PT_REGULAR, "How wide is this?") returns 124
 
 # ---- What the client does that the docs do not say
 

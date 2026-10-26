@@ -39,6 +39,8 @@ ui.PagedCarousel = {}
 function ui.PagedCarousel.new(parent, categoryID, dynamicID) end
 
 ---Enumeration containing the various options for how the previous/next page carousel buttons should be displayed.
----@class ui.CarouselButtonDisplayMode
----@field SIDES ui.CarouselButtonDisplayMode Indicates the carousel's buttons should be displayed on its left and right sides.
-ui.CarouselButtonDisplayMode = {}
+---@enum ui.CarouselButtonDisplayMode
+ui.CarouselButtonDisplayMode = {
+    ---Indicates the carousel's buttons should be displayed on its left and right sides.
+    SIDES = 0,
+}

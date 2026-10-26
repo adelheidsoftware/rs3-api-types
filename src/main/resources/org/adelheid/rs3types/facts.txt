@@ -51,7 +51,8 @@ signature game/world.html#clear function World.RemoveRoof.Clear()
 
 # Headings over another function's signature, as the client settles them (Oneiro's check, 2026-10-23): AABB has
 # AddPosition and no AddPoint; RadioGroup has HasOption and SetOptions, and its HasEntry and SetEntries read nil.
-# GetOptionSelected follows SetOptionSelected; its signature repeats GetOptionEnabled's, above it (to confirm)
+# GetOptionSelected follows SetOptionSelected; its signature repeats GetOptionEnabled's, above it. The client's radio
+# group has GetOptionSelected, which returns a boolean (the API probe, 2026-10-26)
 rename math/aabb.html#addpoint AddPosition
 rename ui/interactive_components/radio_group.html#hasoption HasOption
 rename ui/interactive_components/radio_group.html#setoptions SetOptions
@@ -105,8 +106,10 @@ trust core/persistentdb.html#set signature
 trust math/vector.html#dot signature
 trust math/quaternion.html#fromyawpitchroll signature
 trust ui/component_configs.html#get signature
-# The completion counts are counts, as their tables and names say; a corner is a Vector3, as GetCorner's table and
-# example say; GetEntity gives the entity CreateEntity made, a ShapeEntity, as its table says (to confirm in the client)
+# The completion counts are counts, as their tables and names say, and a corner is a Vector3, as GetCorner's table and
+# example say: the client returns 1 for each count and a vector for a corner. GetEntity gives the entity CreateEntity
+# made, a ShapeEntity, as its table says: the client returns the entity, and nil for a name it lacks (the API probe,
+# 2026-10-26)
 trust game/config/achievementtype.html#getsubitemcompletioncountforprereqgroup table
 trust game/config/achievementtype.html#getsubitemcompletioncountforrequirementgroup table
 trust math/aabb.html#getcorner table

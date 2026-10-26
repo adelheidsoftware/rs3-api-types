@@ -23,7 +23,7 @@ function ui.Canvas.new(parent, categoryID, dynamicID) end
 ---@param endX integer Final horizontal position for this element.
 ---@param endY integer Final vertical position for this element.
 ---@param thickness number This element's width in interface units.
----@param colourRGBA integer Hex colour code for this element.
+---@param colourRGBA Long Hex colour code for this element.
 ---@overload fun(self: ui.Canvas, x: integer, y: integer, endX: integer, endY: integer, thickness: number, colour: Vector4)
 function ui.Canvas:AddLine(x, y, endX, endY, thickness, colourRGBA) end
 
@@ -33,7 +33,7 @@ function ui.Canvas:AddLine(x, y, endX, endY, thickness, colourRGBA) end
 ---@param width integer Width for this element.
 ---@param height integer Height for this element.
 ---@param thickness number Outline segment width in interface units.
----@param colourRGBA integer Hex colour code for this element.
+---@param colourRGBA Long Hex colour code for this element.
 ---@overload fun(self: ui.Canvas, x: integer, y: integer, width: integer, height: integer, thickness: number, colour: Vector4)
 function ui.Canvas:AddOutline(x, y, width, height, thickness, colourRGBA) end
 
@@ -42,7 +42,7 @@ function ui.Canvas:AddOutline(x, y, width, height, thickness, colourRGBA) end
 ---@param y integer Vertical position for this element.
 ---@param width integer Width for this element.
 ---@param height integer Height for this element.
----@param colourRGBA integer Hex colour code for this element.
+---@param colourRGBA Long Hex colour code for this element.
 ---@overload fun(self: ui.Canvas, x: integer, y: integer, width: integer, height: integer, colour: Vector4)
 function ui.Canvas:AddRectangle(x, y, width, height, colourRGBA) end
 
@@ -54,8 +54,8 @@ function ui.Canvas:AddRectangle(x, y, width, height, colourRGBA) end
 ---@param y integer Vertical position for this element.
 ---@param width integer Width for this element.
 ---@param height integer Height for this element.
----@param startColourRGBA integer Hex colour code for the starting colour for this element.
----@param endColourRGBA integer Hex colour code for the end colour for this element.
+---@param startColourRGBA Long Hex colour code for the starting colour for this element.
+---@param endColourRGBA Long Hex colour code for the end colour for this element.
 ---@overload fun(self: ui.Canvas, x: integer, y: integer, width: integer, height: integer, startColour: Vector4, endColour: Vector4)
 function ui.Canvas:AddGradientH(x, y, width, height, startColourRGBA, endColourRGBA) end
 
@@ -67,8 +67,8 @@ function ui.Canvas:AddGradientH(x, y, width, height, startColourRGBA, endColourR
 ---@param y integer Vertical position for this element.
 ---@param width integer Width for this element.
 ---@param height integer Height for this element.
----@param startColourRGBA integer Hex colour code for the starting colour for this element.
----@param endColourRGBA integer Hex colour code for the end colour for this element.
+---@param startColourRGBA Long Hex colour code for the starting colour for this element.
+---@param endColourRGBA Long Hex colour code for the end colour for this element.
 ---@overload fun(self: ui.Canvas, x: integer, y: integer, width: integer, height: integer, startColour: Vector4, endColour: Vector4)
 function ui.Canvas:AddGradientV(x, y, width, height, startColourRGBA, endColourRGBA) end
 
@@ -79,7 +79,7 @@ function ui.Canvas:AddGradientV(x, y, width, height, startColourRGBA, endColourR
 ---@param p1Y integer Vertical position for the triangle's second vertex.
 ---@param p2X integer Horizontal position for the triangle's third vertex.
 ---@param p2Y integer Vertical position for the triangle's third vertex.
----@param colourRGBA integer Hex colour code for this element.
+---@param colourRGBA Long Hex colour code for this element.
 ---@overload fun(self: ui.Canvas, p0X: integer, p0Y: integer, p1X: integer, p1Y: integer, p2X: integer, p2Y: integer, colour: Vector4)
 function ui.Canvas:AddTriangle(p0X, p0Y, p1X, p1Y, p2X, p2Y, colourRGBA) end
 
@@ -89,8 +89,8 @@ function ui.Canvas:AddTriangle(p0X, p0Y, p1X, p1Y, p2X, p2Y, colourRGBA) end
 ---@param width integer Width for this element.
 ---@param height integer Height for this element.
 ---@param spriteID integer Numeric ID for the sprite to draw.
----@param colourRGBA integer Hex colour code for this element.
----@overload fun(self: ui.Canvas, x: integer, y: integer, width: integer, height: integer, spriteID: integer, uvs: Rect, colourRGBA: integer)
+---@param colourRGBA Long Hex colour code for this element.
+---@overload fun(self: ui.Canvas, x: integer, y: integer, width: integer, height: integer, spriteID: integer, uvs: Rect, colourRGBA: Long)
 ---@overload fun(self: ui.Canvas, x: integer, y: integer, width: integer, height: integer, spriteID: integer, uvs: Rect, spriteConfig: ui.SpriteDataConfig)
 function ui.Canvas:AddSprite(x, y, width, height, spriteID, colourRGBA) end
 
@@ -99,7 +99,7 @@ function ui.Canvas:AddSprite(x, y, width, height, spriteID, colourRGBA) end
 ---@param y integer Vertical position for this element.
 ---@param text string The text to draw.
 ---@param fontID integer Numeric ID for the font used when drawing this block of text.
----@param colourRGBA integer Hex colour code for this element.
+---@param colourRGBA Long Hex colour code for this element.
 ---@overload fun(self: ui.Canvas, x: integer, y: integer, text: string, fontID: integer, colour: Vector4)
 ---@overload fun(self: ui.Canvas, x: integer, y: integer, text: string, textConfig: ui.TextDataConfig)
 ---@overload fun(self: ui.Canvas, x: integer, y: integer, areaWidth: integer, areaHeight: integer, text: string, textConfig: ui.TextDataConfig)

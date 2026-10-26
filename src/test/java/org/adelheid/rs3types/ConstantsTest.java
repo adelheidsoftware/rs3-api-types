@@ -114,7 +114,8 @@ class ConstantsTest {
 
 	@Test
 	void writesTheTablesAndEachNamespacesNames() {
-		String tables = ConstantsWriter.tables(List.of("NPC"), List.of("NPC"), List.of(), Map.of("NPC", "NPCType"));
+		String tables = ConstantsWriter.tables(List.of("NPC"), List.of("NPC"), List.of("VarPlayer"),
+				Map.of("NPC", "NPCType"));
 		String expectedTables = """
 				---@class id
 				---@field NPC id.NPC
@@ -131,6 +132,12 @@ class ConstantsTest {
 				---@class config.NPC
 				---@field [string] NPCType
 				---@field FromID fun(id: integer): NPCType The config of an ID.
+				"""), tables);
+		assertEquals(true, tables.contains("""
+				---The VarPlayer variables, by name.
+				---@class var.VarPlayer
+				---@field [string] VarType
+				---@field FromID fun(id: integer): VarType The variable of an ID.
 				"""), tables);
 
 		assertEquals("""

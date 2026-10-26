@@ -74,6 +74,7 @@ type AchievementType.descriptions AchievementDescription[]   # docs: game/config
 type ui.Sprite.sprite integer|RuntimeSprite|PluginImageResource       # docs: ui/decorative_components/sprite.html's example assigns Plugin.resources.my_sprite; client 2026-10-22: Session Clock's icon shows from a plugin image
 type ui.SpriteData.sprite integer|RuntimeSprite|PluginImageResource   # docs: core/plugin.html, resources stand in for built-in ones
 type ClientOption.minMaxRange integer               # client 2026-10-23: reads one number (0 for Brightness), not the docs' pair
+type ui.GroupBox.headerText ui.TextData             # docs: ui/layout_components/group_box.html types it ui.LabelData, which no page defines, and its example sets content and font; client 2026-10-26: a jag::ui::TextData
 note ClientOption.minMaxRange It reads one number, 0 for Brightness, not a pair.   # client 2026-10-23
 type Vector:Normalise Vector                        # docs: math/vector.html, its examples use the result; client 2026-10-23: returns the normalised vector, and normalises in place too
 type Vector2:Normalise Vector2                      # client 2026-10-23: the same

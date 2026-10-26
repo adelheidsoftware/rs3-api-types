@@ -325,7 +325,8 @@ config = {}
 ---@field [string] StructType
 ---@field FromID fun(id: integer): StructType The config of an ID.
 
----The game's variables, by domain and name: `var.VarPlayer.SOME_NAME.value` is a variable's value.
+---The game's variables, by domain and name: `var.VarPlayer.SOME_NAME.value` is a variable's value. A
+---domain's `FromID` gives the variable of an ID.
 ---@class var
 ---@field VarClan var.VarClan
 ---@field VarClanSetting var.VarClanSetting
@@ -337,19 +338,24 @@ var = {}
 ---The VarClan variables, by name.
 ---@class var.VarClan
 ---@field [string] VarType
+---@field FromID fun(id: integer): VarType The variable of an ID.
 
 ---The VarClanSetting variables, by name.
 ---@class var.VarClanSetting
 ---@field [string] VarType
+---@field FromID fun(id: integer): VarType The variable of an ID.
 
 ---The VarClient variables, by name.
 ---@class var.VarClient
 ---@field [string] VarType
+---@field FromID fun(id: integer): VarType The variable of an ID.
 
 ---The VarPlayer variables, by name.
 ---@class var.VarPlayer
 ---@field [string] VarType
+---@field FromID fun(id: integer): VarType The variable of an ID.
 
 ---The VarPlayerGroup variables, by name.
 ---@class var.VarPlayerGroup
 ---@field [string] VarType
+---@field FromID fun(id: integer): VarType The variable of an ID.

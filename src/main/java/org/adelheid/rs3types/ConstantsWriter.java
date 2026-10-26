@@ -95,13 +95,16 @@ final class ConstantsWriter {
 		}
 		out.append("""
 
-				---The game's variables, by domain and name: `var.VarPlayer.SOME_NAME.value` is a variable's value.
+				---The game's variables, by domain and name: `var.VarPlayer.SOME_NAME.value` is a variable's value. A
+				---domain's `FromID` gives the variable of an ID.
 				""");
 		table(out, "var", variables);
 		for (String namespace : variables) {
 			out.append("\n---The ").append(namespace).append(" variables, by name.\n")
 					.append("---@class var.").append(namespace).append('\n')
-					.append("---@field [string] ").append(VARIABLE_TYPE).append('\n');
+					.append("---@field [string] ").append(VARIABLE_TYPE).append('\n')
+					.append("---@field FromID fun(id: integer): ").append(VARIABLE_TYPE)
+					.append(" The variable of an ID.\n");
 		}
 		return out.toString();
 	}

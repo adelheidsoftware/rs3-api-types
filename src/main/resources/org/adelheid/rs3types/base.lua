@@ -22,7 +22,8 @@ game = {}
 ---@field urls table<string, PluginURL> The base URLs the plugin's manifest names, by their aliases, as in `Plugin.urls.wiki`.
 ---@field resources table The plugin's resources, by their file names without extensions; a folder is a table of its own, as in `Plugin.resources.images.menu.background`.
 
----A base URL the plugin's manifest names, which `Plugin.urls` holds by its alias, and an `HTTPRequest` starts from.
+---A base URL the plugin's manifest names, which `Plugin.urls` holds by its alias, and an `HTTPRequest` starts from: an
+---object of the client's, not a string.
 ---@class PluginURL
 local PluginURL = {}
 

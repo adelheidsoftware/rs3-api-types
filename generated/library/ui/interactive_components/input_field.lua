@@ -11,7 +11,7 @@
 ---spritesheet containing all of the potential states in a vertical layout using the following order - `default`,
 ---`disabled`.
 ---@class ui.InputField : ui.Component
----@field content string Gets or sets the current contents of the input field. If the component is restricted, attempting to retrieve the contents will yield an empty string.
+---@field content string Gets or sets the current contents of the input field. If the component is restricted, attempting to retrieve the contents will yield an empty string. In the client: It keeps what is set only once the field has a style sheet: without one it reads "" back, though the field is not restricted and its visibility is VISIBLE.
 ---@field contentQuantity integer? (Read-only) Attempts to convert the current contents into an integer and returns it if successful. Only usable with numeric and quantity input fields.
 ---@field visibility ui.TextContentVisibilityMode Identifies how text will be drawn for this input field.
 ---@field filterMode ui.InputFieldFilterMode Identifies how inputs will be filtered by this input field.

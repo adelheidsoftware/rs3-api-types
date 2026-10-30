@@ -19,8 +19,8 @@
 ---@field buttonHeight integer Height for the carousel's buttons in interface units.
 ---@field buttonOffset integer Offset in interface units from the left/right edges applied when positioning the carousel's buttons.
 ---@field contentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component.
----@field entryText ui.TextData (Modifiable Contents) Text properties used when displaying entry text labels.
----@field buttonSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the carousel's buttons.
+---@field entryText ui.TextData (Read-only) (Modifiable Contents) Text properties used when displaying entry text labels.
+---@field buttonSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the carousel's buttons.
 ---@field backgroundSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
 ui.Carousel = {}
 

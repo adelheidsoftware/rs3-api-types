@@ -39,9 +39,9 @@ function audio.StopSoundsUsingResource(resource) end
 ---SoundInstances can also expire naturally (via shutdown of the plugin they were created in, or by being played and
 ---finishing), or through script requests (via `Stop`).
 ---@class audio.SoundInstance
----@field isPlaying boolean True if this sound is currently playing, false otherwise.
----@field isPaused boolean True if this sound is currently paused.
----@field id integer Numeric ID used to uniquely identify this sound instance.
+---@field isPlaying boolean (Read-only)
+---@field isPaused boolean (Read-only)
+---@field id integer (Read-only)
 local SoundInstance = {}
 
 ---Starts playing this sound instance, or requests playback to start in the specified number of logic ticks.
@@ -122,7 +122,7 @@ audio.AudioBus = {
     MASTER = 0,
     SFX = 1,
     MUSIC = 2,
-    MUSIC_LOGIC = 3,
+    MUSIC_LOGIN = 3,
     AMBIENT = 4,
     VOICEOVER = 5,
     SFX_SUB = 6,

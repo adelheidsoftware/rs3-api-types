@@ -36,7 +36,8 @@ longer to start:
 - `generated/constants/`: a CSV of each namespace of the game's `id` table, `id,NAME`, with a variable's value type,
   base variable and bit mask after them, as the client's console command `pan` gives them; and a definition file of
   each namespace's names.
-- `src/`: the generator. `tools/constants-dump/`: the development plugin that dumps the constants from the client.
+- `src/`: the generator. `tools/constants-dump/`: the development plugin that dumps the variables' types from the
+  client.
 
 Everything in `generated/` is written by the generator, so don't edit it by hand.
 
@@ -48,7 +49,7 @@ The generator needs JDK 25, which Gradle downloads if you have none:
 ./gradlew generate            # fetches the pages the cache lacks, then rewrites generated/
 ./gradlew generate -Prefresh  # fetches every page again
 ./gradlew generate -Poffline  # reads only the pages already in cache/
-./gradlew constants           # reads the constants dump from the beta client, then generates
+./gradlew constants           # reads the names from the beta client's cache and the dump, then generates
 ```
 
 It fetches the docs one page at a time, a second apart, and keeps them in `cache/`, which is never committed. At the end
@@ -63,9 +64,11 @@ it lists anything in the docs it did not understand. Three files of its own fill
 
 When the docs catch up with a fact or a correction, the generator reports it so it can be deleted.
 
-The constants come from the game client after each game update: run the dump plugin as
-[its README](tools/constants-dump/README.md) says, then `./gradlew constants`, which prints how each namespace
-changed.
+The constants' names come from the game client's cache, which the launcher keeps current: `./gradlew constants`
+reads them from `C:\ProgramData\Jagex\RuneScape-BETA` (`-Pcache=<folder>` for another cache) and prints how each
+namespace changed. The variables' value types and bit masks come from the dump plugin, run as
+[its README](tools/constants-dump/README.md) says, when they change; without a fresh dump the task keeps the ones
+already written.
 
 `./gradlew build` compiles the generator and runs its tests.
 

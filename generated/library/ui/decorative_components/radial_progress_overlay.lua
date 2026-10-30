@@ -10,7 +10,7 @@
 ---@field initialValue number (Read-only) The initial value for this overlay, as specified via `Set`.
 ---@field endValue number (Read-only) The final value for this overlay, as specified via `Set`.
 ---@field progress number (Read-only) The current progress percentage for this overlay, ranging from `0` to `1`, representing `0%` and `100%` respectively.
----@field maskSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the overlay's visuals, normally used as a transparency mask.
+---@field maskSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the overlay's visuals, normally used as a transparency mask.
 ui.RadialProgressOverlay = {}
 
 ---Creates a new radial progress overlay on the specified parent.

@@ -37,11 +37,11 @@
 ---@field selectionHighlightRGBA Long Hex-encoded red/green/blue/alpha colour code used for the input selection overlay.
 ---@field contentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component.
 ---@field headerMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component's dropdown header.
----@field entryText ui.TextData (Modifiable Contents) Text properties used when displaying entries for this combo.
----@field entrySprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
----@field buttonSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the combofield's button.
----@field headerSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the combofield's header.
----@field scrollbar ui.ScrollBar (Modifiable Contents) Scroll bar proprties used when vertical scrolling is required.
+---@field entryText ui.TextData (Read-only) (Modifiable Contents) Text properties used when displaying entries for this combo.
+---@field entrySprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the background.
+---@field buttonSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the combofield's button.
+---@field headerSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the combofield's header.
+---@field scrollbar ui.ScrollBar (Read-only) (Modifiable Contents) Scroll bar proprties used when vertical scrolling is required.
 ui.ComboField = {}
 
 ---Creates a new combofield on the specified parent.

@@ -14,8 +14,8 @@
 ---@field value boolean Indicates if the check is currently ticked or not.
 ---@field alignment ui.CheckAlignMode Determines how the Check's label and button should be positioned. Defaults to `ui.CheckAlignMode.LEFT`
 ---@field buttonSize integer Determines the size of the Check's button in interface units. Limited to a maximum of 255 units. Defaults to the component's height if not set, or set to 0.
----@field text ui.TextData Check label parameters.
----@field sprite ui.SpriteData Check sprite parameters.
+---@field text ui.TextData (Read-only) Check label parameters.
+---@field sprite ui.SpriteData (Read-only) Check sprite parameters.
 ui.Check = {}
 
 ---Creates a new check on the specified parent.

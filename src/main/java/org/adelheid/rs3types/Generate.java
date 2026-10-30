@@ -24,7 +24,8 @@ import java.util.stream.Stream;
  * them the other names their signatures give the types, and writes a definition file for each page that documents the
  * API, beside the hand-written {@code base.lua}. What the reader or the writer does not understand is printed at the
  * end. Run from the repository's root, as {@code ./gradlew generate} does: {@code --refresh} fetches every page again,
- * and {@code --offline} reads the cache alone.
+ * {@code --offline} reads the cache alone, and {@code --no-bindings} leaves bindings.txt out and writes the library to
+ * {@code build/library-docs-only} instead, so that generated/ keeps its word.
  */
 public final class Generate {
 
@@ -40,18 +41,22 @@ public final class Generate {
 
 	public static void main(String[] args) throws IOException {
 		DocsSite.Mode mode = DocsSite.Mode.CACHED;
+		boolean withBindings = true;
 		for (String arg : args) {
-			mode = switch (arg) {
-				case "--refresh" -> DocsSite.Mode.REFRESH;
-				case "--offline" -> DocsSite.Mode.OFFLINE;
+			switch (arg) {
+				case "--refresh" -> mode = DocsSite.Mode.REFRESH;
+				case "--offline" -> mode = DocsSite.Mode.OFFLINE;
+				case "--no-bindings" -> withBindings = false;
 				default -> throw new IllegalArgumentException("Unknown option " + arg
-						+ "; use --refresh or --offline.");
-			};
+						+ "; use --refresh, --offline or --no-bindings.");
+			}
 		}
 		Path root = Path.of("").toAbsolutePath();
 		DocsSite site = new DocsSite(DocsSite.DOCS, root.resolve("cache"), mode, DocsSite.http());
-		List<String> reports = generate(site, root.resolve("generated/library"), root.resolve("generated/constants"),
-				Facts.load(), Corrections.load());
+		Path library = root.resolve(withBindings ? "generated/library" : "build/library-docs-only");
+		Corrections bindings = withBindings ? Corrections.loadBindings() : Corrections.parse("", "bindings.txt");
+		List<String> reports = generate(site, library, root.resolve("generated/constants"), Facts.load(), bindings,
+				Corrections.load());
 		PrintStream out = System.out;
 		reports.forEach(out::println);
 		out.println(reports.isEmpty() ? "generated/ is up to date with the docs."
@@ -59,12 +64,14 @@ public final class Generate {
 	}
 
 	/**
-	 * Rewrites a library folder from a site, with the corrections applied, and the LuaCATS of the constants a folder's
-	 * CSVs give, returning what the reader and the writer did not understand and the corrections that found nothing to
-	 * correct.
+	 * Rewrites a library folder from a site, with bindings.txt's corrections and then corrections.txt's applied, and
+	 * the LuaCATS of the constants a folder's CSVs give, returning what the reader and the writer did not understand
+	 * and the lines of either file that found nothing to correct.
+	 *
+	 * @param bindings the corrections of bindings.txt, applied first, so that one of corrections.txt wins
 	 */
-	static List<String> generate(DocsSite site, Path library, Path constants, Facts facts, Corrections corrections)
-			throws IOException {
+	static List<String> generate(DocsSite site, Path library, Path constants, Facts facts, Corrections bindings,
+			Corrections corrections) throws IOException {
 		List<String> reports = new ArrayList<>();
 		List<ApiPage> pages = new ArrayList<>();
 		for (String path : site.pages()) {
@@ -77,6 +84,7 @@ public final class Generate {
 				reports.addAll(pageReports);
 			}
 		}
+		pages = bindings.apply(pages, reports);
 		pages = corrections.apply(pages, reports);
 		pages = withSharedFields(pages, facts, reports);
 		String base = baseFile();

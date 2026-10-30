@@ -32,9 +32,9 @@ function ui.Canvas:AddLine(x, y, endX, endY, thickness, colourRGBA) end
 ---@param y integer Vertical position for this element.
 ---@param width integer Width for this element.
 ---@param height integer Height for this element.
----@param thickness number Outline segment width in interface units.
+---@param thickness integer Outline segment width in interface units.
 ---@param colourRGBA Long Hex colour code for this element.
----@overload fun(self: ui.Canvas, x: integer, y: integer, width: integer, height: integer, thickness: number, colour: Vector4)
+---@overload fun(self: ui.Canvas, x: integer, y: integer, width: integer, height: integer, thickness: integer, colour: Vector4)
 function ui.Canvas:AddOutline(x, y, width, height, thickness, colourRGBA) end
 
 ---Adds a filled rectangle to the list of drawable elements for this canvas.

@@ -6,11 +6,11 @@
 ---
 ---The following layout component types are available:
 ---@class ui.ComponentCollection : ui.Component
----@field scrollable boolean (Read-only) Indicates whether this component can be scrolled.
----@field scrollX number (Read-only) Current horizontal origin for this component's scroll region.
----@field scrollY number (Read-only) Current vertical origin for this component's scroll region.
----@field scrollWidth number (Read-only) Width of this component's scroll region.
----@field scrollHeight number (Read-only) Height of this component's scroll region.
+---@field scrollable boolean (Read-only)
+---@field scrollX integer (Read-only) Current horizontal origin for this component's scroll region.
+---@field scrollY integer (Read-only) Current vertical origin for this component's scroll region.
+---@field scrollWidth integer (Read-only) Width of this component's scroll region.
+---@field scrollHeight integer (Read-only) Height of this component's scroll region.
 local ComponentCollection = {}
 
 ---Iterates over statically defined components contained in this collection, executing the provided callback once for

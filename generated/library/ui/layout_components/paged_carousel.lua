@@ -23,8 +23,8 @@
 ---@field buttonWidth integer Width used for the previous/next page buttons.
 ---@field buttonHeight integer Height used for the previous/next page buttons.
 ---@field buttonDisplayMode ui.CarouselButtonDisplayMode Controls how the previous/next buttons are displayed.
----@field buttonSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the previous/next buttons.
----@field pageBackgroundSprite ui.SpriteData (Modifiable Contents) Sprite properties used each page's background.
+---@field buttonSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the previous/next buttons.
+---@field pageBackgroundSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used each page's background.
 ---@field pageContentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for each page.
 ui.PagedCarousel = {}
 

@@ -4,6 +4,9 @@
 
 ---The most basic layout component, supports arbitrary positioning and layout of child components on it.
 ---@class ui.Layer : ui.ComponentCollection
+---@field id integer (Read-only)
+---@field offer GrandExchangeOffer
+---@field slot integer (Read-only)
 ui.Layer = {}
 
 ---Creates a new Layer on the specified parent.
@@ -15,3 +18,7 @@ ui.Layer = {}
 ---@param dynamicID? integer Dynamic ID used to identify this component. Defaults to auto-incrementing from the parent's dynamic ID if not specified.
 ---@return ui.Layer # The newly created layer. The caller must set its layout and visual information afterwards.
 function ui.Layer.new(parent, categoryID, dynamicID) end
+
+---@param arg1 integer
+---@return ui.Interface
+function ui.Layer:GetInterface(arg1) end

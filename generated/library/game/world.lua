@@ -67,6 +67,14 @@ function World.GetMapSquareBounds() end
 ---@return boolean
 function World.GetGroundHeight(level, x, z, heightOffsetType) end
 
+---@param arg1 string
+---@param arg2 CoordGrid
+---@overload fun(arg1: string, arg2: CoordGrid, arg3: CoordGrid)
+function World.Add(arg1, arg2) end
+
+---@param arg1 string
+function World.Remove(arg1) end
+
 ---The Remove Roof system allows the client to hide upper levels of the game world in order to provide a clearer view to
 ---players. Portions of the game world, such as the upper floors of a building, are grouped together and hidden as a
 ---whole when the system is told to 'reveal' a coordinate on a level underneath the group.

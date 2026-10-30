@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,12 +25,15 @@ import java.util.stream.Stream;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Reads the constants dump, which {@code tools/constants-dump} stores in the beta client's plugin database, and writes
- * {@code generated/constants/}: a CSV of each namespace of the client's {@code id} table, a row {@code id,NAME} for
- * each name, which for a variable goes on with its value type and, for a bit variable, the ID of the variable it lives
- * in and its bit mask, as the console's {@code pan} command copies them; and {@code tables.txt}, the namespaces of
- * {@code id}, {@code config} and {@code var}. It prints how each namespace changed since the last dump. Run from the
- * repository's root, as {@code ./gradlew constants} does, with the database's path, or the beta client's by default.
+ * Writes {@code generated/constants/}: a CSV of each namespace of the client's {@code id} table, a row {@code id,NAME}
+ * for each name, which for a variable goes on with its value type and, for a bit variable, the ID of the variable it
+ * lives in and its bit mask, as the console's {@code pan} command copies them; and {@code tables.txt}, the namespaces
+ * of {@code id}, {@code config} and {@code var}. The names come from the client's cache, which {@link CacheNames}
+ * reads; the variables' types and masks, and the namespaces, from the constants dump, which
+ * {@code tools/constants-dump} stores in the beta client's plugin database, or from the CSVs already written when
+ * there is no dump. It prints how each namespace changed. Run from the repository's root, as
+ * {@code ./gradlew constants} does: {@code --cache=<folder>} reads another cache, {@code --cache=none} the dump alone,
+ * and {@code --database=<path>} another database.
  */
 public final class Constants {
 
@@ -74,11 +78,102 @@ public final class Constants {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Path database = args.length > 0 ? Path.of(args[0]) : BETA_DATABASE;
+		Path database = BETA_DATABASE;
+		Path cache = CacheNames.BETA_CACHE;
+		boolean useCache = true;
+		for (String arg : args) {
+			if (arg.startsWith("--database=")) {
+				database = Path.of(arg.substring("--database=".length()));
+			} else if (arg.equals("--cache=none")) {
+				useCache = false;
+			} else if (arg.startsWith("--cache=")) {
+				cache = Path.of(arg.substring("--cache=".length()));
+			} else {
+				throw new IllegalArgumentException("Unknown option " + arg
+						+ "; use --database=<path> or --cache=<folder>.");
+			}
+		}
 		Path constants = Path.of("").toAbsolutePath().resolve("generated/constants");
-		Dump dump = read(entries(database));
 		PrintStream out = System.out;
-		write(dump, constants).forEach(out::println);
+		Dump dump = null;
+		if (Files.isRegularFile(database)) {
+			dump = read(entries(database));
+		} else {
+			out.println("No plugin database at " + database + ": the variables' types stay as the CSVs have them.");
+		}
+		CacheNames.Names names = null;
+		if (useCache && CacheNames.has(cache)) {
+			names = CacheNames.read(cache);
+			out.println("Names of " + names.rows().size() + " namespaces read from the cache at " + cache + ".");
+		} else if (useCache) {
+			out.println("No names index at " + cache.resolve(CacheNames.NAMES_INDEX)
+					+ ": the names come from the dump.");
+		}
+		write(merge(dump, names, constants), constants).forEach(out::println);
+	}
+
+	/**
+	 * The dump to write: the cache's names where it has a namespace, with the variables' columns the dump gives, or the
+	 * CSVs already written when there is no dump; the dump's rows otherwise; and the namespaces of the dump, or of
+	 * tables.txt without one, since the cache names a few the client does not expose. The two variable namespaces the
+	 * cache numbers otherwise keep the dump's names.
+	 */
+	static Dump merge(@Nullable Dump dump, CacheNames.@Nullable Names names, Path folder) throws IOException {
+		if (dump == null && names == null) {
+			throw new IOException("There is neither a constants dump nor a cache to read the names from.");
+		}
+		Map<String, List<String>> tables = tables(folder);
+		// The namespaces are the client's id tables, which the dump lists; the cache names a few more the client
+		// does not expose
+		List<String> namespaces = new ArrayList<>(dump != null ? dump.namespaces()
+				: tables.getOrDefault("id", List.of()));
+		List<String> config = dump != null ? dump.config() : tables.getOrDefault("config", List.of());
+		List<String> var = dump != null ? dump.var() : tables.getOrDefault("var", List.of());
+		Map<String, List<String>> rows = new LinkedHashMap<>();
+		Map<String, Integer> nameless = new HashMap<>();
+		for (String namespace : namespaces) {
+			List<String> known = dump != null ? dump.rows().getOrDefault(namespace, List.of())
+					: existing(folder, namespace);
+			List<String> cached = names == null || CacheNames.KEPT_FROM_DUMP.contains(namespace) ? null
+					: names.rows().get(namespace);
+			if (cached == null || names == null) {
+				rows.put(namespace, known);
+				if (dump != null && dump.nameless().containsKey(namespace)) {
+					nameless.put(namespace, dump.nameless().get(namespace));
+				}
+				continue;
+			}
+			// The variables' value type, base variable and mask follow the name in the rows the dump gave
+			Map<String, String> columns = new HashMap<>();
+			for (String row : known) {
+				int first = row.indexOf(',');
+				int second = row.indexOf(',', first + 1);
+				if (first > 0 && second > 0) {
+					columns.put(row.substring(0, first), row.substring(second));
+				}
+			}
+			List<String> merged = new ArrayList<>();
+			for (String row : cached) {
+				String id = row.substring(0, row.indexOf(','));
+				merged.add(row + columns.getOrDefault(id, ""));
+			}
+			// In the dump's order: by ID, the bit variables' negative IDs first
+			merged.sort(Comparator.comparingLong(row -> Long.parseLong(row.substring(0, row.indexOf(',')))));
+			rows.put(namespace, merged);
+			if (names.nameless().containsKey(namespace)) {
+				nameless.put(namespace, names.nameless().get(namespace));
+			}
+		}
+		return new Dump(namespaces, config, var, rows, nameless);
+	}
+
+	/** The rows of a namespace's CSV as written before, or none. */
+	private static List<String> existing(Path folder, String namespace) throws IOException {
+		Path csv = folder.resolve(namespace + ".csv");
+		if (!Files.isRegularFile(csv)) {
+			return List.of();
+		}
+		return Files.readAllLines(csv, StandardCharsets.UTF_8).stream().filter(line -> !line.isBlank()).toList();
 	}
 
 	/**

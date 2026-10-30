@@ -4,8 +4,9 @@ import net.ltgt.gradle.errorprone.errorprone
 // The generator of the stubs in generated/: Java 25, with JSpecify, Error Prone and NullAway, Checkstyle and JUnit, as
 // in Oneiro. `./gradlew generate` reads the docs site, from the cache in cache/ where it has the pages, and the CSVs in
 // generated/constants/, and rewrites the LuaCATS; `-Prefresh` fetches every page again, and `-Poffline` reads the cache
-// alone. `./gradlew constants` reads the constants dump from the beta client's plugin database into
-// generated/constants/, then generates; `-Pdatabase=<path>` reads another database.
+// alone. `./gradlew constants` reads the constants' names from the beta client's cache and the variables' types from
+// the constants dump in its plugin database into generated/constants/, then generates; `-Pcache=<folder>` reads
+// another cache, `-Pdatabase=<path>` another database, and `-Pcache=none` the database alone.
 
 plugins {
 	java
@@ -75,17 +76,21 @@ val generate = tasks.register<JavaExec>("generate") {
 	args = buildList {
 		if (providers.gradleProperty("refresh").isPresent) add("--refresh")
 		if (providers.gradleProperty("offline").isPresent) add("--offline")
+		// -Pnobindings writes the library without bindings.txt to build/library-docs-only, leaving generated/ alone
+		if (providers.gradleProperty("nobindings").isPresent) add("--no-bindings")
 	}
 }
 
 tasks.register<JavaExec>("constants") {
-	description = "Reads the constants dump from the beta client's plugin database, then generates."
+	description = "Reads the constants' names from the beta client's cache and the dump from its plugin database, then generates."
 	group = "generation"
 	classpath = sourceSets.main.get().runtimeClasspath
 	mainClass = "org.adelheid.rs3types.Constants"
 	// The SQLite driver loads its native library, which Java warns about unless native access is allowed
 	jvmArgs("--enable-native-access=ALL-UNNAMED")
 	workingDir = projectDir
-	args = listOfNotNull(providers.gradleProperty("database").orNull)
+	args = listOfNotNull(
+		providers.gradleProperty("database").orNull?.let { "--database=$it" },
+		providers.gradleProperty("cache").orNull?.let { "--cache=$it" })
 	finalizedBy(generate)
 }

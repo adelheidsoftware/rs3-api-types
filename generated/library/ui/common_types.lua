@@ -73,13 +73,13 @@ function ui.Size.new() end
 local TextData = {}
 
 ---Sets the alignment for this text.
----@param alignment ui.AlignMode The alignment to set as both horizontal and vertical alignments.
----@overload fun(self: ui.TextData, horizontalAlignment: ui.AlignMode, verticalAlignment: ui.AlignMode)
-function TextData:AlignTo(alignment) end
+---@param arg1 ui.AlignMode
+---@overload fun(self: ui.TextData, arg1: ui.AlignMode, arg2: ui.AlignMode)
+function TextData:AlignTo(arg1) end
 
 ---Sets this TextData's properties based on the provided config values.
----@param config ui.TextDataConfig The config to source the various properties from.
-function TextData:SetConfig(config) end
+---@param arg1 ui.TextDataConfig
+function TextData:SetConfig(arg1) end
 
 ---Returns a copy of this TextData's config, allowing it to be used elsewhere.
 ---@return ui.TextDataConfig # Config containing a copy of all properties set on this TextData object, excluding non-config properties (eg. `content`)
@@ -139,8 +139,8 @@ function TextData:GetConfigCopy() end
 local SpriteData = {}
 
 ---Sets this SpriteData's properties based on the provided config values.
----@param config ui.SpriteDataConfig The config to source the various properties from.
-function SpriteData:SetConfig(config) end
+---@param arg1 ui.SpriteDataConfig
+function SpriteData:SetConfig(arg1) end
 
 ---Returns a copy of this SpriteData's config, allowing it to be used elsewhere.
 ---@return ui.SpriteDataConfig # Config containing a copy of all properties set on this SpriteData object, excluding non-config properties (eg. `content`)
@@ -172,9 +172,9 @@ function ui.Margin.new() end
 ---@field visible boolean Controls whether the scrollbar is visible or not. Defaults to true.
 ---@field autohide boolean Controls whether the scrollbar only appears to the user when required by the component where the scrollbar resides. For example, an input field may hide the scrollbar until the contents exceed the input field's visible region. Note this doesn't affect the value of `visible`, as that controls whether the scrollbar can ever appear to the user. Defaults to true.
 ---@field buttonLength integer The length of the scrollbar's buttons, representing height or width depending on whether it's a vertical or a horizontal scrollbar. Can be set to `0` to remove the buttons.
----@field backgroundSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
----@field buttonSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the scrollbar's buttons.
----@field handleSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the scrollbar's draggable handle.
+---@field backgroundSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the background.
+---@field buttonSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the scrollbar's buttons.
+---@field handleSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the scrollbar's draggable handle.
 local ScrollBar = {}
 
 ---TextDataConfigs are simplified versions of TextData, containing only the properties necessary for drawing text,
@@ -183,12 +183,12 @@ local ScrollBar = {}
 ---Essentially they contain all of the same properties and data, except the `content` property is omitted and no methods
 ---are available.
 ---@class ui.TextDataConfig
+---@field alpha integer
 ---@field font integer The font to use when drawing this text.
 ---@field lineSpacing integer Spacing between text lines in interface units. Defaults to the font's spacing if set to zero.
 ---@field alignHorizontal ui.AlignMode Horizontal alignment for this text.
 ---@field alignVertical ui.AlignMode Vertical alignment for this text.
 ---@field maxLines integer Maximum number of lines to display. Can be set to 0 to allow an unlimited number of lines.
----@field alpha number Visibility for this text, ranging from 0 (fully transparent) to 1 (opaque).
 ---@field colour Vector4 Colour used when drawing this text.
 ---@field rgba Long Hex-encoded red/green/blue/alpha colour code used when drawing this text.
 ---@field shadowColour Vector4 Colour used when drawing this text's shadow if enabled.

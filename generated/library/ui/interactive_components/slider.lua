@@ -23,10 +23,10 @@
 ---@field maxValue integer (Read-only) The maximum value for this slider.
 ---@field numValues integer (Read-only) The number of values available on this slider. This takes into account `minValue`, `maxValue`, and `rate`.
 ---@field scale integer (Read-only) Divisor applied on the current value when displaying it, allowing integer values to be displayed as floating-point.
----@field rate integer The rate at which the slider transitions from `minValue` to `maxValue`. Also used to determine how often notches get displayed on the slider's track.
----@field labelsText ui.TextData (Modifiable Contents) Text properties used when displaying this slider's text labels.
----@field thumbSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the slider's draggable thumb indicator.
----@field trackSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the slider's track.
+---@field rate integer (Read-only) The rate at which the slider transitions from `minValue` to `maxValue`. Also used to determine how often notches get displayed on the slider's track.
+---@field labelsText ui.TextData (Read-only) (Modifiable Contents) Text properties used when displaying this slider's text labels.
+---@field thumbSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the slider's draggable thumb indicator.
+---@field trackSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the slider's track.
 ---@field notchSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the notches on the slider's track.
 ui.Slider = {}
 

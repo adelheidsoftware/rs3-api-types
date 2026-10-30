@@ -20,8 +20,8 @@
 ---components are associated with do not represent a static target, meaning the type of the component corresponding to
 ---those IDs could change over time, resulting in potential plugin errors if a specific type is assumed.
 ---@class ui.Interface
----@field id integer Unique numeric value used to identify this specific interface.
----@field clientOnly boolean True if this interface is managed entirely by the client and doesn't interact with the server.
+---@field id integer (Read-only) Unique numeric value used to identify this specific interface.
+---@field clientOnly boolean (Read-only) True if this interface is managed entirely by the client and doesn't interact with the server.
 local Interface = {}
 
 ---Attempts to retrieve the component associated with the various provided IDs contained within this interface.

@@ -78,10 +78,10 @@ local ModelCamera = {}
 ---Starts a transition to this camera using the provided sprite mask.
 ---
 ---Warning: Avoid using this directly as camera transitions should be managed by model group components.
----@param transition ui.ModelCameraTransition Determines how the visibility for this transition should be calculated over time.
----@param maskSpriteID integer Numeric ID associated with a sprite for use as a mask for this transition.
----@param durationMs integer Determines how long this transition lasts for in milliseconds.
-function ModelCamera:StartTransition(transition, maskSpriteID, durationMs) end
+---@param arg1 ui.ModelCameraTransition
+---@param arg2 integer
+---@param arg3 integer
+function ModelCamera:StartTransition(arg1, arg2, arg3) end
 
 ---Resets the transition for this camera, reverting to the initial state.
 ---
@@ -89,31 +89,31 @@ function ModelCamera:StartTransition(transition, maskSpriteID, durationMs) end
 function ModelCamera:ClearTransition() end
 
 ---Changes the field-of-view for this camera over the specified duration.
----@param fov number Desired field-of-view in degrees. Defaults to `90.0`.
----@param durationMs integer Determines how long this change takes in milliseconds.
-function ModelCamera:SetFOV(fov, durationMs) end
+---@param arg1 number
+---@param arg2 Long
+function ModelCamera:SetFOV(arg1, arg2) end
 
 ---Changes the origin for this camera over the specified duration.
----@param position Vector3 Desired origin for this camera.
----@param durationMs integer Determines how long this change takes in milliseconds.
-function ModelCamera:SetPosition(position, durationMs) end
+---@param arg1 Vector3
+---@param arg2 integer
+function ModelCamera:SetPosition(arg1, arg2) end
 
 ---Changes the target for this camera over the specified duration.
----@param target Vector3
----@param durationMs integer Determines how long this change takes in milliseconds.
-function ModelCamera:SetLookAt(target, durationMs) end
+---@param arg1 Vector3
+---@param arg2 integer
+function ModelCamera:SetLookAt(arg1, arg2) end
 
 ---Changes the target for this camera over the specified duration.
----@param yawPitchRoll Vector3 Desired rotations for this camera in radians. If not specified, the camera will point directly at its target as set based on `SetPosition` and `SetLookAt`.
----@param durationMs integer Determines how long this change takes in milliseconds.
-function ModelCamera:SetYawPitchRoll(yawPitchRoll, durationMs) end
+---@param arg1 Vector3
+---@param arg2 integer
+function ModelCamera:SetYawPitchRoll(arg1, arg2) end
 
 ---Sets the clip planes which control the minimum and maximum distances at which objects are visible for this camera.
 ---
 ---Warning: The value used for `far` must be larger than `near`.
----@param near number Minimum distance in world units from the camera before objects are visible.
----@param far number Maximum distance in world units from the camera before objects are visible.
-function ModelCamera:SetClipPlanes(near, far) end
+---@param arg1 number
+---@param arg2 number
+function ModelCamera:SetClipPlanes(arg1, arg2) end
 
 ---Determines how transitions between multiple model group cameras are handled visually.
 ---@enum ui.ModelCameraTransition

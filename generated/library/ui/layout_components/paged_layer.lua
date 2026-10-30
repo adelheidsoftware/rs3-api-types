@@ -13,7 +13,7 @@
 ---@field numPages integer
 ---@field numBuiltinPages integer (Read-only) The number of statically built-in pages on this paged layer. Always zero for dynamically created paged layers.
 ---@field contentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component.
----@field backgroundSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
+---@field backgroundSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the background.
 ui.PagedLayer = {}
 
 ---Creates a new PagedLayer on the specified parent.
@@ -79,12 +79,12 @@ function ui.PagedLayer:AddHeader(parent, categoryID, dynamicID) end
 ---Warning: Although a paged layer can be associated with any number of headers, you should avoid doing so as there's no
 ---benefit to it at the moment and support for that may be removed in the future.
 ---@class ui.PagedLayerHeader : ui.Component
----@field target ui.PagedLayer The paged layer associated with this header, and where page information is being sourced retrieved from.
----@field isHorizontal boolean Controls whether this header uses a horizontal or vertical layout.
+---@field target ui.PagedLayer (Read-only) The paged layer associated with this header, and where page information is being sourced retrieved from.
+---@field isHorizontal boolean (Read-only) Controls whether this header uses a horizontal or vertical layout.
 ---@field contentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component.
 ---@field pageHeaderMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for each page element.
----@field entryText ui.TextData (Modifiable Contents) Text properties used when displaying entries for this combo.
----@field backgroundSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
----@field disabledPageIcon ui.SpriteData (Modifiable Contents) Sprite properties used for the icon displayed on disabled pages.
----@field pageHeaderSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the the individual page elements.
+---@field entryText ui.TextData (Read-only) (Modifiable Contents) Text properties used when displaying entries for this combo.
+---@field backgroundSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the background.
+---@field disabledPageIcon ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the icon displayed on disabled pages.
+---@field pageHeaderSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the the individual page elements.
 local PagedLayerHeader = {}

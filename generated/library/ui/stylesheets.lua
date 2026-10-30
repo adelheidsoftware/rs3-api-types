@@ -5,7 +5,7 @@
 ---@class ui.StyleSheet
 ---@field id integer Numeric ID associated with this stylesheet.
 ---@field parent ui.StyleSheet? Parent stylesheet for this.
----@field parentID integer Numeric ID associated with the parent for this stylesheet, or `-1` if no parent is specified.
+---@field parentID ui.StyleSheet Numeric ID associated with the parent for this stylesheet, or `-1` if no parent is specified.
 ---@field [integer] integer? Gets or sets the value for the specified property in this stylesheet.
 local StyleSheet = {}
 

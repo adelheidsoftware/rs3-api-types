@@ -7,6 +7,7 @@
 ---@field filterString string Filtering string to compare against op names.
 ---@field exactMatch boolean Whether the filter string must be an exact match to the op name, otherwise the filter string is a substring.
 ---@field invertFilter boolean Inverts the filter results, ie. op names that don't match the filter string return true.
+---@field isValid boolean (Read-only)
 ui.OpNameFilter = {}
 
 ---Creates a new op name filter object.
@@ -27,12 +28,12 @@ function ui.OpNameFilter:Test(testString) end
 ---@class ui.ComponentOpConfig
 ---@field pauseText string Text to display for this component when an interface pause is triggered by the server. Only affects text and button components.
 ---@field opWikiText string Text to display for this component's Wiki op entry in the right-click menu.
----@field numOpNames integer (Read-only) Number of ops defined for this component.
----@field numOpCursors integer (Read-only) Number of cursors defined for this component's ops.
----@field opNames string[] (Read-only) Names for the ops available for this component.
----@field opBaseName string (Read-only) Suffix used for ops for this component. Commonly used to identify the target of an op.
----@field opCursors integer[] (Read-only) IDs for the cursors available for this component's ops.
----@field targetOpVerb string (Read-only) Prefix used for ops for this component when in target mode. Commonly used to identify the action to perform with something.
+---@field numOpNames Long (Read-only)
+---@field numOpCursors Long (Read-only)
+---@field opNames table (Read-only)
+---@field opBaseName string (Read-only)
+---@field opCursors integer[] (Read-only)
+---@field targetOpVerb string (Read-only)
 ---@field targetOpCursor integer ID for the cursor to use when in target mode for this component.
 local ComponentOpConfig = {}
 
@@ -133,9 +134,9 @@ function ComponentOpConfig:GetOpNameHighPriority() end
 local ComponentSwipeConfig = {}
 
 ---Sets the minimum travel distance for horizontal and vertical inputs before being treated as a swipe gesture.
----@param horizontal integer
----@param vertical integer
-function ComponentSwipeConfig:SetDeadZone(horizontal, vertical) end
+---@param arg1 integer
+---@param arg2 integer
+function ComponentSwipeConfig:SetDeadZone(arg1, arg2) end
 
 ---Configuration parameters used for drag gestures handling on components.
 ---@class ui.ComponentDragConfig
@@ -163,7 +164,7 @@ local ComponentCursorConfig = {}
 ---Warning: This config type is meant for interop with the game's legacy scripting system and should generally be
 ---avoided as it may be removed in the future.
 ---@class ui.ComponentParamsConfig
----@field valid boolean (Read-only) True if there are any parameters set on this component.
+---@field valid boolean (Read-only)
 local ComponentParamsConfig = {}
 
 ---Retrieves the value for the parameter associated with the provided ID.

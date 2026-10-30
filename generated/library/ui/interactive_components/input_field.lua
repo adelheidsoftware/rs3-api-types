@@ -13,8 +13,8 @@
 ---@class ui.InputField : ui.Component
 ---@field content string Gets or sets the current contents of the input field. If the component is restricted, attempting to retrieve the contents will yield an empty string. In the client: It keeps what is set only once the field has a style sheet: without one it reads "" back, though the field is not restricted and its visibility is VISIBLE.
 ---@field contentQuantity integer? (Read-only) Attempts to convert the current contents into an integer and returns it if successful. Only usable with numeric and quantity input fields.
----@field visibility ui.TextContentVisibilityMode Identifies how text will be drawn for this input field.
----@field filterMode ui.InputFieldFilterMode Identifies how inputs will be filtered by this input field.
+---@field visibility ui.TextContentVisibilityMode (Read-only) Identifies how text will be drawn for this input field.
+---@field filterMode ui.InputFieldFilterMode (Read-only) Identifies how inputs will be filtered by this input field.
 ---@field maxLength integer (Read-only) The maximum number of characters that are allowed in this input field.
 ---@field inputMode ui.InputFieldKeyHandlingMode Identifies how inputs will be handled by this input field.
 ---@field emptyText string Text to be displayed while this input field is empty.
@@ -27,9 +27,9 @@
 ---@field emptyTextColour Vector4 Colour used for the text displayed while the input field is empty.
 ---@field emptyTextRGBA Long Hex-encoded red/green/blue/alpha colour code used for the text displayed while the input field is empty.
 ---@field contentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component.
----@field text ui.TextData (Modifiable Contents) Text properties used when displaying this input field. Note using `text.content` will not yield the actual contents of the input field, and you must instead use the `content` property present on the input field itself.
----@field containerSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
----@field scrollbar ui.ScrollBar (Modifiable Contents) Scroll bar proprties used when vertical scrolling is required.
+---@field text ui.TextData (Read-only) (Modifiable Contents) Text properties used when displaying this input field. Note using `text.content` will not yield the actual contents of the input field, and you must instead use the `content` property present on the input field itself.
+---@field containerSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the background.
+---@field scrollbar ui.ScrollBar (Read-only) (Modifiable Contents) Scroll bar proprties used when vertical scrolling is required.
 ui.InputField = {}
 
 ---Creates a new input field on the specified parent.

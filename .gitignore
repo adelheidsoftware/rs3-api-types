@@ -13,5 +13,9 @@ out/
 # Visual Studio Code
 .vscode/
 
+# Corrections kept outside the repository for now
+bindings-review.txt
+src/main/resources/org/adelheid/rs3types/bindings.txt
+
 # macOS
 .DS_Store

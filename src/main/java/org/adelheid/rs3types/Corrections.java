@@ -23,6 +23,10 @@ import org.jspecify.annotations.Nullable;
  * {@code NPCType.attackOpPriority}, or a function's, {@code ui.Interface:GetComponent}, and gives its evidence after a
  * {@code #}. Types are written as LuaCATS writes them. The corrections are applied once the pages are read; one that
  * matches nothing in the docs, or changes nothing, is reported, as the docs or the client may have caught up with it.
+ *
+ * <p>{@code bindings.txt} holds lines of the same form from another source than the docs, applied before
+ * {@code corrections.txt}, so that a correction checked in the client wins. It is kept outside the repository for now,
+ * and the generator runs without it.
  */
 final class Corrections {
 
@@ -39,24 +43,43 @@ final class Corrections {
 	private static final Set<String> DESCRIBED = Set.of("field", "function", "class");
 	private static final String DESCRIPTION = " -- ";
 
+	private static final String CORRECTIONS = "corrections.txt";
+	private static final String BINDINGS = "bindings.txt";
+
 	private final List<Correction> corrections;
+	/** The file the corrections come from, which the reports name. */
+	private final String source;
 
 	/** A correction's kind, its subject, what follows it up to its description, its description, and its line. */
 	private record Correction(String kind, String subject, String rest, String description, String line) {
 	}
 
-	private Corrections(List<Correction> corrections) {
+	private Corrections(List<Correction> corrections, String source) {
 		this.corrections = corrections;
+		this.source = source;
 	}
 
 	/** The corrections the generator ships with. */
 	static Corrections load() {
-		try (InputStream in = Objects.requireNonNull(Corrections.class.getResourceAsStream("corrections.txt"),
-				"corrections.txt")) {
-			return parse(new String(in.readAllBytes(), StandardCharsets.UTF_8));
+		return load(CORRECTIONS);
+	}
+
+	/** The corrections of bindings.txt, applied before those of corrections.txt; none where the file is not there. */
+	static Corrections loadBindings() {
+		return Corrections.class.getResource(BINDINGS) == null ? parse("", BINDINGS) : load(BINDINGS);
+	}
+
+	private static Corrections load(String file) {
+		try (InputStream in = Objects.requireNonNull(Corrections.class.getResourceAsStream(file), file)) {
+			return parse(new String(in.readAllBytes(), StandardCharsets.UTF_8), file);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
+	}
+
+	/** The corrections in a text, as {@link #parse(String, String)} reads them, from corrections.txt. */
+	static Corrections parse(String text) {
+		return parse(text, CORRECTIONS);
 	}
 
 	/**
@@ -88,8 +111,10 @@ final class Corrections {
 	 *
 	 * <p>A {@code field}, {@code function} or {@code class} line may end with a description after {@code --}, which
 	 * replaces the docs' or describes what they leave out.
+	 *
+	 * @param source the file the text is from, which the reports and the errors name
 	 */
-	static Corrections parse(String text) {
+	static Corrections parse(String text, String source) {
 		List<Correction> corrections = new ArrayList<>();
 		for (String line : text.lines().toList()) {
 			String stripped = line.strip();
@@ -98,7 +123,7 @@ final class Corrections {
 			}
 			int evidence = stripped.indexOf(" #");
 			if (evidence < 0) {
-				throw new IllegalArgumentException("corrections.txt has a line without its evidence: " + line);
+				throw new IllegalArgumentException(source + " has a line without its evidence: " + line);
 			}
 			String correction = stripped.substring(0, evidence).strip();
 			String description = "";
@@ -113,14 +138,14 @@ final class Corrections {
 					&& (expected < 0 ? words.size() >= 3 : words.size() == expected + 2)
 					&& (description.isEmpty() || DESCRIBED.contains(words.get(0)));
 			if (!fits) {
-				throw new IllegalArgumentException("corrections.txt has a line the generator does not understand: "
+				throw new IllegalArgumentException(source + " has a line the generator does not understand: "
 						+ line);
 			}
 			String afterSubject = correction.substring(correction.indexOf(words.get(1)) + words.get(1).length())
 					.strip();
 			corrections.add(new Correction(words.get(0), words.get(1), afterSubject, description, stripped));
 		}
-		return new Corrections(corrections);
+		return new Corrections(corrections, source);
 	}
 
 	/**
@@ -134,9 +159,9 @@ final class Corrections {
 		for (Correction correction : corrections) {
 			List<ApiPage> before = List.copyOf(corrected);
 			if (!apply(correction, corrected, replaced)) {
-				reports.add("corrections.txt: " + correction.line() + ", which matches nothing in the docs.");
+				reports.add(source + ": " + correction.line() + ", which matches nothing in the docs.");
 			} else if (corrected.equals(before)) {
-				reports.add("corrections.txt: " + correction.line() + ", which the docs now say themselves.");
+				reports.add(source + ": " + correction.line() + ", which the docs now say themselves.");
 			}
 		}
 		return corrected;
@@ -154,7 +179,7 @@ final class Corrections {
 					Stream.concat(type.operators().stream(), Stream.of(correction.rest())).toList()));
 			case "field" -> field(pages, correction.subject(), correction.rest(), correction.description());
 			case "function" -> function(pages, correction.subject(), correction.rest(), correction.description(),
-					replaced);
+					replaced, source);
 			default -> member(pages, correction);
 		};
 	}
@@ -373,7 +398,7 @@ final class Corrections {
 	 * @param description the function's description, replacing the docs'; empty to keep theirs
 	 */
 	private static boolean function(List<ApiPage> pages, String path, String fun, String description,
-			Set<String> replaced) {
+			Set<String> replaced, String source) {
 		boolean colon = path.contains(":");
 		Member member = member(pages, path);
 		if (member == null) {
@@ -401,8 +426,7 @@ final class Corrections {
 			}
 			if (!found[0]) {
 				functions.add(new ApiPage.FunctionDoc(member.name(), colon, List.of(form),
-						description.isEmpty() ? List.of() : List.of(description), List.of(), List.of(),
-						"corrections.txt"));
+						description.isEmpty() ? List.of() : List.of(description), List.of(), List.of(), source));
 			}
 			return type.withFunctions(functions);
 		});

@@ -15,9 +15,9 @@
 ---@field headerOffsetX integer The header's offset from the left in interface units.
 ---@field headerOffsetY integer The header's offset from the right in interface units.
 ---@field headerAlignment ui.GroupBoxHeaderAlignMode Defines how the header should be positioned.
----@field headerText ui.TextData (Modifiable Contents) Label properties used for the header text.
----@field contentBackgroundSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
----@field headerBackgroundSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the header background.
+---@field headerText ui.TextData (Read-only) (Modifiable Contents) Label properties used for the header text.
+---@field contentBackgroundSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the background.
+---@field headerBackgroundSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the header background.
 ---@field contentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component. In the client: It gives a copy: setting one of its sides changes nothing, so assign a whole margin, which works.
 ui.GroupBox = {}
 

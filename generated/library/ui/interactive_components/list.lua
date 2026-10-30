@@ -22,11 +22,11 @@
 ---@field entries ui.ListEntry[] (Read-only) Array containing all entries on this list.
 ---@field contentMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component.
 ---@field headerMargin ui.Margin (Modifiable Contents) Offsets used to determine the inner content area for this component's dropdown header. Only used by dropdown lists.
----@field scrollbar ui.ScrollBar (Modifiable Contents) Scroll bar proprties used when vertical scrolling is required.
----@field entryText ui.TextData (Modifiable Contents) Text properties used when displaying entries for this list.
----@field entrySprite ui.SpriteData (Modifiable Contents) Sprite properties used for the background.
----@field buttonSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the dropdown's button. Only used by dropdown lists.
----@field headerSprite ui.SpriteData (Modifiable Contents) Sprite properties used for the dropdown's header. Only used by dropdown lists.
+---@field scrollbar ui.ScrollBar (Read-only) (Modifiable Contents) Scroll bar proprties used when vertical scrolling is required.
+---@field entryText ui.TextData (Read-only) (Modifiable Contents) Text properties used when displaying entries for this list.
+---@field entrySprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the background.
+---@field buttonSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the dropdown's button. Only used by dropdown lists.
+---@field headerSprite ui.SpriteData (Read-only) (Modifiable Contents) Sprite properties used for the dropdown's header. Only used by dropdown lists.
 ui.List = {}
 
 ---Creates a new list on the specified parent.

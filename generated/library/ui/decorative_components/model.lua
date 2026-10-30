@@ -145,6 +145,7 @@ function ui.NPCCustomisation.new(customisingBody) end
 ---@param scale number Desired scale for the model. Only applies for body customisations. Defaults to `1.0`.
 ---@param translation Vector3 Desired position for the model. Only applies for body customisations. Defaults to `(0.0, 0.0, 0.0)`.
 ---@param rotationYawPitchRoll Vector3 Desired rotation for the model, specified in radians. Only applies for body customisations. Defaults to `(0.0, 0.0, 0.0)`.
+---@return boolean
 function ui.NPCCustomisation:SetModelSlot(modelSlot, modelID, scale, translation, rotationYawPitchRoll) end
 
 ---Configures a material replacement operation for a model.
@@ -152,6 +153,7 @@ function ui.NPCCustomisation:SetModelSlot(modelSlot, modelID, scale, translation
 ---@param rematerialSlot integer Rematerial slot to set. A maximum of `16` rematerial slots are available.
 ---@param sourceMaterialID integer ID for the material to replace.
 ---@param replacementMaterialID integer ID for the material to use as a replacement.
+---@return boolean
 function ui.NPCCustomisation:SetModelSlotRematerial(modelSlot, rematerialSlot, sourceMaterialID, replacementMaterialID) end
 
 ---Configures a material replacement operation for a model.
@@ -159,6 +161,7 @@ function ui.NPCCustomisation:SetModelSlotRematerial(modelSlot, rematerialSlot, s
 ---@param recolourSlot integer
 ---@param sourceColourHSL integer HSL colour to replace. HSL colour codes get compressed into 16 bit value rather than using the full 24 bits, as seen below where `0` represents a dropped bit. Hue: `xxxxxx00`; Saturation: `xxx00000`; Lightness: `xxxxxxx0`. So the packed 16 bit colour code contains the 6 high bits for hue, followed by the 3 high bits for saturation, and the 7 high bits for lightness.
 ---@param replacementColourHSL integer HSL colour to use as a replacement. HSL colour codes get compressed into 16 bit value rather than using the full 24 bits, as seen below where `0` represents a dropped bit. Hue: `xxxxxx00`; Saturation: `xxx00000`; Lightness: `xxxxxxx0`. So the packed 16 bit colour code contains the 6 high bits for hue, followed by the 3 high bits for saturation, and the 7 high bits for lightness.
+---@return boolean
 function ui.NPCCustomisation:SetModelSlotRecolour(modelSlot, recolourSlot, sourceColourHSL, replacementColourHSL) end
 
 ---Identifies how a generic model ID should be interpreted by a model component.

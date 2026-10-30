@@ -28,7 +28,7 @@ class GenerateTest {
 		DocsSite site = new DocsSite(Fixtures.SITE, root.resolve("cache"), DocsSite.Mode.CACHED, Fixtures::serve);
 
 		List<String> reports = Generate.generate(site, library, root.resolve("constants"), Fixtures.facts(),
-				Corrections.parse(""));
+				Corrections.parse("", "bindings.txt"), Corrections.parse(""));
 
 		for (String name : List.of("lantern", "lamps", "events")) {
 			assertEquals(Fixtures.read(name + ".lua"),
@@ -53,8 +53,8 @@ class GenerateTest {
 		DocsSite site = new DocsSite(Fixtures.SITE, root.resolve("cache"), DocsSite.Mode.CACHED, Fixtures::serve);
 		Facts facts = Facts.parse(Fixtures.read("test-facts.txt") + "fields lamps.Glow lamps.Wick length shine\n");
 
-		List<String> reports =
-				Generate.generate(site, library, root.resolve("constants"), facts, Corrections.parse(""));
+		List<String> reports = Generate.generate(site, library, root.resolve("constants"), facts,
+				Corrections.parse("", "bindings.txt"), Corrections.parse(""));
 
 		// lamps.Glow, which the page describes in prose alone, has the wick's fields but its length
 		String lamps = Files.readString(library.resolve("core/lamps.lua"), StandardCharsets.UTF_8);

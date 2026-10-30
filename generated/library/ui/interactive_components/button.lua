@@ -26,8 +26,8 @@
 ---@field showAssociatedObjectText boolean Controls whether the button's label should be replaced with the associated object's text. Defaults to the actual label text if there's no associated object, or if it's invalid.
 ---@field showAssociatedObjectSprite boolean Controls whether the sprite for the associated object will be displayed on top of the button's sprite. Does nothing if there's no associated object, or if it's invalid.
 ---@field contentMargin ui.Margin Margin used to determine the label region for the button.
----@field text ui.TextData Button label parameters.
----@field sprite ui.SpriteData Button sprite parameters.
+---@field text ui.TextData (Read-only) Button label parameters.
+---@field sprite ui.SpriteData (Read-only) Button sprite parameters.
 ui.Button = {}
 
 ---Creates a new button on the specified parent.
